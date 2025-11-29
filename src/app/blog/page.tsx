@@ -1,8 +1,30 @@
 import Link from 'next/link';
-import { posts } from '@/data/posts';
-import { Calendar, Tag, ArrowRight } from 'lucide-react';
+import { posts as localPosts } from '@/data/posts';
+import { Calendar, ArrowRight } from 'lucide-react';
+import { supabase } from '@/lib/supabaseClient';
 
-export default function Blog() {
+export default async function Blog() {
+  // Try to fetch posts from Supabase, fall back to local posts if it fails
+  let posts = localPosts;
+  
+  try {
+    const { data: supabasePosts, error } = await supabase
+    .from('posts')
+    .select('*')
+    .eq('status', 'published')
+    .order('created_at', { ascending: false });
+
+    console.log(supabasePosts);
+    
+    if (!error && supabasePosts && supabasePosts.length > 0) {
+      posts = supabasePosts;
+    }
+  } catch (error) {
+    // If Supabase is not configured or fails, use local posts
+    console.warn('Failed to fetch posts from Supabase, using local posts:', error);
+  }
+
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
       <h1 className="text-3xl md:text-4xl font-bold mb-12 text-center">Blog</h1>
@@ -18,7 +40,7 @@ export default function Blog() {
                 </div>
               </div>
 
-              <div className="p-6 flex flex-col flex-grow">
+              <div className="p-6 flex flex-col grow">
                 <div className="flex items-center gap-4 text-xs text-gray-400 mb-4">
                   <span className="flex items-center gap-1">
                     <Calendar size={14} />
@@ -33,7 +55,7 @@ export default function Blog() {
                   {post.title}
                 </h2>
                 
-                <p className="text-gray-400 text-sm mb-6 line-clamp-3 flex-grow">
+                <p className="text-gray-400 text-sm mb-6 line-clamp-3 grow">
                   {post.excerpt}
                 </p>
 
