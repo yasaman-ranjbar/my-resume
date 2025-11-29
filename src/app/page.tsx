@@ -6,7 +6,7 @@ export default function Home() {
     <div className="flex flex-col items-center justify-center min-h-[calc(100vh-4rem)] px-4 sm:px-6 lg:px-8 text-center">
       <div className="relative w-32 h-32 md:w-40 md:h-40 mb-8 rounded-full overflow-hidden border-4 border-blue-500/30 shadow-2xl shadow-blue-500/20 bg-white/5">
         {/* Placeholder for Profile Image */}
-        <div className="w-full h-full flex items-center justify-center text-gray-500 text-xs">
+        <div className="w-full h-full flex items-center justify-center text-red-500 text-xs">
           Placeholder
         </div>
       </div>
