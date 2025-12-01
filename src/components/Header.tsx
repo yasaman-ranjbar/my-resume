@@ -1,13 +1,35 @@
+"use client";
+
 import Link from "next/link";
 import { Menu } from "lucide-react";
+import { useEffect, useState } from "react";
+import clsx from 'clsx'
 
 export default function Header() {
+
+
+  const [isscrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 0) {
+        setIsScrolled(true);
+      } else {
+        setIsScrolled(false);
+      }
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-[#131313]/90 backdrop-blur-sm border-b border-white/10">
+    <header className={clsx('fixed top-0 left-0 right-0 z-50 bg-transparent border-b border-white/10', isscrolled && 'backdrop-blur-3xl')}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
-          <div className="flex-shrink-0">
+          <div className="shrink-0">
             <Link href="/" className="text-2xl font-bold text-white">
               <span className="text-[#F9004D]">R</span>eeni.
             </Link>
