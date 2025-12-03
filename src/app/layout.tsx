@@ -6,7 +6,7 @@ import { Providers } from "@/components/Providers";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Front-End Developer Portfolio",
+  title: "Jasmine resume",
   description: "Portfolio of a passionate Front-End Developer specializing in React and Next.js",
 };
 
@@ -16,7 +16,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark">
+    <html lang="en">
       <body className={`${inter.className} min-h-screen flex flex-col`}>
         <Providers>
           {children}

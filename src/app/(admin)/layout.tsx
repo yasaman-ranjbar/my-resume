@@ -1,26 +1,22 @@
 import React from 'react'
+import Sidebar from '@/components/admin/Sidebar'
 
 const AdminLayout = ({ children }: { children: React.ReactNode }) => {
-  return (
-    <div className="flex min-h-screen flex-col">
-        <header className="bg-slate-900 text-white p-4">
-            <h1>Admin Dashboard</h1>
-        </header>
-        <div className="flex flex-1">
-            <aside className="w-64 bg-slate-100 p-4 border-r">
-                <nav>
-                    <ul>
-                        <li><a href="/admin" className="block py-2">Dashboard</a></li>
-                        <li><a href="/admin/posts" className="block py-2">Posts</a></li>
-                    </ul>
-                </nav>
-            </aside>
-            <main className="flex-1 p-8">
-                {children}
-            </main>
+    return (
+        <div className="flex min-h-screen flex-col">
+
+            <div className="flex flex-1">
+                <Sidebar />
+                <main className="flex-1 overflow-hidden  text-gray-800">
+                    <header className="bg-[#F5F7FB] p-5 m-6 rounded-3xl">
+                        <h1>Admin Dashboard</h1>
+                    </header>
+                    <div className='m-6 bg-[#F5F7FB] rounded-4xl'>{children}</div>
+
+                </main>
+            </div>
         </div>
-    </div>
-  )
+    )
 }
 
 export default AdminLayout
