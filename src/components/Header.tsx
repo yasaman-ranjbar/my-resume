@@ -31,7 +31,7 @@ export default function Header() {
           {/* Logo */}
           <div className="shrink-0">
             <Link href="/" className="text-2xl font-bold text-white">
-              <span className="text-[#F9004D]">R</span>eeni.
+              <span className="text-[#F9004D]">J</span>asmine.
             </Link>
           </div>
 

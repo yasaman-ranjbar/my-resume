@@ -1,19 +1,33 @@
 "use client";
 
 import LoadingSpinner from "@/components/common/LoadingSpinner";
+import { ADMIN_ROUTES } from "@/constant/route";
 import usePosts from "@/hooks/usePosts";
 import Link from "next/link";
+import { useEffect } from "react";
+import { toast } from "react-toastify";
 
 export default function AdminPostsPage() {
   const { data: posts, isLoading, error } = usePosts();
+
+  useEffect(() => {
+    if (error) {
+      toast.error(
+        error.message || "Failed to load posts. Please try again later."
+      );
+    }
+  }, [error]);
 
   if (isLoading) {
     return <LoadingSpinner />;
   }
 
   if (error) {
-    console.error("Supabase fetch error:", error);
-    return <main className="p-8">Error loading posts</main>;
+    return (
+      <main className="p-8">
+        <p className="text-red-500">Error loading posts</p>
+      </main>
+    );
   }
 
   return (
@@ -21,7 +35,7 @@ export default function AdminPostsPage() {
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-2xl font-semibold">Posts</h1>
         <Link
-          href="/admin/posts/new"
+          href={ADMIN_ROUTES.POSTS_NEW}
           className="px-4 py-2 bg-[#280A10] text-white rounded-lg"
         >
           New post

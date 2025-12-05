@@ -4,62 +4,62 @@ import CoverImage from "@/components/ui/coverImage";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { CopyPlus, X } from "lucide-react";
+import { CopyPlus } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/Button";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import PostTag from "@/components/admin/PostTag";
-import { useRouter } from "next/navigation";
+import { useCreatePost } from "@/hooks/usePosts";
+import { useCategories } from "@/hooks/useCategories";
+import { toast } from "react-toastify";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/Select";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/RadioGroup";
 
 export default function AddNewPost() {
   const [coverImage, setCoverImage] = useState<File | null>(null);
   const [tags, setTags] = useState<string[]>([]);
   const [tagInput, setTagInput] = useState<string>("");
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const { register, handleSubmit } = useForm();
-  const router = useRouter();
+  const { register, handleSubmit, control } = useForm({
+    defaultValues: {
+      title: "",
+      slug: "",
+      content: "",
+      status: "draft",
+      tags: "",
+      category_id: "",
+    },
+  });
+  const createPostMutation = useCreatePost();
+  const { data: categories, isLoading: categoriesLoading } = useCategories();
 
   const onSubmit = async (data: any) => {
-    setIsSubmitting(true);
-    setError(null);
-
-    try {
-      // Create FormData with all fields
-      const formData = new FormData();
-      formData.append("title", data.title);
-      formData.append("slug", data.slug || "");
-      formData.append("content", data.content);
-      formData.append("status", "draft");
-      formData.append("tags", JSON.stringify(tags));
-
-      // Add cover image if provided
-      if (coverImage) {
-        formData.append("coverImage", coverImage);
+    createPostMutation.mutate(
+      {
+        title: data.title,
+        slug: data.slug || "",
+        content: data.content,
+        status: data.status || "draft",
+        tags,
+        coverImage,
+        category_id: data.category_id || undefined,
+      },
+      {
+        onSuccess: () => {
+          toast.success("Post created successfully!");
+        },
+        onError: (err: Error) => {
+          toast.error(
+            err.message || "Failed to create post. Please try again."
+          );
+        },
       }
-
-      // Submit everything in one request
-      const response = await fetch("/api/admin/posts", {
-        method: "POST",
-        body: formData,
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || "Failed to create post");
-      }
-
-      const result = await response.json();
-      console.log("Post created successfully:", result);
-
-      // Redirect to posts list
-      router.push("/admin/posts");
-    } catch (err: any) {
-      console.error("Error submitting post:", err);
-      setError(err.message || "An error occurred while creating the post");
-    } finally {
-      setIsSubmitting(false);
-    }
+    );
   };
 
   const handleTagInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -93,8 +93,69 @@ export default function AddNewPost() {
             <Label htmlFor="slug">slug</Label>
             <Input type="text" id="slug" {...register("slug")} />
           </div>
+
+          <div className="w-full">
+            <Label>Category</Label>
+            <Controller
+              name="category_id"
+              control={control}
+              render={({ field }) => (
+                <Select
+                  value={field.value}
+                  onValueChange={field.onChange}
+                  disabled={categoriesLoading}
+                >
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Select a category" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {categoriesLoading ? (
+                      <SelectItem value="loading" disabled>
+                        Loading categories...
+                      </SelectItem>
+                    ) : categories && categories.length > 0 ? (
+                      categories.map((category) => (
+                        <SelectItem key={category.id} value={category.id}>
+                          {category.name}
+                        </SelectItem>
+                      ))
+                    ) : (
+                      <SelectItem value="no-categories" disabled>
+                        No categories available
+                      </SelectItem>
+                    )}
+                  </SelectContent>
+                </Select>
+              )}
+            />
+          </div>
         </div>
         <div className="flex items-center gap-6">
+          <div className="w-full">
+            <Label className="">Status: </Label>
+            <Controller
+              name="status"
+              control={control}
+              render={({ field }) => (
+                <div className="border border-stone-400 h-12 rounded-md py-2 px-4">
+                  <RadioGroup
+                    className="flex gap-5 pt-2"
+                    value={field.value}
+                    onValueChange={field.onChange}
+                  >
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="draft" id="draft" />
+                      <Label htmlFor="draft">Draft</Label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="published" id="published" />
+                      <Label htmlFor="published">Published</Label>
+                    </div>
+                  </RadioGroup>
+                </div>
+              )}
+            />
+          </div>
           <div className="w-full">
             <Label htmlFor="tags">Tags</Label>
             <Input
@@ -107,11 +168,13 @@ export default function AddNewPost() {
               placeholder="Type a tag and press Enter"
             />
           </div>
-          <div className="w-full">
-            {tags.length > 0 && (
-              <PostTag onClick={handleRemoveTag} tags={tags} />
-            )}
-          </div>
+          {tags && (
+            <div className="w-full">
+              {tags.length > 0 && (
+                <PostTag onClick={handleRemoveTag} tags={tags} />
+              )}
+            </div>
+          )}
         </div>
         <div className="space-y-3">
           <Label htmlFor="content">Content</Label>
@@ -122,18 +185,13 @@ export default function AddNewPost() {
           onChange={(file) => setCoverImage(file)}
           label="Cover Image"
         />
-        {error && (
-          <div className="p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
-            <p className="text-sm text-red-600 dark:text-red-400">{error}</p>
-          </div>
-        )}
         <Button
           variant="default"
           size="lg"
           type="submit"
-          disabled={isSubmitting}
+          disabled={createPostMutation.isPending}
         >
-          {isSubmitting ? "Creating..." : "Create Post"}
+          {createPostMutation.isPending ? "Creating..." : "Create Post"}
         </Button>
       </form>
     </div>

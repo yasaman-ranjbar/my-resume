@@ -11,6 +11,7 @@ import {
   ChevronRight,
   Info,
   Mail,
+  ListPlus,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ADMIN_ROUTES } from "@/constant/route";
@@ -38,6 +39,11 @@ const menuItems: { category?: string; items: MenuItem[] }[] = [
           { title: "All Posts", href: ADMIN_ROUTES.POSTS },
           { title: "Add Post", href: ADMIN_ROUTES.POSTS_NEW },
         ],
+      },
+      {
+        title: "Categories",
+        icon: ListPlus,
+        submenu: [{ title: "New Category", href: ADMIN_ROUTES.New_CATEGORY }],
       },
     ],
   },

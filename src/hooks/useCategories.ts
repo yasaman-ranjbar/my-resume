@@ -1,0 +1,77 @@
+"use client";
+
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+
+export interface Category {
+  id: string;
+  name: string;
+  slug: string;
+  created_at: string;
+}
+
+interface CategoriesResponse {
+  categories: Category[];
+}
+
+interface CreateCategoryData {
+  name: string;
+  slug?: string;
+}
+
+interface CreateCategoryResponse {
+  category: Category;
+}
+
+const fetchCategories = async (): Promise<Category[]> => {
+  const response = await fetch("/api/admin/categories");
+
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({}));
+    throw new Error(errorData.error || "Failed to fetch categories");
+  }
+
+  const data: CategoriesResponse = await response.json();
+  return data.categories;
+};
+
+const createCategory = async (
+  data: CreateCategoryData
+): Promise<CreateCategoryResponse> => {
+  const response = await fetch("/api/admin/categories", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      name: data.name,
+      slug: data.slug || "",
+    }),
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json();
+    throw new Error(errorData.error || "Failed to create category");
+  }
+
+  return response.json();
+};
+
+export const useCategories = () => {
+  return useQuery({
+    queryKey: ["categories"],
+    queryFn: fetchCategories,
+    retry: 1,
+  });
+};
+
+export const useCreateCategory = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: createCategory,
+    onSuccess: () => {
+      // Invalidate and refetch categories list after successful creation
+      queryClient.invalidateQueries({ queryKey: ["categories"] });
+    },
+  });
+};

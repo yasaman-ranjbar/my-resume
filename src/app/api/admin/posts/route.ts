@@ -30,6 +30,7 @@ export async function POST(req: Request) {
     const content = formData.get("content") as string;
     const status = formData.get("status") as string;
     const tagsString = formData.get("tags") as string;
+    const categoryId = formData.get("category_id") as string | null;
     const coverImage = formData.get("coverImage") as File | null;
 
     if (!title || !content) {
@@ -132,6 +133,11 @@ export async function POST(req: Request) {
       content,
       status: status || "draft",
     };
+
+    // Add category_id if provided
+    if (categoryId) {
+      insertData.category_id = categoryId;
+    }
 
     // Add tags if provided
     if (tags && tags.length > 0) {
