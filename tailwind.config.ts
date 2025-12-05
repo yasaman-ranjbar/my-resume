@@ -9,11 +9,15 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        background: "var(--background)",
-        foreground: "var(--foreground)",
+        background: "hsl(var(--background))",
+        foreground: "hsl(var(--foreground))",
         primary: "var(--primary)",
         secondary: "var(--secondary)",
         accent: "var(--accent)",
+        input: "hsl(var(--input))",
+        ring: "hsl(var(--ring))",
+        "ring-offset-background": "hsl(var(--ring-offset-background))",
+        "muted-foreground": "hsl(var(--muted-foreground))",
       },
     },
   },
@@ -21,4 +25,3 @@ const config: Config = {
 };
 
 export default config;
-

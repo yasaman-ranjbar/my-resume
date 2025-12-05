@@ -17,12 +17,12 @@ export default function AdminPostsPage() {
   }
 
   return (
-    <main className="p-8 max-w-4xl mx-auto">
+    <main className="p-8">
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-2xl font-semibold">Posts</h1>
         <Link
           href="/admin/posts/new"
-          className="px-4 py-2 rounded bg-indigo-600 text-white"
+          className="px-4 py-2 bg-[#280A10] text-white rounded-lg"
         >
           New post
         </Link>
