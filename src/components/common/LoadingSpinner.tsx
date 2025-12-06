@@ -14,8 +14,8 @@ const LoadingSpinner = ({ size = "md", className }: LoadingSpinnerProps) => {
   };
 
   return (
-    <div className={cn("flex items-center justify-center", className)}>
-      <Spinner className={sizeClasses[size]} />
+    <div className={cn("flex items-center justify-center min-h-[600px]", className)}>
+      <Spinner className={sizeClasses[size]} />Loading...
     </div>
   );
 };

@@ -10,7 +10,7 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
           <header className="bg-[#F5F7FB] p-5 m-6 rounded-3xl">
             <h1>Admin Dashboard</h1>
           </header>
-          <div className="m-6 bg-[#F5F7FB] rounded-4xl">{children}</div>
+          <div className="m-6 bg-[#F5F7FB] rounded-4xl min-h-[600px]">{children}</div>
         </main>
       </div>
     </div>

@@ -40,7 +40,9 @@ export default function AdminPostsPage() {
   };
 
   if (isLoading) {
-    return <LoadingSpinner />;
+    return (
+        <LoadingSpinner />
+    );
   }
 
   if (error) {
@@ -54,7 +56,7 @@ export default function AdminPostsPage() {
   console.log(posts);
 
   return (
-    <main className="p-8">
+    <main className="p-8 min-h-[600px]">
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-2xl font-semibold">Posts</h1>
         <Link
@@ -70,7 +72,7 @@ export default function AdminPostsPage() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 ">
         {posts?.map((p) => (
           <div key={p.id} className="bg-white p-4 rounded-lg space-y-4">
-            <div className="flex flex-col gap-2 border-b border-gray-200">
+            <div className="flex flex-col gap-2 border-b border-gray-200 py-3">
               <div className="relative w-full h-48 mb-2">
                 <Image
                   src={p.cover_url}
@@ -79,7 +81,7 @@ export default function AdminPostsPage() {
                   className="object-cover rounded-md"
                 />
               </div>
-              <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
                 <h1 className="font-semibold text-xl truncate">{p.title}</h1>
                 <Badge
                   variant={p.status === "published" ? "success" : "secondary"}
@@ -87,7 +89,7 @@ export default function AdminPostsPage() {
                   {p.status}
                 </Badge>
               </div>
-              <p className="text-sm text-gray-500">{p.slug}</p>
+              <p className="text-sm text-gray-500">/{p.slug}</p>
               <p className="text-sm text-gray-500">{p.content}</p>
               <div className="flex flex-wrap gap-2">
                 {p?.tags?.map((tag) => (
