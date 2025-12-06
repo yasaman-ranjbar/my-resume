@@ -13,7 +13,7 @@ interface CreatePostData {
   content: string;
   status?: string;
   tags: string[];
-  coverImage?: File | null;
+  cover_url?: File | null;
   category_id?: string;
 }
 
@@ -47,8 +47,8 @@ const createPost = async (
     formData.append("category_id", data.category_id);
   }
 
-  if (data.coverImage) {
-    formData.append("coverImage", data.coverImage);
+  if (data.cover_url) {
+    formData.append("cover_url", data.cover_url);
   }
 
   const response = await fetch("/api/admin/posts", {
@@ -62,6 +62,30 @@ const createPost = async (
   }
 
   return response.json();
+};
+
+interface UpdatePostStatusData {
+  id: string;
+  title: string;
+  content: string;
+  status: string;
+}
+
+const updatePostStatus = async (
+  data: UpdatePostStatusData
+): Promise<void> => {
+  const response = await fetch(`/api/admin/posts/${data.id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ title: data.title, content: data.content, status: data.status }),
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({}));
+    throw new Error(errorData.error || "Failed to update post status");
+  }
 };
 
 const usePosts = () => {
@@ -79,6 +103,18 @@ export const useCreatePost = () => {
     mutationFn: createPost,
     onSuccess: () => {
       // Invalidate and refetch posts list after successful creation
+      queryClient.invalidateQueries({ queryKey: ["posts"] });
+    },
+  });
+};
+
+export const useUpdatePostStatus = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: updatePostStatus,
+    onSuccess: () => {
+      // Invalidate and refetch posts list after successful status update
       queryClient.invalidateQueries({ queryKey: ["posts"] });
     },
   });
