@@ -1,19 +1,42 @@
 import { NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
 
-export async function GET() {
+export async function GET(req: Request) {
   try {
-    const { data, error } = await supabaseAdmin
+    // Parse URL query parameters
+    const { searchParams } = new URL(req.url);
+    const searchQuery = searchParams.get("search") || "";
+    const statusFilter = searchParams.get("status") || "all";
+
+    // Start building the query
+    let query = supabaseAdmin
       .from("posts")
-      .select("id, title, slug, status, created_at, content, cover_url, tags, category_id")
-      .order("created_at", { ascending: false });
+      .select("id, title, slug, status, created_at, content, cover_url, tags, category_id");
+
+    // Apply status filter if not "all"
+    if (statusFilter && statusFilter !== "all") {
+      query = query.eq("status", statusFilter);
+    }
+
+    // Apply search filter if search query exists (search only in title)
+    if (searchQuery && searchQuery.trim() !== "") {
+      const trimmedQuery = searchQuery.trim();
+      
+      // Search only in title field using case-insensitive like
+      query = query.ilike("title", `%${trimmedQuery}%`);
+    }
+
+    // Order by created_at descending
+    query = query.order("created_at", { ascending: false });
+
+    const { data, error } = await query;
 
     if (error) {
       console.error("Supabase GET error:", error);
       return NextResponse.json({ error: error.message }, { status: 500 });
     }
 
-    return NextResponse.json({ posts: data }, { status: 200 });
+    return NextResponse.json({ posts: data || [] }, { status: 200 });
   } catch (err) {
     console.error(err);
     return NextResponse.json({ error: "Server error" }, { status: 500 });
