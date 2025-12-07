@@ -5,7 +5,7 @@ import { ADMIN_ROUTES } from "@/constant/route";
 import usePosts, { useUpdatePostStatus, useDeletePost } from "@/hooks/usePosts";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { toast } from "react-toastify";
 import { Badge } from "@/components/ui/Badge";
 import { SquarePen, Trash2, Eye, EyeOff, Search, CopyPlus } from "lucide-react";
@@ -21,18 +21,18 @@ import { Input } from "@/components/ui/input";
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import { useDebounce } from "@/hooks/useDebounce";
 
-export default function AdminPostsPage() {
+function PostListContent() {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  
+
   // Initialize state from URL query parameters
   const [searchQuery, setSearchQuery] = useState(searchParams.get("search") || "");
   const [statusFilter, setStatusFilter] = useState(searchParams.get("status") || "all");
-  
+
   // Debounce search query to avoid too many API calls
   const debouncedSearchQuery = useDebounce(searchQuery, 500);
-  
+
   // Fetch posts with search and filter parameters
   const { data: posts, isLoading, error } = usePosts(debouncedSearchQuery, statusFilter);
   const updatePostStatus = useUpdatePostStatus();
@@ -41,22 +41,22 @@ export default function AdminPostsPage() {
   // Update URL when filters change
   useEffect(() => {
     const params = new URLSearchParams();
-    
+
     if (debouncedSearchQuery && debouncedSearchQuery.trim() !== "") {
       params.set("search", debouncedSearchQuery.trim());
     }
-    
+
     if (statusFilter && statusFilter !== "all") {
       params.set("status", statusFilter);
     }
-    
+
     const queryString = params.toString();
     const newUrl = queryString ? `${pathname}?${queryString}` : pathname;
-    
+
     // Use replace to avoid cluttering browser history
     router.replace(newUrl, { scroll: false });
   }, [debouncedSearchQuery, statusFilter, pathname, router]);
-  
+
   useEffect(() => {
     if (error) {
       toast.error(
@@ -117,7 +117,7 @@ export default function AdminPostsPage() {
           <div className="flex-1 flex gap-3 relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
             <Input
-            className="flex-1 pl-10"
+              className="flex-1 pl-10"
               type="text"
               placeholder="Search posts by title..."
               value={searchQuery}
@@ -155,12 +155,12 @@ export default function AdminPostsPage() {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 ">
           {posts?.map((p) => (
-            <div key={p.id} className="bg-white p-4 rounded-lg space-y-4">
+            <div key={p?.id} className="bg-white p-4 rounded-lg space-y-4">
               <div className="flex flex-col gap-2 border-b border-gray-200 py-3">
                 <div className="relative w-full h-48 mb-2">
                   <Image
-                    src={p.cover_url}
-                    alt={p.title}
+                    src={p?.cover_url}
+                    alt={p?.title}
                     fill
                     className="object-cover rounded-md"
                   />
@@ -168,13 +168,13 @@ export default function AdminPostsPage() {
                 <div className="flex items-center gap-3">
                   <h1 className="font-semibold text-xl truncate">{p.title}</h1>
                   <Badge
-                    variant={p.status === "published" ? "success" : "secondary"}
+                    variant={p?.status === "published" ? "success" : "secondary"}
                   >
-                    {p.status}
+                    {p?.status}
                   </Badge>
                 </div>
-                <p className="text-sm text-gray-500">/{p.slug}</p>
-                <p className="text-sm text-gray-500">{p.content}</p>
+                <p className="text-sm text-gray-500">/{p?.slug}</p>
+                <p className="text-sm text-gray-500">{p?.content}</p>
                 <div className="flex flex-wrap gap-2">
                   {p?.tags?.map((tag) => (
                     <Badge key={tag} variant="default">
@@ -210,5 +210,13 @@ export default function AdminPostsPage() {
         </div>
       )}
     </main>
+  );
+}
+
+export default function AdminPostsPage() {
+  return (
+    <Suspense fallback={<div className="flex items-center justify-center h-screen"><LoadingSpinner /></div>}>
+      <PostListContent />
+    </Suspense>
   );
 }

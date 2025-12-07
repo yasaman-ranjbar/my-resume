@@ -27,7 +27,7 @@ export default function Hero() {
                 <span className="text-white font-medium">
                   <Typewriter
                     options={{
-                      strings: ['Front-end developer', 'Web developer', ''],
+                      strings: ['Front-end developer', 'UI Engineer', 'Creative Web Developer'],
                       autoStart: true,
                       loop: true,
                       delay: 75,
@@ -36,8 +36,7 @@ export default function Hero() {
                 </span>
               </div>
               <p className="text-gray-400 text-lg max-w-2xl mx-auto lg:mx-0 mb-10 leading-relaxed">
-                I'm a Freelance UI/UX Designer and Developer based in London, England.
-                I strives to build immersive and beautiful web applications through carefully crafted code and user-centric design.
+                I am a passionate Front-end Developer with over 5 years of experience in building responsive web applications. I specialize in turning complex designs into clean, efficient code to deliver seamless and engaging user experiences.
               </p>
 
               <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-6">

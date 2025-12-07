@@ -46,7 +46,7 @@ export default function AddNewPost() {
         content: data.content,
         status: data.status || "draft",
         tags,
-        coverImage,
+        cover_url: coverImage,
         category_id: data.category_id || undefined,
       },
       {

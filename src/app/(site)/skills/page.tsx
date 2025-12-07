@@ -1,6 +1,6 @@
 import { Code2, PenTool, Users, Terminal } from 'lucide-react';
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
+import Header from "@/components/layout/Header";
+import Footer from "@/components/layout/Footer";
 
 const skillCategories = [
   {

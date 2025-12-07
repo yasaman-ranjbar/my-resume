@@ -1,4 +1,5 @@
 import { Code, Palette, Smartphone } from "lucide-react";
+import PageHeader from "../pageHeader/PageHeader";
 
 const services = [
   {
@@ -21,7 +22,8 @@ const services = [
 export default function About() {
   return (
     <section id="about" className="py-20 bg-[#1f1f1f]">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <PageHeader title="About" />
+      <div className="px-4 sm:px-6">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
           {/* About Text */}
           <div>

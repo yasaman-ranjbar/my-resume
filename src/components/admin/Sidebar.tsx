@@ -115,8 +115,7 @@ const SidebarItem = ({ item }: { item: MenuItem }) => {
 
 export default function Sidebar() {
   return (
-    <aside className="w-72 p-4 bg-[#F5F7FB] text-[#2d353c] flex flex-col h-screen overflow-y-auto scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-transparent">
-      {/* Header */}
+    <aside className="sticky top-0 w-72 p-4 bg-[#F5F7FB] text-[#2d353c] flex flex-col h-screen overflow-y-auto scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-transparent">
 
       {/* Profile Section */}
       <div className="flex flex-col items-center py-8 shadow-sm bg-white text-[#2d353c] rounded-2xl">
