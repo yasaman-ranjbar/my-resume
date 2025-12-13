@@ -1,11 +1,22 @@
-import { PageHeaderProps } from "./type"
+import Navigator from "@/components/common/Navigator";
+import { PageHeaderProps } from "./type";
+import Link from "next/link";
+import clsx from "clsx";
 
-const PageHeader = ({ title }: PageHeaderProps) => {
-    return (
-        <div className="min-h-[300px] flex items-center justify-center bg-black text-white">
-            <h1 className="text-4xl font-bold">{title}</h1>
-        </div>
-    )
-}
+const PageHeader = ({ title, pageName, className }: PageHeaderProps) => {
+  return (
+    <div
+      className={clsx(
+        "min-h-[200px] flex flex-col gap-4 items-center justify-center",
+        className
+      )}
+    >
+      <h1 className="text-4xl font-bold">{title}</h1>
+      <Navigator>
+        <Link href={pageName}>{pageName}</Link>
+      </Navigator>
+    </div>
+  );
+};
 
-export default PageHeader
+export default PageHeader;

@@ -3,11 +3,13 @@
 import Link from "next/link";
 import { Menu } from "lucide-react";
 import { useEffect, useState } from "react";
-import clsx from 'clsx'
+import clsx from "clsx";
 
-export default function Header() {
-
-
+export default function Header({
+  className = "bg-transparent",
+}: {
+  className?: string;
+}) {
   const [isscrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
@@ -18,19 +20,25 @@ export default function Header() {
         setIsScrolled(false);
       }
     };
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll);
     return () => {
-      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener("scroll", handleScroll);
     };
   }, []);
 
   return (
-    <header className={clsx('fixed top-0 left-0 right-0 z-50 bg-transparent border-b border-white/10', isscrolled && 'backdrop-blur-3xl')}>
+    <header
+      className={clsx(
+        "sticky top-0 left-0 right-0 z-50",
+        isscrolled && "backdrop-blur-3xl",
+        className
+      )}
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
           <div className="shrink-0">
-            <Link href="/" className="text-2xl font-bold text-white">
+            <Link href="/" className={clsx("text-2xl font-bold", className)}>
               <span className="text-[#F9004D]">J</span>asmine.
             </Link>
           </div>
@@ -43,12 +51,15 @@ export default function Header() {
               { name: "Services", path: "/services" },
               { name: "Portfolio", path: "/projects" },
               { name: "Blog", path: "/blog" },
-              { name: "Contact", path: "/contact" }
+              { name: "Contact", path: "/contact" },
             ].map((item) => (
               <Link
                 key={item.name}
                 href={item.path}
-                className="text-gray-300 hover:text-[#F9004D] transition-colors text-sm font-medium uppercase tracking-wider"
+                className={clsx(
+                  " hover:text-[#F9004D] transition-colors text-sm font-medium uppercase tracking-wider",
+                  className
+                )}
               >
                 {item.name}
               </Link>

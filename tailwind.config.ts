@@ -19,6 +19,17 @@ const config: Config = {
         "ring-offset-background": "hsl(var(--ring-offset-background))",
         "muted-foreground": "hsl(var(--muted-foreground))",
       },
+      container: {
+        center: true,
+        padding: '2rem',
+        screens: {
+          xs: '480px',
+          sm: '640px',
+          md: '768px',
+          lg: '1024px',
+          xl: '1280px',
+        },
+      },
     },
   },
   plugins: [],
