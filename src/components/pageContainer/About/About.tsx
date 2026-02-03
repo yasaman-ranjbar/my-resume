@@ -22,7 +22,7 @@ const services = [
 export default function About() {
   return (
     <section id="about" className="py-20 bg-[#1f1f1f]">
-      <PageHeader title="About" />
+      <PageHeader pageName="About" title="About" />
       <div className="px-4 sm:px-6">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
           {/* About Text */}
