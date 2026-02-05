@@ -11,7 +11,7 @@ export default function Hero() {
       <div className="absolute w-full h-full bg-linear-to-l from-[#280A10] via-[#0C0809] to-[#280A10] z-10 mix-blend-multiply"></div>
       <section id="home"
         style={{ backgroundImage: 'url(/images/bg.png)', backgroundSize: 'contain', backgroundPosition: 'center' }}
-        className="relative pt-14 pb-20 lg:pt-32 lg:pb-32 overflow-hidden bg-linear-to-l from-[#280A10] via-[#0C0809] to-[#280A10]">
+        className="relative pb-20 lg:pb-32 overflow-hidden bg-linear-to-l from-[#280A10] via-[#0C0809] to-[#280A10]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
             {/* Text Content */}
