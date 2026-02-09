@@ -3,10 +3,10 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
 export interface Category {
-  id: string;
+  id: number;
   name: string;
   slug: string;
-  created_at: string;
+  createdAt: string;
 }
 
 interface CategoriesResponse {

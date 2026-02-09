@@ -119,7 +119,6 @@ export default function WorkExperience() {
             {experiences.map((exp, index) => (
               <motion.div
                 key={index}
-                variants={itemVariants}
                 className="relative pl-8 border-l-2 border-[#F9004D]/30 hover:border-[#F9004D] transition-colors duration-300"
               >
                 <div className="absolute left-[-9px] top-0 w-4 h-4 rounded-full bg-[#F9004D] shadow-lg shadow-[#F9004D]/50"></div>

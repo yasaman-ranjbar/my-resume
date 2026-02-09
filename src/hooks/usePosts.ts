@@ -7,7 +7,7 @@ interface PostsResponse {
   posts: PostsProps[];
 }
 
-interface CreatePostData {
+export interface CreatePostData {
   title: string;
   slug?: string;
   content: string;
