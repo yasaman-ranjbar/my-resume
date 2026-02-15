@@ -187,6 +187,9 @@ docker restart next-dev
 # Access database directly
 docker exec -it postgres-db-dev psql -U postgres -d mydb
 
+# Input direct migration
+docker compose -f docker-compose.dev.yml exec app npx prisma migrate dev --name add-post-model
+
 # Run Prisma Studio
 docker exec -it next-dev npx prisma studio
 ```

@@ -1,8 +1,16 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { Prisma } from "@prisma/client";
 
 
 export async function GET() {
+
+  try {
+    const categories = await prisma.category.findMany();
+    return NextResponse.json(categories);
+  } catch (error: unknown) {
+    return NextResponse.json({ error: 'Failed to fetch categories' }, { status: 500 });
+  }
 }
 
 export async function POST(request: Request) {
@@ -56,9 +64,9 @@ export async function POST(request: Request) {
       });
   
       return NextResponse.json(category, { status: 201 });
-    } catch (error: any) {
-      // Handle unique constraint violation (slug already exists)
-      if (error.code === 'P2002') {
+    } catch (error: unknown) {
+      
+      if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2002') {
         return NextResponse.json(
           { error: 'A category with this slug already exists' },
           { status: 409 }

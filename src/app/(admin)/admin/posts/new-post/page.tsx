@@ -38,6 +38,8 @@ export default function AddNewPost() {
   const createPostMutation = useCreatePost();
   const { data: categories, isLoading: categoriesLoading } = useCategories();
 
+  console.log("categories", categories);
+
   const onSubmit = async (data: CreatePostData) => {
     createPostMutation.mutate(
       {

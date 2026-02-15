@@ -9,10 +9,6 @@ export interface Category {
   createdAt: string;
 }
 
-interface CategoriesResponse {
-  categories: Category[];
-}
-
 interface CreateCategoryData {
   name: string;
   slug?: string;
@@ -30,8 +26,8 @@ const fetchCategories = async (): Promise<Category[]> => {
     throw new Error(errorData.error || "Failed to fetch categories");
   }
 
-  const data: CategoriesResponse = await response.json();
-  return data.categories;
+  const data = await response.json();
+  return data;
 };
 
 const createCategory = async (

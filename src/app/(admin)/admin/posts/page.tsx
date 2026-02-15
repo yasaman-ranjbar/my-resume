@@ -185,7 +185,7 @@ function PostListContent() {
               </div>
               <div className="flex items-center justify-between">
                 <p className="text-sm text-gray-500">
-                  Created: {p.created_at.toLocaleString().slice(0, 10)}
+                  Created: {p.createdAt.toLocaleString().slice(0, 10)}
                 </p>
                 <div className="flex items-center gap-4">
                   {p.status === "published" ? (

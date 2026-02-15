@@ -58,8 +58,8 @@ const fetchPosts = async (search?: string, status?: string): Promise<PostsProps[
     throw new Error(errorData.error || "Failed to fetch posts");
   }
 
-  const data: PostsResponse = await response.json();
-  return data.posts;
+  const data = await response.json();
+  return data;
 };
 
 const createPost = async (

@@ -1,5 +1,6 @@
 datasource db {
   provider = "postgresql"
+  url = env("DATABASE_URL")
 }
 
 generator client {
@@ -18,4 +19,18 @@ model Category {
   createdAt DateTime @default(now())
   name      String
   slug      String   @unique
+  posts Post[]
+}
+
+model Post {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  title     String
+  slug      String   @unique
+  content   String
+  status    String
+  tags      String[]
+  category_id Int
+  category    Category @relation(fields: [category_id], references: [id], onDelete: Cascade)
+  cover_url String?
 }
