@@ -86,7 +86,7 @@ export default function AddNewPost() {
         <span>New Post</span>
       </h1>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-        <div className="flex w-full gap-6">
+        <div className="flex md:flex-row flex-col w-full gap-6">
           <div className="w-full">
             <Label htmlFor="title">Title</Label>
             <Input type="text" id="title" {...register("title")} />
@@ -132,32 +132,8 @@ export default function AddNewPost() {
             />
           </div>
         </div>
-        <div className="flex items-center gap-6">
-          <div className="w-full">
-            <Label className="">Status: </Label>
-            <Controller
-              name="status"
-              control={control}
-              render={({ field }) => (
-                <div className="border border-stone-400 h-12 rounded-md py-2 px-4">
-                  <RadioGroup
-                    className="flex gap-5 pt-2"
-                    value={field.value}
-                    onValueChange={field.onChange}
-                  >
-                    <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="draft" id="draft" />
-                      <Label htmlFor="draft">Draft</Label>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="published" id="published" />
-                      <Label htmlFor="published">Published</Label>
-                    </div>
-                  </RadioGroup>
-                </div>
-              )}
-            />
-          </div>
+        <div className="flex md:flex-row flex-col items-center gap-6">
+          
           <div className="w-full">
             <Label htmlFor="tags">Tags</Label>
             <Input
@@ -177,6 +153,31 @@ export default function AddNewPost() {
               )}
             </div>
           )}
+          <div className="w-full">
+            <Label className="">Status: </Label>
+            <Controller
+              name="status"
+              control={control}
+              render={({ field }) => (
+                <div className="h-12 rounded-md py-2 px-4">
+                  <RadioGroup
+                    className="flex gap-5 pt-2"
+                    value={field.value}
+                    onValueChange={field.onChange}
+                  >
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="draft" id="draft" />
+                      <Label htmlFor="draft">Draft</Label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="published" id="published" />
+                      <Label htmlFor="published">Published</Label>
+                    </div>
+                  </RadioGroup>
+                </div>
+              )}
+            />
+          </div>
         </div>
         <div className="space-y-3">
           <Label htmlFor="content">Content</Label>

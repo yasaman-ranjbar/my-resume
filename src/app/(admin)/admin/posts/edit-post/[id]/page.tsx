@@ -147,6 +147,9 @@ export default function EditPostPage() {
     );
   }
 
+  const categoryName = categories?.find((category) => category.id === parseInt(post.category_id))?.name;
+  console.log("categoryName", categoryName);
+
   return (
     <div className="p-6 space-y-8">
       <h1 className="text-2xl font-bold flex items-center gap-2">
@@ -185,8 +188,8 @@ export default function EditPostPage() {
                       </SelectItem>
                     ) : categories && categories.length > 0 ? (
                       categories.map((category) => (
-                        <SelectItem key={category.id} value={category.id.toString()}>
-                          {category.name}
+                        <SelectItem key={category.id} value={post?.category_id.toString()}>
+                          {categoryName}
                         </SelectItem>
                       ))
                     ) : (

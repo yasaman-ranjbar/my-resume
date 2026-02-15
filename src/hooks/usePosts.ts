@@ -157,8 +157,8 @@ const fetchPost = async (id: string): Promise<PostsProps> => {
     throw new Error(errorData.error || "Failed to fetch post");
   }
 
-  const data: PostResponse = await response.json();
-  return data.post;
+  const data = await response.json();
+  return data;
 };
 
 const updatePost = async (

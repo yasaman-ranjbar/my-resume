@@ -44,7 +44,7 @@ export default function CategoriesPage() {
         <span>New Category</span>
       </h1>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-        <div className="flex w-full gap-6">
+        <div className="flex md:flex-row flex-col w-full gap-6">
           <div className="w-full">
             <Label htmlFor="name">Name</Label>
             <Input

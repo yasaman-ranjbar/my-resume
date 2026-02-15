@@ -3,13 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-  "dev": "next dev",
-  "dev:docker": "next dev -H 0.0.0.0 -p 3000",
-  "build": "next build",
-  "start": "next start",
-  "docker:dev": "docker compose -f docker-compose.dev.yml up --build",
-  "docker:dev:down": "docker compose -f docker-compose.dev.yml down"
-},
+    "dev": "next dev",
+    "dev:docker": "next dev -H 0.0.0.0 -p 3000",
+    "build": "next build",
+    "start": "next start",
+    "docker:dev": "docker compose -f docker-compose.dev.yml up --build",
+    "docker:dev:down": "docker compose -f docker-compose.dev.yml down"
+  },
   "dependencies": {
     "@prisma/adapter-pg": "^7.3.0",
     "@prisma/client": "^6.19.0",
@@ -36,14 +36,14 @@
     "typewriter-effect": "^2.22.0"
   },
   "devDependencies": {
-    "prisma": "6.19.0",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.0.5",
-    "prettier": "^3.7.4",
+    "prettier": "3.8.1",
+    "prisma": "6.19.0",
     "tailwindcss": "^4",
     "typescript": "^5"
   }
