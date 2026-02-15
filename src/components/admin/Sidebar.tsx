@@ -125,12 +125,12 @@ export default function Sidebar() {
           </button>
 
           <div className="relative w-24 h-24 rounded-full border-4 border-white/10 overflow-hidden">
-            <Image
+            {/* <Image
               src="/images/admin.jpg"
               alt="Profile"
               fill
               className="object-cover"
-            />
+            /> */}
           </div>
 
           <button className="p-2 rounded-full border border-white/20 text-[#2d353c] hover:bg-white/10 transition-colors">

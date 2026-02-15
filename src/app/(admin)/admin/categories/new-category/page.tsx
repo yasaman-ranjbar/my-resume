@@ -41,7 +41,7 @@ export default function CategoriesPage() {
     <div className="p-8 space-y-8">
       <h1 className="text-2xl font-bold flex items-center gap-2">
         <CopyPlus size={24} />
-        <span>New Category</span>
+        <span>New Categorygg</span>
       </h1>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <div className="flex w-full gap-6">

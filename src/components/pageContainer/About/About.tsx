@@ -1,6 +1,7 @@
 import Skills from "./Skills";
 
 export default function About() {
+  console.log("About component rendered");
   return (
     <div className="my-20">
       <section id="about" className="py-20 bg-[#1f1f1f] container">
