@@ -185,7 +185,7 @@ export default function EditPostPage() {
                       </SelectItem>
                     ) : categories && categories.length > 0 ? (
                       categories.map((category) => (
-                        <SelectItem key={category.id} value={category.id}>
+                        <SelectItem key={category.id} value={category.id.toString()}>
                           {category.name}
                         </SelectItem>
                       ))

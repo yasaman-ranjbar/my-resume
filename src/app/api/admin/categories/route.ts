@@ -1,84 +1,84 @@
 import { NextResponse } from "next/server";
-import { supabaseAdmin } from "@/lib/supabaseAdmin";
+import { prisma } from "@/lib/prisma";
+import { Prisma } from "@prisma/client";
+
 
 export async function GET() {
+
   try {
-    const { data, error } = await supabaseAdmin
-      .from("categories")
-      .select("id, name, slug, created_at")
-      .order("created_at", { ascending: false });
-
-    if (error) {
-      console.error("Supabase GET error:", error);
-      return NextResponse.json({ error: error.message }, { status: 500 });
-    }
-
-    return NextResponse.json({ categories: data }, { status: 200 });
-  } catch (err) {
-    console.error(err);
-    return NextResponse.json({ error: "Server error" }, { status: 500 });
+    const categories = await prisma.category.findMany();
+    return NextResponse.json(categories);
+  } catch (error: unknown) {
+    return NextResponse.json({ error: 'Failed to fetch categories' }, { status: 500 });
   }
 }
 
-export async function POST(req: Request) {
-  try {
-    const body = await req.json();
-    const { name, slug } = body;
-
-    if (!name) {
-      return NextResponse.json({ error: "name is required" }, { status: 400 });
-    }
-
-    // Basic slug sanitize
-    const makeSlug = (s: string) =>
-      s
-        .toString()
-        .trim()
-        .toLowerCase()
-        .replace(/[^a-z0-9\- ]/g, "")
-        .replace(/\s+/g, "-")
-        .replace(/\-+/g, "-")
-        .slice(0, 200);
-
-    const finalSlug = slug ? makeSlug(slug) : makeSlug(name);
-
-    // Check if slug already exists
-    const { data: existingCategory } = await supabaseAdmin
-      .from("categories")
-      .select("id")
-      .eq("slug", finalSlug)
-      .single();
-
-    if (existingCategory) {
+export async function POST(request: Request) {
+    try {
+      const body = await request.json();
+  
+      const { name, slug } = body;
+  
+      // Basic type & presence validation
+      if (typeof name !== 'string' || typeof slug !== 'string') {
+        return NextResponse.json(
+          { error: 'Name and slug must be provided as strings' },
+          { status: 400 }
+        );
+      }
+  
+      const trimmedName = name.trim();
+      const processedSlug = slug.toLowerCase().trim();
+  
+      if (trimmedName.length === 0) {
+        return NextResponse.json(
+          { error: 'Name is required' },
+          { status: 400 }
+        );
+      }
+  
+      if (processedSlug.length === 0) {
+        return NextResponse.json(
+          { error: 'Slug is required' },
+          { status: 400 }
+        );
+      }
+  
+      // Enforce slug format: only lowercase letters, numbers, and hyphens
+      if (!/^[a-z0-9-]+$/.test(processedSlug)) {
+        return NextResponse.json(
+          {
+            error:
+              'Invalid slug format. Use only lowercase letters, numbers, and hyphens (no spaces or special characters).',
+          },
+          { status: 400 }
+        );
+      }
+  
+      // Create the category
+      const category = await prisma.category.create({
+        data: {
+          name: trimmedName,
+          slug: processedSlug,
+        },
+      });
+  
+      return NextResponse.json(category, { status: 201 });
+    } catch (error: unknown) {
+      
+      if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2002') {
+        return NextResponse.json(
+          { error: 'A category with this slug already exists' },
+          { status: 409 }
+        );
+      }
+  
+      // Log unexpected errors for debugging
+      console.error('Error creating category:', error);
+  
       return NextResponse.json(
-        { error: "A category with this slug already exists" },
-        { status: 400 }
+        { error: 'Failed to create category' },
+        { status: 500 }
       );
     }
-
-    // Prepare insert data
-    const insertData = {
-      name,
-      slug: finalSlug,
-    };
-
-    const { data, error } = await supabaseAdmin
-      .from("categories")
-      .insert([insertData])
-      .select()
-      .single();
-
-    if (error) {
-      console.error("Supabase POST error:", error);
-      return NextResponse.json({ error: error.message }, { status: 500 });
-    }
-
-    return NextResponse.json({ category: data }, { status: 201 });
-  } catch (err: any) {
-    console.error("POST error:", err);
-    return NextResponse.json(
-      { error: err.message || "Server error" },
-      { status: 500 }
-    );
   }
-}

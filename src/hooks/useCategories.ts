@@ -3,14 +3,10 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
 export interface Category {
-  id: string;
+  id: number;
   name: string;
   slug: string;
-  created_at: string;
-}
-
-interface CategoriesResponse {
-  categories: Category[];
+  createdAt: string;
 }
 
 interface CreateCategoryData {
@@ -30,8 +26,8 @@ const fetchCategories = async (): Promise<Category[]> => {
     throw new Error(errorData.error || "Failed to fetch categories");
   }
 
-  const data: CategoriesResponse = await response.json();
-  return data.categories;
+  const data = await response.json();
+  return data;
 };
 
 const createCategory = async (

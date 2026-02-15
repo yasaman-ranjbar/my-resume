@@ -1,194 +1,81 @@
+import { prisma } from "@/lib/prisma";
+import { Prisma } from "@prisma/client";
 import { NextResponse } from "next/server";
-import { supabaseAdmin } from "@/lib/supabaseAdmin";
+import { writeFile, mkdir } from "fs/promises";
+import path from "path";
 
-export async function GET(req: Request) {
+export async function GET() {
   try {
-    // Parse URL query parameters
-    const { searchParams } = new URL(req.url);
-    const searchQuery = searchParams.get("search") || "";
-    const statusFilter = searchParams.get("status") || "all";
-
-    // Start building the query
-    let query = supabaseAdmin
-      .from("posts")
-      .select("id, title, slug, status, created_at, content, cover_url, tags, category_id");
-
-    // Apply status filter if not "all"
-    if (statusFilter && statusFilter !== "all") {
-      query = query.eq("status", statusFilter);
-    }
-
-    // Apply search filter if search query exists (search only in title)
-    if (searchQuery && searchQuery.trim() !== "") {
-      const trimmedQuery = searchQuery.trim();
-      
-      // Search only in title field using case-insensitive like
-      query = query.ilike("title", `%${trimmedQuery}%`);
-    }
-
-    // Order by created_at descending
-    query = query.order("created_at", { ascending: false });
-
-    const { data, error } = await query;
-
-    if (error) {
-      console.error("Supabase GET error:", error);
-      return NextResponse.json({ error: error.message }, { status: 500 });
-    }
-
-    return NextResponse.json({ posts: data || [] }, { status: 200 });
-  } catch (err) {
-    console.error(err);
-    return NextResponse.json({ error: "Server error" }, { status: 500 });
+    const posts = await prisma.post.findMany();
+    return NextResponse.json(posts);
+  } catch (error: unknown) {
+    return NextResponse.json({ error: 'Failed to fetch posts' }, { status: 500 });
   }
 }
 
-export async function POST(req: Request) {
+function getString(formData: FormData, key: string): string | null {
+  const value = formData.get(key);
+  return value instanceof File ? null : (value as string | null);
+}
+
+export async function POST(request: Request) {
   try {
-    const formData = await req.formData();
+    const formData = await request.formData();
+    const title = getString(formData, "title");
+    const slug = getString(formData, "slug");
+    const content = getString(formData, "content");
+    const status = getString(formData, "status");
+    const tagsRaw = getString(formData, "tags");
+    const category_id = getString(formData, "category_id");
+    const coverFile = formData.get("cover_url");
 
-    // Get form fields
-    const title = formData.get("title") as string;
-    const slug = formData.get("slug") as string;
-    const content = formData.get("content") as string;
-    const status = formData.get("status") as string;
-    const tagsString = formData.get("tags") as string;
-    const categoryId = formData.get("category_id") as string | null;
-    const coverImage = formData.get("coverImage") as File | null;
-
-    if (!title || !content) {
-      return NextResponse.json(
-        { error: "title and content are required" },
-        { status: 400 }
-      );
+    let cover_url: string | null = null;
+    if (coverFile instanceof File && coverFile.size > 0) {
+      const bytes = await coverFile.arrayBuffer();
+      const buffer = Buffer.from(bytes);
+      const uploadsDir = path.join(process.cwd(), "public", "uploads");
+      await mkdir(uploadsDir, { recursive: true });
+      const safeName = `${Date.now()}-${coverFile.name.replace(/[^a-zA-Z0-9.-]/g, "_")}`;
+      const filePath = path.join(uploadsDir, safeName);
+      await writeFile(filePath, buffer);
+      cover_url = `/uploads/${safeName}`;
     }
 
-    // Parse tags from JSON string
-    let tags: string[] = [];
-    if (tagsString) {
+    const tags: string[] = tagsRaw ? (() => {
       try {
-        tags = JSON.parse(tagsString);
+        return JSON.parse(tagsRaw) as string[];
       } catch {
-        // If not JSON, try as comma-separated string
-        tags = tagsString
-          .split(",")
-          .map((t) => t.trim())
-          .filter(Boolean);
+        return [];
+      }
+    })() : [];
+
+    if (!title || !slug || !content || !status || !category_id) {
+      return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
+    }
+
+    const post = await prisma.post.create({
+      data: {
+        title,
+        slug,
+        content,
+        status,
+        tags,
+        category_id: parseInt(category_id, 10),
+        cover_url,
+      },
+    });
+
+    return NextResponse.json({ post }, { status: 201 });
+  } catch (error: unknown) {
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      if (error.code === "P2002") {
+        return NextResponse.json({ error: "A post with this slug already exists" }, { status: 409 });
+      }
+      if (error.code === "P2003") {
+        return NextResponse.json({ error: "Invalid category_id: Category does not exist" }, { status: 400 });
       }
     }
-
-    // Handle cover image upload
-    let coverUrl: string | null = null;
-    if (coverImage && coverImage.size > 0) {
-      try {
-        // Validate file type
-        if (!coverImage.type.startsWith("image/")) {
-          return NextResponse.json(
-            { error: "Cover image must be an image file" },
-            { status: 400 }
-          );
-        }
-
-        // Validate file size (max 5MB)
-        const maxSize = 5 * 1024 * 1024;
-        if (coverImage.size > maxSize) {
-          return NextResponse.json(
-            { error: "Cover image size must be less than 5MB" },
-            { status: 400 }
-          );
-        }
-
-        // Generate unique filename
-        const timestamp = Date.now();
-        const randomString = Math.random().toString(36).substring(2, 15);
-        const fileExt = coverImage.name.split(".").pop();
-        const fileName = `cover-${timestamp}-${randomString}.${fileExt}`;
-
-        // Convert file to buffer
-        const arrayBuffer = await coverImage.arrayBuffer();
-        const buffer = Buffer.from(arrayBuffer);
-
-        // Upload to Supabase Storage
-        const bucketName = "posts";
-        const { data: uploadData, error: uploadError } =
-          await supabaseAdmin.storage
-            .from(bucketName)
-            .upload(fileName, buffer, {
-              contentType: coverImage.type,
-              upsert: false,
-            });
-
-        if (uploadError) {
-          console.error("Supabase storage upload error:", uploadError);
-          // Fallback: use base64 data URL if storage fails
-          const base64 = buffer.toString("base64");
-          coverUrl = `data:${coverImage.type};base64,${base64}`;
-        } else {
-          // Get public URL
-          const {
-            data: { publicUrl },
-          } = supabaseAdmin.storage.from(bucketName).getPublicUrl(fileName);
-          coverUrl = publicUrl;
-        }
-      } catch (uploadErr) {
-        console.error("Error uploading cover image:", uploadErr);
-        // Continue without cover image if upload fails
-      }
-    }
-
-    // basic slug sanitize
-    const makeSlug = (s: string) =>
-      s
-        .toString()
-        .trim()
-        .toLowerCase()
-        .replace(/[^a-z0-9\- ]/g, "")
-        .replace(/\s+/g, "-")
-        .replace(/\-+/g, "-")
-        .slice(0, 200);
-
-    const finalSlug = slug ? makeSlug(slug) : makeSlug(title);
-
-    // Prepare insert data
-    const insertData: any = {
-      title,
-      slug: finalSlug,
-      content,
-      status: status || "draft",
-    };
-
-    // Add category_id if provided
-    if (categoryId) {
-      insertData.category_id = categoryId;
-    }
-
-    // Add tags if provided
-    if (tags && tags.length > 0) {
-      insertData.tags = tags;
-    }
-
-    // Add cover_url if provided
-    if (coverUrl) {
-      insertData.cover_url = coverUrl;
-    }
-
-    const { data, error } = await supabaseAdmin
-      .from("posts")
-      .insert([insertData])
-      .select()
-      .single();
-
-    if (error) {
-      console.error("Supabase POST error:", error);
-      return NextResponse.json({ error: error.message }, { status: 500 });
-    }
-
-    return NextResponse.json({ post: data }, { status: 201 });
-  } catch (err: any) {
-    console.error("POST error:", err);
-    return NextResponse.json(
-      { error: err.message || "Server error" },
-      { status: 500 }
-    );
+    console.error(error);
+    return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }

@@ -9,7 +9,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/Button";
 import { useForm, Controller } from "react-hook-form";
 import PostTag from "@/components/admin/PostTag";
-import { useCreatePost } from "@/hooks/usePosts";
+import { CreatePostData, useCreatePost } from "@/hooks/usePosts";
 import { useCategories } from "@/hooks/useCategories";
 import { toast } from "react-toastify";
 import {
@@ -25,20 +25,22 @@ export default function AddNewPost() {
   const [coverImage, setCoverImage] = useState<File | null>(null);
   const [tags, setTags] = useState<string[]>([]);
   const [tagInput, setTagInput] = useState<string>("");
-  const { register, handleSubmit, control } = useForm({
+  const { register, handleSubmit, control } = useForm<CreatePostData>({
     defaultValues: {
       title: "",
       slug: "",
       content: "",
       status: "draft",
-      tags: "",
+      tags: [],
       category_id: "",
     },
   });
   const createPostMutation = useCreatePost();
   const { data: categories, isLoading: categoriesLoading } = useCategories();
 
-  const onSubmit = async (data: any) => {
+  console.log("categories", categories);
+
+  const onSubmit = async (data: CreatePostData) => {
     createPostMutation.mutate(
       {
         title: data.title,
@@ -115,7 +117,7 @@ export default function AddNewPost() {
                       </SelectItem>
                     ) : categories && categories.length > 0 ? (
                       categories.map((category) => (
-                        <SelectItem key={category.id} value={category.id}>
+                        <SelectItem key={category.id} value={category.id.toString()}>
                           {category.name}
                         </SelectItem>
                       ))

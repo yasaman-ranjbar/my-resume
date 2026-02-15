@@ -1,6 +1,7 @@
 import Skills from "./Skills";
 
 export default function About() {
+  console.log("About component rendered");
   return (
     <div className="my-20">
       <section id="about" className="py-20 bg-[#1f1f1f] container">
@@ -37,8 +38,8 @@ export default function About() {
                 developers and sharing best practices to ensure that every team
                 member grows and excels. I thrive in agile environments and am
                 always eager to take on new challenges that push the boundaries
-                of what&apos;s possible on the web. Let’s work together to create
-                exceptional digital experiences!
+                of what&apos;s possible on the web. Let’s work together to
+                create exceptional digital experiences!
               </p>
               <button className="text-white border-b-2 border-[#F9004D] pb-1 hover:text-[#F9004D] transition-colors font-medium">
                 View All Services
