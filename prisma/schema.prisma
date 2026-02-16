@@ -34,3 +34,16 @@ model Post {
   category    Category @relation(fields: [category_id], references: [id], onDelete: Cascade)
   cover_url String?
 }
+
+model project { 
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  title     String
+  slug      String   @unique
+  description   String @db.Text
+  shortDescription   String  @db.VarChar(280)
+  liveUrl     String?
+  githubUrl     String?
+  tags      String[]
+  thumbnail String?
+}
