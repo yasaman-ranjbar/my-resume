@@ -25,7 +25,7 @@ export default function AddNewPost() {
   const [coverImage, setCoverImage] = useState<File | null>(null);
   const [tags, setTags] = useState<string[]>([]);
   const [tagInput, setTagInput] = useState<string>("");
-  const { register, handleSubmit, control } = useForm<CreatePostData>({
+  const { register, handleSubmit, control, reset } = useForm<CreatePostData>({
     defaultValues: {
       title: "",
       slug: "",
@@ -37,8 +37,6 @@ export default function AddNewPost() {
   });
   const createPostMutation = useCreatePost();
   const { data: categories, isLoading: categoriesLoading } = useCategories();
-
-  console.log("categories", categories);
 
   const onSubmit = async (data: CreatePostData) => {
     createPostMutation.mutate(
@@ -54,6 +52,10 @@ export default function AddNewPost() {
       {
         onSuccess: () => {
           toast.success("Post created successfully!");
+          reset();
+          setCoverImage(null);
+          setTags([]);
+          setTagInput("");
         },
         onError: (err: Error) => {
           toast.error(
@@ -133,7 +135,7 @@ export default function AddNewPost() {
           </div>
         </div>
         <div className="flex md:flex-row flex-col items-center gap-6">
-          
+
           <div className="w-full">
             <Label htmlFor="tags">Tags</Label>
             <Input

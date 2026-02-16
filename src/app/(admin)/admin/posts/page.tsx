@@ -2,7 +2,7 @@
 
 import LoadingSpinner from "@/components/common/LoadingSpinner";
 import { ADMIN_ROUTES } from "@/constant/route";
-import usePosts, { useUpdatePostStatus, useDeletePost } from "@/hooks/usePosts";
+import { usePosts, useUpdatePostStatus, useDeletePost } from "@/hooks/usePosts";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState, Suspense } from "react";

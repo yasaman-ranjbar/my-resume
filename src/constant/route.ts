@@ -4,6 +4,8 @@ export const ADMIN_ROUTES = {
   POSTS_NEW: "/admin/posts/new-post",
   New_CATEGORY: "/admin/categories/new-category",
   POSTS_EDIT: "/admin/posts/edit-post",
+  PROJECTS: "/admin/projects",
+  PROJECTS_NEW: "/admin/projects/new-project",
 };
 
 

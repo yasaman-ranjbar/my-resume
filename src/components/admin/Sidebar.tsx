@@ -6,7 +6,7 @@ import Link from "next/link";
 import {
   LayoutDashboard,
   FileText,
-  Table,
+  Palette,
   ChevronDown,
   ChevronRight,
   Info,
@@ -27,7 +27,6 @@ interface MenuItem {
 
 const menuItems: { category?: string; items: MenuItem[] }[] = [
   {
-    category: "Navigation",
     items: [
       { title: "Dashboard", icon: LayoutDashboard, href: ADMIN_ROUTES.DASHBOARD },
       {
@@ -43,15 +42,13 @@ const menuItems: { category?: string; items: MenuItem[] }[] = [
         icon: ListPlus,
         submenu: [{ title: "New Category", href: ADMIN_ROUTES.New_CATEGORY }],
       },
-    ],
-  },
-  {
-    category: "Components",
-    items: [
       {
-        title: "Tables",
-        icon: Table,
-        submenu: [{ title: "Data Tables", href: "/admin/tables" }],
+        title: "Projects",
+        icon: Palette,
+        submenu: [
+          { title: "All Projects", href: ADMIN_ROUTES.PROJECTS },
+          { title: "Add Project", href: ADMIN_ROUTES.PROJECTS_NEW },
+        ],
       },
     ],
   },

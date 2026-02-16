@@ -1,11 +1,8 @@
 "use client";
 
+import { API_URL } from "@/config/api";
 import { PostsProps } from "@/types";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-
-interface PostsResponse {
-  posts: PostsProps[];
-}
 
 export interface CreatePostData {
   title: string;
@@ -36,12 +33,15 @@ interface UpdatePostResponse {
   post: PostsProps;
 }
 
-interface PostResponse {
-  post: PostsProps;
+interface UpdatePostStatusData {
+  id: string;
+  title: string;
+  content: string;
+  status: string;
 }
 
+// fetch posts************************************************
 const fetchPosts = async (search?: string, status?: string): Promise<PostsProps[]> => {
-  // Build query parameters
   const params = new URLSearchParams();
   if (search && search.trim() !== "") {
     params.append("search", search.trim());
@@ -50,7 +50,7 @@ const fetchPosts = async (search?: string, status?: string): Promise<PostsProps[
     params.append("status", status);
   }
 
-  const url = `/api/admin/posts${params.toString() ? `?${params.toString()}` : ""}`;
+  const url = `${API_URL.ADMIN.POSTS}${params.toString() ? `?${params.toString()}` : ""}`;
   const response = await fetch(url);
 
   if (!response.ok) {
@@ -62,6 +62,15 @@ const fetchPosts = async (search?: string, status?: string): Promise<PostsProps[
   return data;
 };
 
+export const usePosts = (search?: string, status?: string) => {
+  return useQuery({
+    queryKey: ["posts", search, status],
+    queryFn: () => fetchPosts(search, status),
+    retry: 1,
+  });
+};
+
+// create post************************************************
 const createPost = async (
   data: CreatePostData
 ): Promise<CreatePostResponse> => {
@@ -80,7 +89,7 @@ const createPost = async (
     formData.append("cover_url", data.cover_url);
   }
 
-  const response = await fetch("/api/admin/posts", {
+  const response = await fetch(API_URL.ADMIN.POSTS, {
     method: "POST",
     body: formData,
   });
@@ -93,17 +102,22 @@ const createPost = async (
   return response.json();
 };
 
-interface UpdatePostStatusData {
-  id: string;
-  title: string;
-  content: string;
-  status: string;
-}
+export const useCreatePost = () => {
+  const queryClient = useQueryClient();
 
+  return useMutation({
+    mutationFn: createPost,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["posts"] });
+    },
+  });
+};
+
+// update post status************************************************
 const updatePostStatus = async (
   data: UpdatePostStatusData
 ): Promise<void> => {
-  const response = await fetch(`/api/admin/posts/${data.id}`, {
+  const response = await fetch(`${API_URL.ADMIN.POSTS}/${data.id}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
@@ -117,40 +131,21 @@ const updatePostStatus = async (
   }
 };
 
-const usePosts = (search?: string, status?: string) => {
-  return useQuery({
-    queryKey: ["posts", search, status],
-    queryFn: () => fetchPosts(search, status),
-    retry: 1,
-  });
-};
-
-export const useCreatePost = () => {
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn: createPost,
-    onSuccess: () => {
-      // Invalidate and refetch posts list after successful creation
-      queryClient.invalidateQueries({ queryKey: ["posts"] });
-    },
-  });
-};
-
 export const useUpdatePostStatus = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: updatePostStatus,
     onSuccess: () => {
-      // Invalidate and refetch posts list after successful status update
       queryClient.invalidateQueries({ queryKey: ["posts"] });
     },
   });
 };
 
+
+// fetch post by id************************************************
 const fetchPost = async (id: string): Promise<PostsProps> => {
-  const response = await fetch(`/api/admin/posts/${id}`);
+  const response = await fetch(`${API_URL.ADMIN.POSTS}/${id}`);
 
   if (!response.ok) {
     const errorData = await response.json().catch(() => ({}));
@@ -161,6 +156,16 @@ const fetchPost = async (id: string): Promise<PostsProps> => {
   return data;
 };
 
+export const usePost = (id: string) => {
+  return useQuery({
+    queryKey: ["post", id],
+    queryFn: () => fetchPost(id),
+    enabled: !!id,
+    retry: 1,
+  });
+};
+
+// update post ************************************************
 const updatePost = async (
   data: UpdatePostData
 ): Promise<UpdatePostResponse> => {
@@ -193,7 +198,7 @@ const updatePost = async (
 };
 
 const deletePost = async (id: string): Promise<void> => {
-  const response = await fetch(`/api/admin/posts/${id}`, {
+  const response = await fetch(`${API_URL.ADMIN.POSTS}/${id}`, {
     method: "DELETE",
   });
 
@@ -203,14 +208,6 @@ const deletePost = async (id: string): Promise<void> => {
   }
 };
 
-export const usePost = (id: string) => {
-  return useQuery({
-    queryKey: ["post", id],
-    queryFn: () => fetchPost(id),
-    enabled: !!id,
-    retry: 1,
-  });
-};
 
 export const useUpdatePost = () => {
   const queryClient = useQueryClient();
@@ -225,6 +222,7 @@ export const useUpdatePost = () => {
   });
 };
 
+// delete post************************************************
 export const useDeletePost = () => {
   const queryClient = useQueryClient();
 
@@ -236,5 +234,3 @@ export const useDeletePost = () => {
     },
   });
 };
-
-export default usePosts;
