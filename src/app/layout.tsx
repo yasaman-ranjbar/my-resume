@@ -8,7 +8,8 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Jasmine resume",
-  description: "Portfolio of a passionate Front-End Developer specializing in React and Next.js",
+  description:
+    "Portfolio of a passionate Front-End Developer specializing in React and Next.js",
 };
 
 export default function RootLayout({
@@ -18,11 +19,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.className} min-h-screen flex flex-col`}>
+      <body
+        className={`${inter.className} flex min-h-screen flex-col`}>
         <NextTopLoader color="#3b82f6" />
-        <Providers>
-          {children}
-        </Providers>
+        <Providers>{children}</Providers>
       </body>
     </html>
   );

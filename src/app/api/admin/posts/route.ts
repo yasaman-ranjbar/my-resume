@@ -9,13 +9,21 @@ export async function GET() {
     const posts = await prisma.post.findMany();
     return NextResponse.json(posts);
   } catch (error: unknown) {
-    return NextResponse.json({ error: 'Failed to fetch posts' }, { status: 500 });
+    return NextResponse.json(
+      { error: "Failed to fetch posts" },
+      { status: 500 }
+    );
   }
 }
 
-function getString(formData: FormData, key: string): string | null {
+function getString(
+  formData: FormData,
+  key: string
+): string | null {
   const value = formData.get(key);
-  return value instanceof File ? null : (value as string | null);
+  return value instanceof File
+    ? null
+    : (value as string | null);
 }
 
 export async function POST(request: Request) {
@@ -33,7 +41,11 @@ export async function POST(request: Request) {
     if (coverFile instanceof File && coverFile.size > 0) {
       const bytes = await coverFile.arrayBuffer();
       const buffer = Buffer.from(bytes);
-      const uploadsDir = path.join(process.cwd(), "public", "uploads");
+      const uploadsDir = path.join(
+        process.cwd(),
+        "public",
+        "uploads"
+      );
       await mkdir(uploadsDir, { recursive: true });
       const safeName = `${Date.now()}-${coverFile.name.replace(/[^a-zA-Z0-9.-]/g, "_")}`;
       const filePath = path.join(uploadsDir, safeName);
@@ -41,16 +53,27 @@ export async function POST(request: Request) {
       cover_url = `/uploads/${safeName}`;
     }
 
-    const tags: string[] = tagsRaw ? (() => {
-      try {
-        return JSON.parse(tagsRaw) as string[];
-      } catch {
-        return [];
-      }
-    })() : [];
+    const tags: string[] = tagsRaw
+      ? (() => {
+          try {
+            return JSON.parse(tagsRaw) as string[];
+          } catch {
+            return [];
+          }
+        })()
+      : [];
 
-    if (!title || !slug || !content || !status || !category_id) {
-      return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
+    if (
+      !title ||
+      !slug ||
+      !content ||
+      !status ||
+      !category_id
+    ) {
+      return NextResponse.json(
+        { error: "Missing required fields" },
+        { status: 400 }
+      );
     }
 
     const post = await prisma.post.create({
@@ -67,15 +90,29 @@ export async function POST(request: Request) {
 
     return NextResponse.json({ post }, { status: 201 });
   } catch (error: unknown) {
-    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+    if (
+      error instanceof Prisma.PrismaClientKnownRequestError
+    ) {
       if (error.code === "P2002") {
-        return NextResponse.json({ error: "A post with this slug already exists" }, { status: 409 });
+        return NextResponse.json(
+          { error: "A post with this slug already exists" },
+          { status: 409 }
+        );
       }
       if (error.code === "P2003") {
-        return NextResponse.json({ error: "Invalid category_id: Category does not exist" }, { status: 400 });
+        return NextResponse.json(
+          {
+            error:
+              "Invalid category_id: Category does not exist",
+          },
+          { status: 400 }
+        );
       }
     }
     console.error(error);
-    return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Internal Server Error" },
+      { status: 500 }
+    );
   }
 }

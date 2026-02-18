@@ -16,20 +16,21 @@ const config: Config = {
         accent: "var(--accent)",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
-        "ring-offset-background": "hsl(var(--ring-offset-background))",
+        "ring-offset-background":
+          "hsl(var(--ring-offset-background))",
         "muted-foreground": "hsl(var(--muted-foreground))",
       },
       textColor: {
         primary: "#F9004D",
-      }
+      },
     },
     container: {
       center: true,
-      padding: '2rem',
+      padding: "2rem",
       screens: {
-        xs: '480px',
-        sm: '640px',
-        md: '768px',
+        xs: "480px",
+        sm: "640px",
+        md: "768px",
       },
     },
   },

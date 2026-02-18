@@ -9,7 +9,10 @@ import { useState } from "react";
 import { Button } from "@/components/ui/Button";
 import { useForm, Controller } from "react-hook-form";
 import PostTag from "@/components/admin/PostTag";
-import { CreatePostData, useCreatePost } from "@/hooks/usePosts";
+import {
+  CreatePostData,
+  useCreatePost,
+} from "@/hooks/usePosts";
 import { useCategories } from "@/hooks/useCategories";
 import { toast } from "react-toastify";
 import {
@@ -19,24 +22,31 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/Select";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/RadioGroup";
+import {
+  RadioGroup,
+  RadioGroupItem,
+} from "@/components/ui/RadioGroup";
 
 export default function AddNewPost() {
-  const [coverImage, setCoverImage] = useState<File | null>(null);
+  const [coverImage, setCoverImage] = useState<File | null>(
+    null
+  );
   const [tags, setTags] = useState<string[]>([]);
   const [tagInput, setTagInput] = useState<string>("");
-  const { register, handleSubmit, control, reset } = useForm<CreatePostData>({
-    defaultValues: {
-      title: "",
-      slug: "",
-      content: "",
-      status: "draft",
-      tags: [],
-      category_id: "",
-    },
-  });
+  const { register, handleSubmit, control, reset } =
+    useForm<CreatePostData>({
+      defaultValues: {
+        title: "",
+        slug: "",
+        content: "",
+        status: "draft",
+        tags: [],
+        category_id: "",
+      },
+    });
   const createPostMutation = useCreatePost();
-  const { data: categories, isLoading: categoriesLoading } = useCategories();
+  const { data: categories, isLoading: categoriesLoading } =
+    useCategories();
 
   const onSubmit = async (data: CreatePostData) => {
     createPostMutation.mutate(
@@ -59,14 +69,17 @@ export default function AddNewPost() {
         },
         onError: (err: Error) => {
           toast.error(
-            err.message || "Failed to create post. Please try again."
+            err.message ||
+              "Failed to create post. Please try again."
           );
         },
       }
     );
   };
 
-  const handleTagInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  const handleTagInputKeyDown = (
+    e: React.KeyboardEvent<HTMLInputElement>
+  ) => {
     if (e.key === "Enter") {
       e.preventDefault();
       const trimmedValue = tagInput.trim();
@@ -82,20 +95,30 @@ export default function AddNewPost() {
   };
 
   return (
-    <div className="p-6 space-y-8">
-      <h1 className="text-2xl font-bold flex items-center gap-2">
+    <div className="space-y-8 p-6">
+      <h1 className="flex items-center gap-2 text-2xl font-bold">
         <CopyPlus size={24} />
         <span>New Post</span>
       </h1>
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-        <div className="flex md:flex-row flex-col w-full gap-6">
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="space-y-4">
+        <div className="flex w-full flex-col gap-6 md:flex-row">
           <div className="w-full">
             <Label htmlFor="title">Title</Label>
-            <Input type="text" id="title" {...register("title")} />
+            <Input
+              type="text"
+              id="title"
+              {...register("title")}
+            />
           </div>
           <div className="w-full">
             <Label htmlFor="slug">slug</Label>
-            <Input type="text" id="slug" {...register("slug")} />
+            <Input
+              type="text"
+              id="slug"
+              {...register("slug")}
+            />
           </div>
 
           <div className="w-full">
@@ -107,24 +130,30 @@ export default function AddNewPost() {
                 <Select
                   value={field.value}
                   onValueChange={field.onChange}
-                  disabled={categoriesLoading}
-                >
+                  disabled={categoriesLoading}>
                   <SelectTrigger className="w-full">
                     <SelectValue placeholder="Select a category" />
                   </SelectTrigger>
                   <SelectContent>
                     {categoriesLoading ? (
-                      <SelectItem value="loading" disabled>
+                      <SelectItem
+                        value="loading"
+                        disabled>
                         Loading categories...
                       </SelectItem>
-                    ) : categories && categories.length > 0 ? (
+                    ) : categories &&
+                      categories.length > 0 ? (
                       categories.map((category) => (
-                        <SelectItem key={category.id} value={category.id.toString()}>
+                        <SelectItem
+                          key={category.id}
+                          value={category.id.toString()}>
                           {category.name}
                         </SelectItem>
                       ))
                     ) : (
-                      <SelectItem value="no-categories" disabled>
+                      <SelectItem
+                        value="no-categories"
+                        disabled>
                         No categories available
                       </SelectItem>
                     )}
@@ -134,8 +163,7 @@ export default function AddNewPost() {
             />
           </div>
         </div>
-        <div className="flex md:flex-row flex-col items-center gap-6">
-
+        <div className="flex flex-col items-center gap-6 md:flex-row">
           <div className="w-full">
             <Label htmlFor="tags">Tags</Label>
             <Input
@@ -151,7 +179,10 @@ export default function AddNewPost() {
           {tags && (
             <div className="w-full">
               {tags.length > 0 && (
-                <PostTag onClick={handleRemoveTag} tags={tags} />
+                <PostTag
+                  onClick={handleRemoveTag}
+                  tags={tags}
+                />
               )}
             </div>
           )}
@@ -161,19 +192,26 @@ export default function AddNewPost() {
               name="status"
               control={control}
               render={({ field }) => (
-                <div className="h-12 rounded-md py-2 px-4">
+                <div className="h-12 rounded-md px-4 py-2">
                   <RadioGroup
                     className="flex gap-5 pt-2"
                     value={field.value}
-                    onValueChange={field.onChange}
-                  >
+                    onValueChange={field.onChange}>
                     <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="draft" id="draft" />
+                      <RadioGroupItem
+                        value="draft"
+                        id="draft"
+                      />
                       <Label htmlFor="draft">Draft</Label>
                     </div>
                     <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="published" id="published" />
-                      <Label htmlFor="published">Published</Label>
+                      <RadioGroupItem
+                        value="published"
+                        id="published"
+                      />
+                      <Label htmlFor="published">
+                        Published
+                      </Label>
                     </div>
                   </RadioGroup>
                 </div>
@@ -183,7 +221,11 @@ export default function AddNewPost() {
         </div>
         <div className="space-y-3">
           <Label htmlFor="content">Content</Label>
-          <Textarea id="content" {...register("content")} rows={10} />
+          <Textarea
+            id="content"
+            {...register("content")}
+            rows={10}
+          />
         </div>
         <CoverImage
           value={coverImage}
@@ -194,9 +236,10 @@ export default function AddNewPost() {
           variant="default"
           size="lg"
           type="submit"
-          disabled={createPostMutation.isPending}
-        >
-          {createPostMutation.isPending ? "Creating..." : "Create Post"}
+          disabled={createPostMutation.isPending}>
+          {createPostMutation.isPending
+            ? "Creating..."
+            : "Create Post"}
         </Button>
       </form>
     </div>

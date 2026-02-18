@@ -1,5 +1,5 @@
 export type PageHeaderProps = {
-    title: string;
-    pageName: string;
-    className?: string;
-}
+  title: string;
+  pageName: string;
+  className?: string;
+};

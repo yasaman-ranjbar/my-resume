@@ -1,33 +1,50 @@
-'use client';
+"use client";
 
 import Image from "next/image";
 import Link from "next/link";
-import { Download, ArrowRight, Facebook, Twitter, Linkedin, Instagram } from "lucide-react";
-import Typewriter from 'typewriter-effect';
+import {
+  Download,
+  ArrowRight,
+  Facebook,
+  Twitter,
+  Linkedin,
+  Instagram,
+} from "lucide-react";
+import Typewriter from "typewriter-effect";
 
 export default function Hero() {
   return (
     <div className="relative">
-      <div className="absolute w-full h-full bg-linear-to-l from-[#280A10] via-[#0C0809] to-[#280A10] z-10 mix-blend-multiply"></div>
-      <section id="home"
-        style={{ backgroundImage: 'url(/images/bg.png)', backgroundSize: 'contain', backgroundPosition: 'center' }}
-        className="relative pb-20 lg:pb-32 overflow-hidden bg-linear-to-l from-[#280A10] via-[#0C0809] to-[#280A10]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
+      <div className="absolute z-10 h-full w-full bg-linear-to-l from-[#280A10] via-[#0C0809] to-[#280A10] mix-blend-multiply"></div>
+      <section
+        id="home"
+        style={{
+          backgroundImage: "url(/images/bg.png)",
+          backgroundSize: "contain",
+          backgroundPosition: "center",
+        }}
+        className="relative overflow-hidden bg-linear-to-l from-[#280A10] via-[#0C0809] to-[#280A10] pb-20 lg:pb-32">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col items-center gap-12 lg:flex-row lg:gap-20">
             {/* Text Content */}
-            <div className="flex-1 text-center lg:text-left z-10">
-              <span className="text-[#F9004D] text-xl md:text-2xl font-medium mb-4 block">
+            <div className="z-10 flex-1 text-center lg:text-left">
+              <span className="mb-4 block text-xl font-medium text-[#F9004D] md:text-2xl">
                 Hello, I'm
               </span>
-              <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 tracking-tight">
-                Jasmine <span className="text-[#F9004D]">.</span>
+              <h1 className="mb-6 text-5xl font-bold tracking-tight text-white md:text-7xl">
+                Jasmine{" "}
+                <span className="text-[#F9004D]">.</span>
               </h1>
-              <div className="text-2xl md:text-4xl text-gray-400 font-light mb-8 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-2">
+              <div className="mb-8 flex flex-col items-center justify-center gap-2 text-2xl font-light text-gray-400 sm:flex-row md:text-4xl lg:justify-start">
                 <span>I Am</span>
-                <span className="text-white font-medium">
+                <span className="font-medium text-white">
                   <Typewriter
                     options={{
-                      strings: ['Front-end developer', 'UI Engineer', 'Creative Web Developer'],
+                      strings: [
+                        "Front-end developer",
+                        "UI Engineer",
+                        "Creative Web Developer",
+                      ],
                       autoStart: true,
                       loop: true,
                       delay: 75,
@@ -35,35 +52,42 @@ export default function Hero() {
                   />
                 </span>
               </div>
-              <p className="text-gray-400 text-lg max-w-2xl mx-auto lg:mx-0 mb-10 leading-relaxed">
-                I am a passionate Front-end Developer with over 5 years of experience in building responsive web applications. I specialize in turning complex designs into clean, efficient code to deliver seamless and engaging user experiences.
+              <p className="mx-auto mb-10 max-w-2xl text-lg leading-relaxed text-gray-400 lg:mx-0">
+                I am a passionate Front-end Developer with
+                over 5 years of experience in building
+                responsive web applications. I specialize in
+                turning complex designs into clean,
+                efficient code to deliver seamless and
+                engaging user experiences.
               </p>
 
-              <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-6">
+              <div className="flex flex-col items-center justify-center gap-6 sm:flex-row lg:justify-start">
                 <Link
                   href="/resume"
-                  className="inline-flex items-center justify-center px-8 py-4 text-base font-bold text-white bg-[#F9004D] rounded-full hover:bg-[#d00040] transition-all hover:scale-105 shadow-lg shadow-[#F9004D]/20"
-                >
+                  className="inline-flex items-center justify-center rounded-full bg-[#F9004D] px-8 py-4 text-base font-bold text-white shadow-lg shadow-[#F9004D]/20 transition-all hover:scale-105 hover:bg-[#d00040]">
                   Hire Me
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Link>
                 <Link
                   href="/resume.pdf"
-                  className="inline-flex items-center justify-center px-8 py-4 text-base font-bold text-white border border-white/20 rounded-full hover:bg-white/10 transition-all hover:scale-105"
-                >
+                  className="inline-flex items-center justify-center rounded-full border border-white/20 px-8 py-4 text-base font-bold text-white transition-all hover:scale-105 hover:bg-white/10">
                   Download CV
                   <Download className="ml-2 h-5 w-5" />
                 </Link>
               </div>
 
               {/* Social Links */}
-              <div className="mt-12 flex items-center justify-center lg:justify-start gap-6">
-                {[Facebook, Twitter, Linkedin, Instagram].map((Icon, index) => (
+              <div className="mt-12 flex items-center justify-center gap-6 lg:justify-start">
+                {[
+                  Facebook,
+                  Twitter,
+                  Linkedin,
+                  Instagram,
+                ].map((Icon, index) => (
                   <a
                     key={index}
                     href="#"
-                    className="text-gray-400 hover:text-[#F9004D] transition-colors p-2 border border-white/10 rounded-full hover:border-[#F9004D]"
-                  >
+                    className="rounded-full border border-white/10 p-2 text-gray-400 transition-colors hover:border-[#F9004D] hover:text-[#F9004D]">
                     <Icon className="h-5 w-5" />
                   </a>
                 ))}
@@ -71,39 +95,51 @@ export default function Hero() {
             </div>
 
             {/* Image Area */}
-            <div className="relative flex-1 w-full max-w-lg lg:max-w-xl">
+            <div className="relative w-full max-w-lg flex-1 lg:max-w-xl">
               {/* Back Text - Solid White - Floats Normal */}
-              <div className="absolute bottom-48 left-1/2 -translate-x-1/2 w-full flex justify-center z-10 animate-float pointer-events-none">
-                <span className="text-6xl lg:text-6xl font-bold text-white tracking-wider whitespace-nowrap opacity-20 lg:opacity-100">
+              <div className="animate-float pointer-events-none absolute bottom-48 left-1/2 z-10 flex w-full -translate-x-1/2 justify-center">
+                <span className="text-6xl font-bold tracking-wider whitespace-nowrap text-white opacity-20 lg:text-6xl lg:opacity-100">
                   Front-end Developer
                 </span>
               </div>
 
               {/* Image and Shape with Mask */}
-              <div className="relative w-full z-10" style={{ maskImage: 'linear-gradient(to bottom, black 80%, transparent 100%)', WebkitMaskImage: 'linear-gradient(to bottom, black 80%, transparent 100%)' }}>
+              <div
+                className="relative z-10 w-full"
+                style={{
+                  maskImage:
+                    "linear-gradient(to bottom, black 80%, transparent 100%)",
+                  WebkitMaskImage:
+                    "linear-gradient(to bottom, black 80%, transparent 100%)",
+                }}>
                 {/* Background Shape */}
-                <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full h-[45%] bg-linear-to-b from-[#F9004D] to-[#800028] rounded-tr-[90px]  rounded-tl-[90px] -z-20 opacity-90"></div>
+                <div className="absolute bottom-0 left-1/2 -z-20 h-[45%] w-full -translate-x-1/2 rounded-tl-[90px] rounded-tr-[90px] bg-linear-to-b from-[#F9004D] to-[#800028] opacity-90"></div>
 
                 <Image
                   src="/images/hero-image.png"
                   alt="Profile"
                   width={1500}
                   height={500}
-                  className="object-cover relative z-10"
+                  className="relative z-10 object-cover"
                   priority
                 />
               </div>
 
               {/* Front Text - Outlined - Floats Reverse */}
-              <div className="absolute bottom-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full z-20 flex items-center justify-center pointer-events-none animate-float-reverse">
-                <span className="text-6xl lg:text-6xl font-bold text-transparent tracking-wider whitespace-nowrap"
-                  style={{ WebkitTextStroke: '1px rgba(255, 255, 255, 1)' }}>
+              <div className="animate-float-reverse pointer-events-none absolute bottom-0 left-1/2 z-20 flex w-full -translate-x-1/2 -translate-y-1/2 items-center justify-center">
+                <span
+                  className="text-6xl font-bold tracking-wider whitespace-nowrap text-transparent lg:text-6xl"
+                  style={{
+                    WebkitTextStroke:
+                      "1px rgba(255, 255, 255, 1)",
+                  }}>
                   Front-end Developer
                 </span>
               </div>
             </div>
           </div>
         </div>
-      </section></div>
+      </section>
+    </div>
   );
 }

@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { motion } from "framer-motion";
 
@@ -15,28 +15,42 @@ export default function Skills() {
   ];
 
   return (
-    <section id="skills" className="py-20 bg-[#131313]">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
-          <h3 className="text-[#F9004D] font-medium uppercase tracking-wider mb-2">My Skills</h3>
-          <h2 className="text-4xl font-bold text-white">My Best Skills</h2>
+    <section
+      id="skills"
+      className="bg-[#131313] py-20">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="mb-16 text-center">
+          <h3 className="mb-2 font-medium tracking-wider text-[#F9004D] uppercase">
+            My Skills
+          </h3>
+          <h2 className="text-4xl font-bold text-white">
+            My Best Skills
+          </h2>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-8 max-w-4xl mx-auto">
+        <div className="mx-auto grid max-w-4xl grid-cols-1 gap-x-16 gap-y-8 md:grid-cols-2">
           {skills.map((skill, index) => (
             <div key={index}>
-              <div className="flex justify-between mb-2">
-                <span className="text-white font-medium">{skill.name}</span>
-                <span className="text-gray-400">{skill.percentage}%</span>
+              <div className="mb-2 flex justify-between">
+                <span className="font-medium text-white">
+                  {skill.name}
+                </span>
+                <span className="text-gray-400">
+                  {skill.percentage}%
+                </span>
               </div>
-              <div className="w-full bg-[#1f1f1f] rounded-full h-2.5 border border-white/5 overflow-hidden">
+              <div className="h-2.5 w-full overflow-hidden rounded-full border border-white/5 bg-[#1f1f1f]">
                 <motion.div
                   initial={{ width: 0 }}
-                  whileInView={{ width: `${skill.percentage}%` }}
-                  transition={{ duration: 1, ease: "easeOut" }}
+                  whileInView={{
+                    width: `${skill.percentage}%`,
+                  }}
+                  transition={{
+                    duration: 1,
+                    ease: "easeOut",
+                  }}
                   viewport={{ once: true }}
-                  className="bg-[#F9004D] h-2.5 rounded-full"
-                ></motion.div>
+                  className="h-2.5 rounded-full bg-[#F9004D]"></motion.div>
               </div>
             </div>
           ))}

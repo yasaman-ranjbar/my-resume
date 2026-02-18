@@ -12,14 +12,20 @@ export interface CoverImageProps {
   label?: string;
 }
 
-const CoverImage = React.forwardRef<HTMLDivElement, CoverImageProps>(
-  ({ value, onChange, className, label = "Cover Image" }, ref) => {
+const CoverImage = React.forwardRef<
+  HTMLDivElement,
+  CoverImageProps
+>(
+  (
+    { value, onChange, className, label = "Cover Image" },
+    ref
+  ) => {
     const [preview, setPreview] = useState<string | null>(
       typeof value === "string"
         ? value
         : value instanceof File
-        ? URL.createObjectURL(value)
-        : null
+          ? URL.createObjectURL(value)
+          : null
     );
     const [isDragging, setIsDragging] = useState(false);
     const fileInputRef = useRef<HTMLInputElement>(null);
@@ -61,24 +67,32 @@ const CoverImage = React.forwardRef<HTMLDivElement, CoverImageProps>(
       }
     };
 
-    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleFileChange = (
+      e: React.ChangeEvent<HTMLInputElement>
+    ) => {
       const file = e.target.files?.[0] || null;
       handleFileSelect(file);
     };
 
-    const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+    const handleDragOver = (
+      e: React.DragEvent<HTMLDivElement>
+    ) => {
       e.preventDefault();
       e.stopPropagation();
       setIsDragging(true);
     };
 
-    const handleDragLeave = (e: React.DragEvent<HTMLDivElement>) => {
+    const handleDragLeave = (
+      e: React.DragEvent<HTMLDivElement>
+    ) => {
       e.preventDefault();
       e.stopPropagation();
       setIsDragging(false);
     };
 
-    const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
+    const handleDrop = (
+      e: React.DragEvent<HTMLDivElement>
+    ) => {
       e.preventDefault();
       e.stopPropagation();
       setIsDragging(false);
@@ -104,7 +118,9 @@ const CoverImage = React.forwardRef<HTMLDivElement, CoverImageProps>(
     };
 
     return (
-      <div className={cn("space-y-2", className)} ref={ref}>
+      <div
+        className={cn("space-y-2", className)}
+        ref={ref}>
         <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
           {label}
         </label>
@@ -114,15 +130,14 @@ const CoverImage = React.forwardRef<HTMLDivElement, CoverImageProps>(
           onDragLeave={handleDragLeave}
           onDrop={handleDrop}
           className={cn(
-            "relative w-full border-2 border-dashed rounded-lg cursor-pointer transition-colors",
+            "relative w-full cursor-pointer rounded-lg border-2 border-dashed transition-colors",
             isDragging
               ? "border-blue-500 bg-blue-50 dark:bg-blue-900/20"
-              : "border-gray-300 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-500",
+              : "border-gray-300 hover:border-gray-400 dark:border-gray-600 dark:hover:border-gray-500",
             preview
               ? "min-h-[200px] bg-white dark:bg-gray-800"
               : "min-h-[150px] bg-gray-50 dark:bg-gray-900/50"
-          )}
-        >
+          )}>
           <input
             ref={fileInputRef}
             type="file"
@@ -132,23 +147,22 @@ const CoverImage = React.forwardRef<HTMLDivElement, CoverImageProps>(
           />
 
           {preview ? (
-            <div className="relative w-full h-full min-h-[200px] rounded-lg overflow-hidden">
+            <div className="relative h-full min-h-[200px] w-full overflow-hidden rounded-lg">
               <img
                 src={preview}
                 alt="Cover preview"
-                className="w-full h-full object-cover"
+                className="h-full w-full object-cover"
               />
               <button
                 type="button"
                 onClick={handleRemove}
-                className="absolute top-2 right-2 p-1.5 bg-red-500 hover:bg-red-600 text-white rounded-full shadow-lg transition-colors z-10"
-                aria-label="Remove image"
-              >
+                className="absolute top-2 right-2 z-10 rounded-full bg-red-500 p-1.5 text-white shadow-lg transition-colors hover:bg-red-600"
+                aria-label="Remove image">
                 <X size={18} />
               </button>
             </div>
           ) : (
-            <div className="flex flex-col items-center justify-center h-full min-h-[150px] p-6">
+            <div className="flex h-full min-h-[150px] flex-col items-center justify-center p-6">
               <Upload
                 size={48}
                 className={cn(
@@ -158,8 +172,8 @@ const CoverImage = React.forwardRef<HTMLDivElement, CoverImageProps>(
                     : "text-gray-400 dark:text-gray-500"
                 )}
               />
-              <p className="text-sm text-gray-600 dark:text-gray-400 text-center">
-                <span className="text-blue-600 dark:text-blue-400 hover:underline cursor-pointer">
+              <p className="text-center text-sm text-gray-600 dark:text-gray-400">
+                <span className="cursor-pointer text-blue-600 hover:underline dark:text-blue-400">
                   Browse
                 </span>{" "}
                 or drop your files here

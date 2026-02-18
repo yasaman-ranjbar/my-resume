@@ -15,7 +15,10 @@ export async function GET(
     });
     return NextResponse.json(post);
   } catch (error) {
-    return NextResponse.json({ error: 'Failed to fetch post' }, { status: 500 });
+    return NextResponse.json(
+      { error: "Failed to fetch post" },
+      { status: 500 }
+    );
   }
 }
 
@@ -32,8 +35,12 @@ export async function PUT(
     const content = formData.get("content") as string;
     const status = formData.get("status") as string;
     const tags = formData.get("tags") as string;
-    const category_id = formData.get("category_id") as string;
-    const cover_url = formData.get("cover_url") as string | null;
+    const category_id = formData.get(
+      "category_id"
+    ) as string;
+    const cover_url = formData.get("cover_url") as
+      | string
+      | null;
     const post = await prisma.post.update({
       where: {
         id: parseInt(id),
@@ -50,7 +57,10 @@ export async function PUT(
     });
     return NextResponse.json(post);
   } catch (error) {
-    return NextResponse.json({ error: 'Failed to update post' }, { status: 500 });
+    return NextResponse.json(
+      { error: "Failed to update post" },
+      { status: 500 }
+    );
   }
 }
 
@@ -67,6 +77,9 @@ export async function DELETE(
     });
     return NextResponse.json({ ok: true }, { status: 200 });
   } catch (error) {
-    return NextResponse.json({ error: 'Failed to delete post' }, { status: 500 });
+    return NextResponse.json(
+      { error: "Failed to delete post" },
+      { status: 500 }
+    );
   }
 }

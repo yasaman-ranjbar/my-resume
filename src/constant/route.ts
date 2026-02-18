@@ -8,7 +8,6 @@ export const ADMIN_ROUTES = {
   PROJECTS_NEW: "/admin/projects/new-project",
 };
 
-
 export const AppRoutes = {
   HOME: "/",
   ABOUT: "/about",

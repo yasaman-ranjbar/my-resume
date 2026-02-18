@@ -1,6 +1,7 @@
 # Docker Setup and Testing Instructions
 
 ## Current Status
+
 ✅ Docker containers are UP and RUNNING
 ✅ Prisma schema is configured
 ✅ Test scripts are ready
@@ -16,6 +17,7 @@ Open PowerShell in the project directory and run:
 ```
 
 This script will:
+
 1. Check Docker container status
 2. Run Prisma migrations
 3. Generate Prisma client
@@ -31,6 +33,7 @@ docker compose -f docker-compose.dev.yml ps
 ```
 
 You should see two containers running:
+
 - `postgres-db-dev` - PostgreSQL database
 - `next-dev` - Next.js application
 
@@ -49,6 +52,7 @@ docker exec next-dev npx prisma generate
 #### 4. Wait for App to Start
 
 Check the Next.js app logs:
+
 ```bash
 docker logs next-dev --follow
 ```
@@ -58,11 +62,13 @@ Wait until you see "Ready" or similar message.
 #### 5. Test API with CURL
 
 Run the test script:
+
 ```bash
 .\test-api.bat
 ```
 
 Or manually:
+
 ```bash
 curl -X POST http://localhost:3000/api/admin/categories \
   -H "Content-Type: application/json" \
@@ -104,6 +110,7 @@ docker exec next-dev npx prisma migrate dev --name init
 #### Issue: Database Connection Error
 
 Check if the database is ready:
+
 ```bash
 docker exec postgres-db-dev pg_isready -U postgres
 ```
@@ -111,6 +118,7 @@ docker exec postgres-db-dev pg_isready -U postgres
 #### Issue: App Container Not Starting
 
 View app logs:
+
 ```bash
 docker logs next-dev
 ```
@@ -118,9 +126,11 @@ docker logs next-dev
 ## API Testing Details
 
 ### Endpoint
+
 `POST http://localhost:3000/api/admin/categories`
 
 ### Request Body
+
 ```json
 {
   "name": "Technology",
@@ -129,6 +139,7 @@ docker logs next-dev
 ```
 
 ### Expected Response (201 Created)
+
 ```json
 {
   "id": 1,
@@ -139,6 +150,7 @@ docker logs next-dev
 ```
 
 ### Validation Rules
+
 - `name`: Required, non-empty string
 - `slug`: Required, lowercase letters, numbers, and hyphens only (no spaces)
 - `slug` must be unique
@@ -154,11 +166,13 @@ docker logs next-dev
 ## Docker Services
 
 ### Next.js App
+
 - Container: `next-dev`
 - Port: 3000
 - URL: http://localhost:3000
 
 ### PostgreSQL
+
 - Container: `postgres-db-dev`
 - Port: 5433 (external), 5432 (internal)
 - Data Volume: `pgdata-dev`

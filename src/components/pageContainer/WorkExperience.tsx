@@ -78,31 +78,34 @@ export default function WorkExperience() {
   };
 
   return (
-    <section id="experience" className="py-20 bg-[#131313]">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
-          <h3 className="text-[#F9004D] font-medium uppercase tracking-wider mb-2">
+    <section
+      id="experience"
+      className="bg-[#131313] py-20">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="mb-16 text-center">
+          <h3 className="mb-2 font-medium tracking-wider text-[#F9004D] uppercase">
             My Journey
           </h3>
-          <h2 className="text-4xl font-bold text-white">Experiences</h2>
+          <h2 className="text-4xl font-bold text-white">
+            Experiences
+          </h2>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-2">
           {/* Left Side - Image */}
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             whileInView={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8 }}
             viewport={{ once: true }}
-            className="relative"
-          >
-            <div className="relative rounded-3xl overflow-hidden shadow-2xl">
+            className="relative">
+            <div className="relative overflow-hidden rounded-3xl shadow-2xl">
               <Image
                 src="/images/about-us.png"
                 alt="Work Experience"
                 width={600}
                 height={700}
-                className="w-full h-auto object-cover"
+                className="h-auto w-full object-cover"
               />
               <div className="absolute inset-0 bg-linear-to-t from-[#131313] via-transparent to-transparent"></div>
             </div>
@@ -114,28 +117,28 @@ export default function WorkExperience() {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
-            className="space-y-8"
-          >
+            className="space-y-8">
             {experiences.map((exp, index) => (
               <motion.div
                 key={index}
-                className="relative pl-8 border-l-2 border-[#F9004D]/30 hover:border-[#F9004D] transition-colors duration-300"
-              >
-                <div className="absolute left-[-9px] top-0 w-4 h-4 rounded-full bg-[#F9004D] shadow-lg shadow-[#F9004D]/50"></div>
+                className="relative border-l-2 border-[#F9004D]/30 pl-8 transition-colors duration-300 hover:border-[#F9004D]">
+                <div className="absolute top-0 left-[-9px] h-4 w-4 rounded-full bg-[#F9004D] shadow-lg shadow-[#F9004D]/50"></div>
 
                 <div className="space-y-2">
-                  <h3 className="text-[#F9004D] font-semibold text-lg">
+                  <h3 className="text-lg font-semibold text-[#F9004D]">
                     {exp.role}
                   </h3>
-                  <h4 className="text-white text-xl font-bold">
+                  <h4 className="text-xl font-bold text-white">
                     {exp.company}
                   </h4>
-                  <p className="text-gray-400 text-sm">{exp.position}</p>
-                  <p className="text-gray-500 text-sm font-medium">
+                  <p className="text-sm text-gray-400">
+                    {exp.position}
+                  </p>
+                  <p className="text-sm font-medium text-gray-500">
                     {exp.duration}
                   </p>
                   {exp.description && (
-                    <p className="text-gray-400 text-sm leading-relaxed pt-2">
+                    <p className="pt-2 text-sm leading-relaxed text-gray-400">
                       {exp.description}
                     </p>
                   )}

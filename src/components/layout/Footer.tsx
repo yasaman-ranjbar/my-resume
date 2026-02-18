@@ -1,31 +1,48 @@
 import Link from "next/link";
-import { Facebook, Twitter, Linkedin, Instagram, Heart } from "lucide-react";
+import {
+  Facebook,
+  Twitter,
+  Linkedin,
+  Instagram,
+  Heart,
+} from "lucide-react";
 
 export default function Footer() {
   return (
-    <footer className="bg-[#1f1f1f] pt-16 pb-8 border-t border-white/5">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
+    <footer className="border-t border-white/5 bg-[#1f1f1f] pt-16 pb-8">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="mb-12 grid grid-cols-1 gap-12 md:grid-cols-3">
           {/* Brand */}
           <div>
-            <Link href="/" className="text-2xl font-bold text-white block mb-6">
+            <Link
+              href="/"
+              className="mb-6 block text-2xl font-bold text-white">
               <span className="text-[#F9004D]">R</span>eeni.
             </Link>
-            <p className="text-gray-400 leading-relaxed">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            <p className="leading-relaxed text-gray-400">
+              Lorem ipsum dolor sit amet, consectetur
+              adipiscing elit, sed do eiusmod tempor
+              incididunt ut labore et dolore magna aliqua.
             </p>
           </div>
 
           {/* Quick Links */}
           <div>
-            <h3 className="text-white font-bold text-lg mb-6">Quick Links</h3>
+            <h3 className="mb-6 text-lg font-bold text-white">
+              Quick Links
+            </h3>
             <ul className="space-y-4">
-              {["About", "Services", "Portfolio", "Blog", "Contact"].map((item) => (
+              {[
+                "About",
+                "Services",
+                "Portfolio",
+                "Blog",
+                "Contact",
+              ].map((item) => (
                 <li key={item}>
                   <Link
                     href={`#${item.toLowerCase()}`}
-                    className="text-gray-400 hover:text-[#F9004D] transition-colors"
-                  >
+                    className="text-gray-400 transition-colors hover:text-[#F9004D]">
                     {item}
                   </Link>
                 </li>
@@ -35,29 +52,34 @@ export default function Footer() {
 
           {/* Contact Info */}
           <div>
-            <h3 className="text-white font-bold text-lg mb-6">Contact</h3>
+            <h3 className="mb-6 text-lg font-bold text-white">
+              Contact
+            </h3>
             <ul className="space-y-4 text-gray-400">
               <li>123 Street Name, City, England</li>
               <li>email@example.com</li>
               <li>+123 456 7890</li>
             </ul>
             <div className="mt-6 flex space-x-4">
-              {[Facebook, Twitter, Linkedin, Instagram].map((Icon, index) => (
-                <a
-                  key={index}
-                  href="#"
-                  className="text-gray-400 hover:text-[#F9004D] transition-colors"
-                >
-                  <Icon className="h-5 w-5" />
-                </a>
-              ))}
+              {[Facebook, Twitter, Linkedin, Instagram].map(
+                (Icon, index) => (
+                  <a
+                    key={index}
+                    href="#"
+                    className="text-gray-400 transition-colors hover:text-[#F9004D]">
+                    <Icon className="h-5 w-5" />
+                  </a>
+                )
+              )}
             </div>
           </div>
         </div>
 
         <div className="border-t border-white/5 pt-8 text-center">
-          <p className="text-gray-500 flex items-center justify-center gap-1">
-            © {new Date().getFullYear()} Reeni. Made with <Heart className="h-4 w-4 text-red-500 fill-red-500" /> by Laralink.
+          <p className="flex items-center justify-center gap-1 text-gray-500">
+            © {new Date().getFullYear()} Reeni. Made with{" "}
+            <Heart className="h-4 w-4 fill-red-500 text-red-500" />{" "}
+            by Laralink.
           </p>
         </div>
       </div>

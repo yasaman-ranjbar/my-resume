@@ -33,11 +33,9 @@ export async function PUT(
   // try {
   //   const body = await req.json();
   //   const { name, slug } = body;
-
   //   if (!name) {
   //     return NextResponse.json({ error: "name is required" }, { status: 400 });
   //   }
-
   //   // Basic slug sanitize
   //   const makeSlug = (s: string) =>
   //     s
@@ -48,9 +46,7 @@ export async function PUT(
   //       .replace(/\s+/g, "-")
   //       .replace(/\-+/g, "-")
   //       .slice(0, 200);
-
   //   const finalSlug = slug ? makeSlug(slug) : makeSlug(name);
-
   //   // Check if slug already exists (excluding current category)
   //   const { data: existingCategory } = await supabaseAdmin
   //     .from("categories")
@@ -58,26 +54,22 @@ export async function PUT(
   //     .eq("slug", finalSlug)
   //     .neq("id", id)
   //     .single();
-
   //   if (existingCategory) {
   //     return NextResponse.json(
   //       { error: "A category with this slug already exists" },
   //       { status: 400 }
   //     );
   //   }
-
   //   const { data, error } = await supabaseAdmin
   //     .from("categories")
   //     .update({ name, slug: finalSlug })
   //     .eq("id", id)
   //     .select()
   //     .single();
-
   //   if (error) {
   //     console.error("Supabase PUT error:", error);
   //     return NextResponse.json({ error: error.message }, { status: 500 });
   //   }
-
   //   return NextResponse.json({ category: data });
   // } catch (err) {
   //   console.error(err);

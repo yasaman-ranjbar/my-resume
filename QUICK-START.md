@@ -21,6 +21,7 @@ Open PowerShell in this directory and run:
 ```
 
 **This script will:**
+
 - ✓ Verify Docker containers are running
 - ✓ Run Prisma migrations
 - ✓ Test the API with POST request
@@ -30,6 +31,7 @@ Open PowerShell in this directory and run:
 ## 📝 What You Should See
 
 **Success Output:**
+
 ```
 ✅ Status Code: 201
 ✅ Response: {"id":1,"createdAt":"...","name":"Technology","slug":"technology"}
@@ -51,16 +53,21 @@ curl -X POST http://localhost:3000/api/admin/categories \
 ## 👀 View Database
 
 ### Option 1: Prisma Studio (Web UI)
+
 ```bash
 docker exec -it next-dev npx prisma studio
 ```
+
 Then open: **http://localhost:5555**
 
 ### Option 2: PostgreSQL CLI
+
 ```bash
 docker exec -it postgres-db-dev psql -U postgres -d mydb
 ```
+
 Then run:
+
 ```sql
 SELECT * FROM "Category";
 ```
@@ -105,6 +112,7 @@ docker compose -f docker-compose.dev.yml up -d
 **URL:** `POST http://localhost:3000/api/admin/categories`
 
 **Request Body:**
+
 ```json
 {
   "name": "Category Name",
@@ -113,12 +121,14 @@ docker compose -f docker-compose.dev.yml up -d
 ```
 
 **Status Codes:**
+
 - `201` ✅ Success - Category created
 - `400` ❌ Bad request - Invalid name/slug
-- `409` ⚠️  Conflict - Slug already exists
+- `409` ⚠️ Conflict - Slug already exists
 - `500` ❌ Server error - Usually hot reload issue
 
 **Slug Rules:**
+
 - Lowercase only
 - Letters, numbers, and hyphens
 - No spaces or special characters
@@ -133,11 +143,13 @@ docker compose -f docker-compose.dev.yml up -d
 ## 🆘 Troubleshooting
 
 **Script won't run?**
+
 ```powershell
 Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 ```
 
 **Port already in use?**
+
 ```bash
 # Check what's using port 3000
 netstat -ano | findstr :3000
@@ -148,6 +160,7 @@ docker compose -f docker-compose.dev.yml up -d
 ```
 
 **Can't connect to database?**
+
 ```bash
 # Check database is ready
 docker exec postgres-db-dev pg_isready -U postgres

@@ -17,7 +17,10 @@ export default function CategoriesPage() {
   });
   const createCategoryMutation = useCreateCategory();
 
-  const onSubmit = async (data: { name: string; slug: string }) => {
+  const onSubmit = async (data: {
+    name: string;
+    slug: string;
+  }) => {
     createCategoryMutation.mutate(
       {
         name: data.name,
@@ -30,7 +33,8 @@ export default function CategoriesPage() {
         },
         onError: (err: Error) => {
           toast.error(
-            err.message || "Failed to create category. Please try again."
+            err.message ||
+              "Failed to create category. Please try again."
           );
         },
       }
@@ -38,33 +42,42 @@ export default function CategoriesPage() {
   };
 
   return (
-    <div className="p-8 space-y-8">
-      <h1 className="text-2xl font-bold flex items-center gap-2">
+    <div className="space-y-8 p-8">
+      <h1 className="flex items-center gap-2 text-2xl font-bold">
         <CopyPlus size={24} />
         <span>New Category</span>
       </h1>
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-        <div className="flex md:flex-row flex-col w-full gap-6">
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="space-y-4">
+        <div className="flex w-full flex-col gap-6 md:flex-row">
           <div className="w-full">
             <Label htmlFor="name">Name</Label>
             <Input
               type="text"
               id="name"
-              {...register("name", { required: "Name is required" })}
+              {...register("name", {
+                required: "Name is required",
+              })}
             />
           </div>
           <div className="w-full">
             <Label htmlFor="slug">Slug</Label>
-            <Input type="text" id="slug" {...register("slug")} />
+            <Input
+              type="text"
+              id="slug"
+              {...register("slug")}
+            />
           </div>
         </div>
         <Button
           variant="default"
           size="lg"
           type="submit"
-          disabled={createCategoryMutation.isPending}
-        >
-          {createCategoryMutation.isPending ? "Creating..." : "Create Category"}
+          disabled={createCategoryMutation.isPending}>
+          {createCategoryMutation.isPending
+            ? "Creating..."
+            : "Create Category"}
         </Button>
       </form>
     </div>

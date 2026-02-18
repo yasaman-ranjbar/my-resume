@@ -11,13 +11,14 @@ export interface BlogPost {
 
 export const posts: BlogPost[] = [
   {
-    slug: 'getting-started-with-nextjs',
-    title: 'Getting Started with Next.js 14',
-    date: 'November 29, 2025',
-    category: 'Development',
-    tags: ['Next.js', 'React', 'Web Development'],
-    excerpt: 'Learn how to build modern web applications with the latest features of Next.js 14, including Server Actions and the App Router.',
-    coverImage: '/blog-placeholder.jpg',
+    slug: "getting-started-with-nextjs",
+    title: "Getting Started with Next.js 14",
+    date: "November 29, 2025",
+    category: "Development",
+    tags: ["Next.js", "React", "Web Development"],
+    excerpt:
+      "Learn how to build modern web applications with the latest features of Next.js 14, including Server Actions and the App Router.",
+    coverImage: "/blog-placeholder.jpg",
     content: `
       <p>Next.js 14 is a game-changer for React developers. It introduces a stable App Router, Server Actions, and partial prerendering.</p>
       <h3>Why Next.js?</h3>
