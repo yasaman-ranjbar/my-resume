@@ -28,7 +28,9 @@ const AdminProjectsPage = () => {
   const [editingProjectId, setEditingProjectId] = useState<string | null>(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [projectIdToDelete, setProjectIdToDelete] = useState<string | null>(null);
-  const { setValue, getValues, register, handleSubmit } = useForm();
+  const { setValue, getValues, register, handleSubmit, watch } = useForm();
+  const watchedTags = watch("tags");
+  const tagsArray = Array.isArray(watchedTags) ? watchedTags : [];
   const { data: projects, isLoading, error } = useGetProjects();
   const deleteProjectMutation = useDeleteProject();
   const updateProjectMutation = useUpdateProject();
@@ -37,9 +39,13 @@ const AdminProjectsPage = () => {
     deleteProjectMutation.mutate(id, {
       onSuccess: () => {
         toast.success("Post deleted successfully");
+        setIsDeleteModalOpen(false);
+        setProjectIdToDelete(null);
       },
       onError: (error: Error) => {
         toast.error(error.message || "Failed to delete post. Please try again later.");
+        setIsDeleteModalOpen(false);
+        setProjectIdToDelete(null);
       },
     });
   };
@@ -101,7 +107,7 @@ const AdminProjectsPage = () => {
                   />
                 </div>
                 <div className="flex-1 flex-col gap-4">
-                  <p className="text-sm text-gray-500">/{p?.title}</p>
+                  <p className="text-base font-bold mb-2">{p?.title}</p>
                   <p className="text-sm text-gray-500">{p?.shortDescription}</p>
                   <div className="mt-3 flex flex-wrap gap-2">
                     {p?.tags?.map((tag) => (
@@ -216,31 +222,33 @@ const AdminProjectsPage = () => {
                   <Input
                     type="text"
                     id="tags"
-                    {...register("tags")}
-                    value={getValues("tags")}
-                    onChange={(e) => setValue("tags", e.target.value)}
+                    placeholder="Type a tag and press Enter"
                     onKeyDown={(e) => {
                       if (e.key === "Enter") {
                         e.preventDefault();
-                        setValue("tags", e.currentTarget.value);
+                        const trimmed = e.currentTarget.value.trim();
+                        if (trimmed && !tagsArray.includes(trimmed)) {
+                          setValue("tags", [...tagsArray, trimmed], {
+                            shouldValidate: true,
+                          });
+                          e.currentTarget.value = "";
+                        }
                       }
                     }}
-                    placeholder="Type a tag and press Enter"
                   />
                 </div>
-                {getValues("tags")?.length > 0 && (
+                {tagsArray.length > 0 && (
                   <div className="w-full">
-                    {getValues("tags")?.length > 0 && (
-                      <PostTag
-                        onClick={(tag) =>
-                          setValue(
-                            "tags",
-                            getValues("tags").filter((t: string) => t !== tag)
-                          )
-                        }
-                        tags={getValues("tags")}
-                      />
-                    )}
+                    <PostTag
+                      onClick={(tag) =>
+                        setValue(
+                          "tags",
+                          tagsArray.filter((t: string) => t !== tag),
+                          { shouldValidate: true }
+                        )
+                      }
+                      tags={tagsArray}
+                    />
                   </div>
                 )}
               </div>

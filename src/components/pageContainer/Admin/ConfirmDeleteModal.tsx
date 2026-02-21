@@ -22,12 +22,13 @@ const ConfirmDeleteModal = ({ isModalOpen, setIsModalOpen, onDelete }: ConfirmDe
         <p>Are you sure you want to delete this item?</p>
         <div className="flex justify-end gap-3 pt-4">
           <Button
+          variant="outline"
             onClick={() => {
               setIsModalOpen(false);
             }}>
             Cancel
           </Button>
-          <Button onClick={onDelete}>Delete</Button>
+          <Button onClick={onDelete} className="bg-red-500 hover:bg-red-600">Delete</Button>
         </div>
       </div>
     </Modal>
