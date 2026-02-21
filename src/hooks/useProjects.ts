@@ -4,8 +4,10 @@ import {
   useQuery,
   useQueryClient,
 } from "@tanstack/react-query";
+import { FieldValues } from "react-hook-form";
 
 export interface CreateProjectData {
+  id: string;
   title: string;
   slug?: string;
   description: string;
@@ -99,44 +101,43 @@ export const useCreateProject = () => {
 };
 
 // update project************************************************
-const updateProject = async (data: ProjectsProps) => {
+const updateProject = async (projectId: string, data: FieldValues) => {
   const formData = new FormData();
-  formData.append("title", data.title);
-  formData.append("slug", data.slug || "");
-  formData.append("description", data.description);
-  formData.append(
-    "shortDescription",
-    data.shortDescription
-  );
-  formData.append("liveUrl", data.liveUrl || "");
-  formData.append("githubUrl", data.githubUrl || "");
-  formData.append("tags", JSON.stringify(data.tags));
-  formData.append("thumbnail", data.thumbnail || "");
+  formData.append("title", data.title ?? "");
+  formData.append("slug", data.slug ?? "");
+  formData.append("description", data.description ?? "");
+  formData.append("shortDescription", data.shortDescription ?? "");
+  formData.append("liveUrl", data.liveUrl ?? "");
+  formData.append("githubUrl", data.githubUrl ?? "");
+  formData.append("tags", JSON.stringify(data.tags ?? []));
+
+  // if thumbnail can be File | string | null → handle accordingly
+  if (data.thumbnail) {
+    formData.append("thumbnail", data.thumbnail);
+  }
 
   const response = await fetch(
-    `${API_URL.ADMIN.PROJECTS}/${data.id}`,
+    `${API_URL.ADMIN.PROJECTS}/${projectId}`,
     {
       method: "PUT",
       body: formData,
     }
   );
   if (!response.ok) {
-    const errorData = await response
-      .json()
-      .catch(() => ({}));
-    throw new Error(
-      errorData.error || "Failed to update project"
-    );
+    let errorData;
+    try {
+      errorData = await response.json();
+    } catch { }
+    throw new Error(errorData?.error || "Failed to update project");
   }
-  const responseData = await response.json();
-  return responseData;
+  return response.json();
 };
 
 export const useUpdateProject = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: updateProject,
+    mutationFn: ({ id, data }: { id: string, data: FieldValues }) => updateProject(id, data),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["projects"],

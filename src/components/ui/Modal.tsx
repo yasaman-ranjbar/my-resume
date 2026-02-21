@@ -73,19 +73,19 @@ export const Modal: React.FC<ModalProps> = ({
   const modalContent = (
     // Overlay
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm"
+      className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm"
       onClick={closeOnOverlayClick ? onClose : undefined}
       aria-modal="true"
       role="dialog">
       {/* Modal panel */}
       <div
         ref={modalRef}
-        className={`relative w-full ${sizeStyles[size]} mx-4 scale-100 transform rounded-2xl bg-white opacity-100 shadow-2xl ring-1 ring-black/5 transition-all duration-200 focus:outline-none sm:mx-6 dark:bg-gray-900 dark:ring-white/10 ${contentClassName} `}
+        className={`relative w-full ${sizeStyles[size]} mx-4 scale-100 transform rounded-2xl bg-white opacity-100 shadow-2xl transition-all duration-200 focus:outline-none sm:mx-6 ${contentClassName} `}
         onClick={(e) => e.stopPropagation()}
         tabIndex={-1}>
         {/* Header */}
         {(title || showCloseButton) && (
-          <div className="flex items-center justify-between border-b border-gray-200 px-6 py-4 dark:border-gray-800">
+          <div className="flex items-center justify-between border-b border-gray-200 px-6 py-4">
             {title && (
               <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
                 {title}

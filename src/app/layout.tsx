@@ -1,10 +1,7 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import "./globals.css";
 import { Providers } from "@/components/pageContainer/Providers";
 import NextTopLoader from "nextjs-toploader";
-
-const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Jasmine resume",
@@ -19,8 +16,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${inter.className} flex min-h-screen flex-col`}>
+      <head>
+        <link
+          href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap"
+          rel="stylesheet"
+        />
+      </head>
+      <body className="font-inter flex min-h-screen flex-col">
         <NextTopLoader color="#3b82f6" />
         <Providers>{children}</Providers>
       </body>
