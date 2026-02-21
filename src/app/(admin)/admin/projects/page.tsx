@@ -28,12 +28,8 @@ const AdminProjectsPage = () => {
   const [editingProjectId, setEditingProjectId] = useState<string | null>(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [projectIdToDelete, setProjectIdToDelete] = useState<string | null>(null);
-  const { setValue, getValues, register, handleSubmit } = useForm()
-  const {
-    data: projects,
-    isLoading,
-    error,
-  } = useGetProjects();
+  const { setValue, getValues, register, handleSubmit } = useForm();
+  const { data: projects, isLoading, error } = useGetProjects();
   const deleteProjectMutation = useDeleteProject();
   const updateProjectMutation = useUpdateProject();
 
@@ -43,10 +39,7 @@ const AdminProjectsPage = () => {
         toast.success("Post deleted successfully");
       },
       onError: (error: Error) => {
-        toast.error(
-          error.message ||
-          "Failed to delete post. Please try again later."
-        );
+        toast.error(error.message || "Failed to delete post. Please try again later.");
       },
     });
   };
@@ -86,9 +79,7 @@ const AdminProjectsPage = () => {
         </div>
       ) : error ? (
         <div className="flex items-center justify-center py-12">
-          <p className="text-red-500">
-            Error loading posts: {error.message}
-          </p>
+          <p className="text-red-500">Error loading posts: {error.message}</p>
         </div>
       ) : !projects?.length ? (
         <div className="flex items-center justify-center py-12">
@@ -110,12 +101,8 @@ const AdminProjectsPage = () => {
                   />
                 </div>
                 <div className="flex-1 flex-col gap-4">
-                  <p className="text-sm text-gray-500">
-                    /{p?.title}
-                  </p>
-                  <p className="text-sm text-gray-500">
-                    {p?.shortDescription}
-                  </p>
+                  <p className="text-sm text-gray-500">/{p?.title}</p>
+                  <p className="text-sm text-gray-500">{p?.shortDescription}</p>
                   <div className="mt-3 flex flex-wrap gap-2">
                     {p?.tags?.map((tag) => (
                       <Badge
@@ -142,7 +129,10 @@ const AdminProjectsPage = () => {
                   <Trash2
                     size={16}
                     className="cursor-pointer text-red-500"
-                    onClick={() => { setIsDeleteModalOpen(true); setProjectIdToDelete(p.id); }}
+                    onClick={() => {
+                      setIsDeleteModalOpen(true);
+                      setProjectIdToDelete(p.id);
+                    }}
                   />
                 </div>
               </div>
@@ -159,14 +149,19 @@ const AdminProjectsPage = () => {
 
       <Modal
         isOpen={isModalOpen}
-        onClose={() => { setIsModalOpen(false); setEditingProjectId(null); }}
+        onClose={() => {
+          setIsModalOpen(false);
+          setEditingProjectId(null);
+        }}
         title="Edit Project"
         size="lg"
         closeOnOverlayClick={true}
         showCloseButton={true}>
         <div className="space-y-6">
           <form
-            onSubmit={handleSubmit((data) => editingProjectId && handleUpdate(editingProjectId, data))}
+            onSubmit={handleSubmit(
+              (data) => editingProjectId && handleUpdate(editingProjectId, data)
+            )}
             className="space-y-4">
             <div className="grid w-full grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
               <div className="w-full">
@@ -191,12 +186,9 @@ const AdminProjectsPage = () => {
                   id="description"
                   {...register("description")}
                 />
-
               </div>
               <div className="w-full">
-                <Label htmlFor="shortDescription">
-                  Short Description
-                </Label>
+                <Label htmlFor="shortDescription">Short Description</Label>
                 <Textarea
                   id="shortDescription"
                   {...register("shortDescription")}
@@ -240,7 +232,12 @@ const AdminProjectsPage = () => {
                   <div className="w-full">
                     {getValues("tags")?.length > 0 && (
                       <PostTag
-                        onClick={(tag) => setValue("tags", getValues("tags").filter((t: string) => t !== tag))}
+                        onClick={(tag) =>
+                          setValue(
+                            "tags",
+                            getValues("tags").filter((t: string) => t !== tag)
+                          )
+                        }
                         tags={getValues("tags")}
                       />
                     )}
@@ -258,7 +255,10 @@ const AdminProjectsPage = () => {
             <div className="flex justify-end gap-3 pt-4">
               <Button
                 type="button"
-                onClick={() => { setIsModalOpen(false); setEditingProjectId(null); }}
+                onClick={() => {
+                  setIsModalOpen(false);
+                  setEditingProjectId(null);
+                }}
                 className="rounded-md border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-800">
                 Cancel
               </Button>
@@ -270,7 +270,6 @@ const AdminProjectsPage = () => {
               </Button>
             </div>
           </form>
-
         </div>
       </Modal>
     </div>

@@ -2,11 +2,7 @@
 
 import { API_URL } from "@/config/api";
 import { PostsProps } from "@/types";
-import {
-  useQuery,
-  useMutation,
-  useQueryClient,
-} from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
 export interface CreatePostData {
   title: string;
@@ -45,10 +41,7 @@ interface UpdatePostStatusData {
 }
 
 // fetch posts************************************************
-const fetchPosts = async (
-  search?: string,
-  status?: string
-): Promise<PostsProps[]> => {
+const fetchPosts = async (search?: string, status?: string): Promise<PostsProps[]> => {
   const params = new URLSearchParams();
   if (search && search.trim() !== "") {
     params.append("search", search.trim());
@@ -61,22 +54,15 @@ const fetchPosts = async (
   const response = await fetch(url);
 
   if (!response.ok) {
-    const errorData = await response
-      .json()
-      .catch(() => ({}));
-    throw new Error(
-      errorData.error || "Failed to fetch posts"
-    );
+    const errorData = await response.json().catch(() => ({}));
+    throw new Error(errorData.error || "Failed to fetch posts");
   }
 
   const data = await response.json();
   return data;
 };
 
-export const usePosts = (
-  search?: string,
-  status?: string
-) => {
+export const usePosts = (search?: string, status?: string) => {
   return useQuery({
     queryKey: ["posts", search, status],
     queryFn: () => fetchPosts(search, status),
@@ -85,9 +71,7 @@ export const usePosts = (
 };
 
 // create post************************************************
-const createPost = async (
-  data: CreatePostData
-): Promise<CreatePostResponse> => {
+const createPost = async (data: CreatePostData): Promise<CreatePostResponse> => {
   const formData = new FormData();
   formData.append("title", data.title);
   formData.append("slug", data.slug || "");
@@ -110,9 +94,7 @@ const createPost = async (
 
   if (!response.ok) {
     const errorData = await response.json();
-    throw new Error(
-      errorData.error || "Failed to create post"
-    );
+    throw new Error(errorData.error || "Failed to create post");
   }
 
   return response.json();
@@ -132,31 +114,22 @@ export const useCreatePost = () => {
 };
 
 // update post status************************************************
-const updatePostStatus = async (
-  data: UpdatePostStatusData
-): Promise<void> => {
-  const response = await fetch(
-    `${API_URL.ADMIN.POSTS}/${data.id}`,
-    {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        title: data.title,
-        content: data.content,
-        status: data.status,
-      }),
-    }
-  );
+const updatePostStatus = async (data: UpdatePostStatusData): Promise<void> => {
+  const response = await fetch(`${API_URL.ADMIN.POSTS}/${data.id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      title: data.title,
+      content: data.content,
+      status: data.status,
+    }),
+  });
 
   if (!response.ok) {
-    const errorData = await response
-      .json()
-      .catch(() => ({}));
-    throw new Error(
-      errorData.error || "Failed to update post status"
-    );
+    const errorData = await response.json().catch(() => ({}));
+    throw new Error(errorData.error || "Failed to update post status");
   }
 };
 
@@ -174,20 +147,12 @@ export const useUpdatePostStatus = () => {
 };
 
 // fetch post by id************************************************
-const fetchPost = async (
-  id: string
-): Promise<PostsProps> => {
-  const response = await fetch(
-    `${API_URL.ADMIN.POSTS}/${id}`
-  );
+const fetchPost = async (id: string): Promise<PostsProps> => {
+  const response = await fetch(`${API_URL.ADMIN.POSTS}/${id}`);
 
   if (!response.ok) {
-    const errorData = await response
-      .json()
-      .catch(() => ({}));
-    throw new Error(
-      errorData.error || "Failed to fetch post"
-    );
+    const errorData = await response.json().catch(() => ({}));
+    throw new Error(errorData.error || "Failed to fetch post");
   }
 
   const data = await response.json();
@@ -204,9 +169,7 @@ export const usePost = (id: string) => {
 };
 
 // update post ************************************************
-const updatePost = async (
-  data: UpdatePostData
-): Promise<UpdatePostResponse> => {
+const updatePost = async (data: UpdatePostData): Promise<UpdatePostResponse> => {
   const formData = new FormData();
   formData.append("title", data.title);
   formData.append("slug", data.slug || "");
@@ -222,41 +185,27 @@ const updatePost = async (
     formData.append("cover_url", data.cover_url);
   }
 
-  const response = await fetch(
-    `/api/admin/posts/${data.id}`,
-    {
-      method: "PUT",
-      body: formData,
-    }
-  );
+  const response = await fetch(`/api/admin/posts/${data.id}`, {
+    method: "PUT",
+    body: formData,
+  });
 
   if (!response.ok) {
-    const errorData = await response
-      .json()
-      .catch(() => ({}));
-    throw new Error(
-      errorData.error || "Failed to update post"
-    );
+    const errorData = await response.json().catch(() => ({}));
+    throw new Error(errorData.error || "Failed to update post");
   }
 
   return response.json();
 };
 
 const deletePost = async (id: string): Promise<void> => {
-  const response = await fetch(
-    `${API_URL.ADMIN.POSTS}/${id}`,
-    {
-      method: "DELETE",
-    }
-  );
+  const response = await fetch(`${API_URL.ADMIN.POSTS}/${id}`, {
+    method: "DELETE",
+  });
 
   if (!response.ok) {
-    const errorData = await response
-      .json()
-      .catch(() => ({}));
-    throw new Error(
-      errorData.error || "Failed to delete post"
-    );
+    const errorData = await response.json().catch(() => ({}));
+    throw new Error(errorData.error || "Failed to delete post");
   }
 };
 

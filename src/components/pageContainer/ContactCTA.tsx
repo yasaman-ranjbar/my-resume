@@ -11,8 +11,7 @@ export default function ContactCTA() {
           Have any project in mind?
         </h2>
         <p className="mb-10 text-lg text-gray-400">
-          Just send me a message and we can discuss your
-          project.
+          Just send me a message and we can discuss your project.
         </p>
         <Link
           href="/contact"

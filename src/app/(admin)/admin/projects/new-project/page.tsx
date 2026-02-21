@@ -6,23 +6,17 @@ import CoverImage from "@/components/ui/coverImage";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import {
-  CreateProjectData,
-  useCreateProject,
-} from "@/hooks/useProjects";
+import { CreateProjectData, useCreateProject } from "@/hooks/useProjects";
 import { CopyPlus } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 
 const AdminNewProjectPage = () => {
-  const [thumbnail, setThumbnail] = useState<File | null>(
-    null
-  );
+  const [thumbnail, setThumbnail] = useState<File | null>(null);
   const [tagInput, setTagInput] = useState<string>("");
   const [tags, setTags] = useState<string[]>([]);
-  const { register, handleSubmit, reset } =
-    useForm<CreateProjectData>();
+  const { register, handleSubmit, reset } = useForm<CreateProjectData>();
   const createProjectMutation = useCreateProject();
 
   const onSubmit = (data: CreateProjectData) => {
@@ -37,18 +31,13 @@ const AdminNewProjectPage = () => {
           setTagInput("");
         },
         onError: (err: Error) => {
-          toast.error(
-            err.message ||
-              "Failed to create project. Please try again."
-          );
+          toast.error(err.message || "Failed to create project. Please try again.");
         },
       }
     );
   };
 
-  const handleTagInputKeyDown = (
-    e: React.KeyboardEvent<HTMLInputElement>
-  ) => {
+  const handleTagInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
       e.preventDefault();
       const trimmedValue = tagInput.trim();
@@ -97,9 +86,7 @@ const AdminNewProjectPage = () => {
             />
           </div>
           <div className="w-full">
-            <Label htmlFor="shortDescription">
-              Short Description
-            </Label>
+            <Label htmlFor="shortDescription">Short Description</Label>
             <Textarea
               id="shortDescription"
               {...register("shortDescription")}
@@ -129,9 +116,7 @@ const AdminNewProjectPage = () => {
                 id="tags"
                 {...register("tags")}
                 value={tagInput}
-                onChange={(e) =>
-                  setTagInput(e.target.value)
-                }
+                onChange={(e) => setTagInput(e.target.value)}
                 onKeyDown={handleTagInputKeyDown}
                 placeholder="Type a tag and press Enter"
               />
@@ -160,9 +145,7 @@ const AdminNewProjectPage = () => {
           size="lg"
           type="submit"
           disabled={createProjectMutation.isPending}>
-          {createProjectMutation.isPending
-            ? "Creating..."
-            : "Create Project"}
+          {createProjectMutation.isPending ? "Creating..." : "Create Project"}
         </Button>
       </form>
     </div>

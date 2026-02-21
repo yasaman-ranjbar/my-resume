@@ -23,14 +23,10 @@ export default function Contact() {
       <div className="grid grid-cols-1 gap-16 lg:grid-cols-2">
         {/* Contact Info */}
         <div>
-          <h1 className="mb-6 text-4xl font-bold">
-            Let's Work Together
-          </h1>
+          <h1 className="mb-6 text-4xl font-bold">Let's Work Together</h1>
           <p className="mb-12 text-xl text-gray-400">
-            I'm currently available for freelance projects
-            and full-time opportunities. If you have a
-            project that needs some creative touch, I'd love
-            to hear about it.
+            I'm currently available for freelance projects and full-time opportunities. If you have
+            a project that needs some creative touch, I'd love to hear about it.
           </p>
 
           <div className="space-y-8">
@@ -39,9 +35,7 @@ export default function Contact() {
                 <Mail size={24} />
               </div>
               <div>
-                <h3 className="mb-1 text-lg font-semibold">
-                  Email Me
-                </h3>
+                <h3 className="mb-1 text-lg font-semibold">Email Me</h3>
                 <a
                   href="mailto:hello@example.com"
                   className="text-gray-400 transition-colors hover:text-white">
@@ -55,9 +49,7 @@ export default function Contact() {
                 <MessageSquare size={24} />
               </div>
               <div>
-                <h3 className="mb-1 text-lg font-semibold">
-                  Telegram
-                </h3>
+                <h3 className="mb-1 text-lg font-semibold">Telegram</h3>
                 <a
                   href="https://t.me/username"
                   target="_blank"

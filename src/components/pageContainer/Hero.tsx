@@ -2,14 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import {
-  Download,
-  ArrowRight,
-  Facebook,
-  Twitter,
-  Linkedin,
-  Instagram,
-} from "lucide-react";
+import { Download, ArrowRight, Facebook, Twitter, Linkedin, Instagram } from "lucide-react";
 import Typewriter from "typewriter-effect";
 
 export default function Hero() {
@@ -32,19 +25,14 @@ export default function Hero() {
                 Hello, I'm
               </span>
               <h1 className="mb-6 text-5xl font-bold tracking-tight text-white md:text-7xl">
-                Jasmine{" "}
-                <span className="text-[#F9004D]">.</span>
+                Jasmine <span className="text-[#F9004D]">.</span>
               </h1>
               <div className="mb-8 flex flex-col items-center justify-center gap-2 text-2xl font-light text-gray-400 sm:flex-row md:text-4xl lg:justify-start">
                 <span>I Am</span>
                 <span className="font-medium text-white">
                   <Typewriter
                     options={{
-                      strings: [
-                        "Front-end developer",
-                        "UI Engineer",
-                        "Creative Web Developer",
-                      ],
+                      strings: ["Front-end developer", "UI Engineer", "Creative Web Developer"],
                       autoStart: true,
                       loop: true,
                       delay: 75,
@@ -53,12 +41,9 @@ export default function Hero() {
                 </span>
               </div>
               <p className="mx-auto mb-10 max-w-2xl text-lg leading-relaxed text-gray-400 lg:mx-0">
-                I am a passionate Front-end Developer with
-                over 5 years of experience in building
-                responsive web applications. I specialize in
-                turning complex designs into clean,
-                efficient code to deliver seamless and
-                engaging user experiences.
+                I am a passionate Front-end Developer with over 5 years of experience in building
+                responsive web applications. I specialize in turning complex designs into clean,
+                efficient code to deliver seamless and engaging user experiences.
               </p>
 
               <div className="flex flex-col items-center justify-center gap-6 sm:flex-row lg:justify-start">
@@ -78,12 +63,7 @@ export default function Hero() {
 
               {/* Social Links */}
               <div className="mt-12 flex items-center justify-center gap-6 lg:justify-start">
-                {[
-                  Facebook,
-                  Twitter,
-                  Linkedin,
-                  Instagram,
-                ].map((Icon, index) => (
+                {[Facebook, Twitter, Linkedin, Instagram].map((Icon, index) => (
                   <a
                     key={index}
                     href="#"
@@ -107,10 +87,8 @@ export default function Hero() {
               <div
                 className="relative z-10 w-full"
                 style={{
-                  maskImage:
-                    "linear-gradient(to bottom, black 80%, transparent 100%)",
-                  WebkitMaskImage:
-                    "linear-gradient(to bottom, black 80%, transparent 100%)",
+                  maskImage: "linear-gradient(to bottom, black 80%, transparent 100%)",
+                  WebkitMaskImage: "linear-gradient(to bottom, black 80%, transparent 100%)",
                 }}>
                 {/* Background Shape */}
                 <div className="absolute bottom-0 left-1/2 -z-20 h-[45%] w-full -translate-x-1/2 rounded-tl-[90px] rounded-tr-[90px] bg-linear-to-b from-[#F9004D] to-[#800028] opacity-90"></div>
@@ -130,8 +108,7 @@ export default function Hero() {
                 <span
                   className="text-6xl font-bold tracking-wider whitespace-nowrap text-transparent lg:text-6xl"
                   style={{
-                    WebkitTextStroke:
-                      "1px rgba(255, 255, 255, 1)",
+                    WebkitTextStroke: "1px rgba(255, 255, 255, 1)",
                   }}>
                   Front-end Developer
                 </span>

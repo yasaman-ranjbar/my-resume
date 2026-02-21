@@ -30,12 +30,8 @@ export default function Portfolio() {
       className="bg-[#1f1f1f] py-20">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mb-16 text-center">
-          <h3 className="mb-2 font-medium tracking-wider text-[#F9004D] uppercase">
-            Portfolio
-          </h3>
-          <h2 className="text-4xl font-bold text-white">
-            My Latest Work
-          </h2>
+          <h3 className="mb-2 font-medium tracking-wider text-[#F9004D] uppercase">Portfolio</h3>
+          <h2 className="text-4xl font-bold text-white">My Latest Work</h2>
         </div>
 
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
@@ -51,12 +47,8 @@ export default function Portfolio() {
                   className="object-cover transition-transform duration-500 group-hover:scale-110"
                 />
                 <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/60 p-4 text-center opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                  <span className="mb-2 font-medium text-[#F9004D]">
-                    {project.category}
-                  </span>
-                  <h3 className="mb-4 text-2xl font-bold text-white">
-                    {project.title}
-                  </h3>
+                  <span className="mb-2 font-medium text-[#F9004D]">{project.category}</span>
+                  <h3 className="mb-4 text-2xl font-bold text-white">{project.title}</h3>
                   <Link
                     href="/projects"
                     className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-[#F9004D] text-white transition-colors hover:bg-white hover:text-[#F9004D]">

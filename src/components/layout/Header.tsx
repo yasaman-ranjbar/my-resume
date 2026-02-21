@@ -5,11 +5,7 @@ import { Menu } from "lucide-react";
 import { useEffect, useState } from "react";
 import clsx from "clsx";
 
-export default function Header({
-  className = "bg-transparent",
-}: {
-  className?: string;
-}) {
+export default function Header({ className = "bg-transparent" }: { className?: string }) {
   const [isscrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
@@ -39,10 +35,7 @@ export default function Header({
           <div className="shrink-0">
             <Link
               href="/"
-              className={clsx(
-                "text-2xl font-bold",
-                className
-              )}>
+              className={clsx("text-2xl font-bold", className)}>
               <span className="text-[#F9004D]">J</span>
               asmine.
             </Link>

@@ -5,8 +5,7 @@ import NextTopLoader from "nextjs-toploader";
 
 export const metadata: Metadata = {
   title: "Jasmine resume",
-  description:
-    "Portfolio of a passionate Front-End Developer specializing in React and Next.js",
+  description: "Portfolio of a passionate Front-End Developer specializing in React and Next.js",
 };
 
 export default function RootLayout({

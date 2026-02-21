@@ -1,20 +1,13 @@
 import { posts } from "@/data/posts";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import {
-  ArrowLeft,
-  Calendar,
-  Tag,
-  Folder,
-} from "lucide-react";
+import { ArrowLeft, Calendar, Tag, Folder } from "lucide-react";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
 }
 
-export default async function BlogPostPage({
-  params,
-}: PageProps) {
+export default async function BlogPostPage({ params }: PageProps) {
   const { slug } = await params;
   const post = posts.find((p) => p.slug === slug);
 
@@ -47,9 +40,7 @@ export default async function BlogPostPage({
             </span>
           </div>
 
-          <h1 className="mb-8 text-3xl leading-tight font-bold md:text-5xl">
-            {post.title}
-          </h1>
+          <h1 className="mb-8 text-3xl leading-tight font-bold md:text-5xl">{post.title}</h1>
 
           <div className="mb-10 flex aspect-video w-full items-center justify-center overflow-hidden rounded-2xl border border-white/10 bg-gray-800 text-gray-600">
             Cover Image Placeholder

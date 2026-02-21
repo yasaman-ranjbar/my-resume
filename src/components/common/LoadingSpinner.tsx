@@ -6,10 +6,7 @@ interface LoadingSpinnerProps {
   className?: string;
 }
 
-const LoadingSpinner = ({
-  size = "md",
-  className,
-}: LoadingSpinnerProps) => {
+const LoadingSpinner = ({ size = "md", className }: LoadingSpinnerProps) => {
   const sizeClasses = {
     sm: "size-4",
     md: "size-8",
@@ -17,11 +14,7 @@ const LoadingSpinner = ({
   };
 
   return (
-    <div
-      className={cn(
-        "flex min-h-[600px] items-center justify-center",
-        className
-      )}>
+    <div className={cn("flex min-h-[600px] items-center justify-center", className)}>
       <Spinner className={sizeClasses[size]} />
       Loading...
     </div>

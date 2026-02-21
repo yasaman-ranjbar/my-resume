@@ -17,10 +17,7 @@ export default function CategoriesPage() {
   });
   const createCategoryMutation = useCreateCategory();
 
-  const onSubmit = async (data: {
-    name: string;
-    slug: string;
-  }) => {
+  const onSubmit = async (data: { name: string; slug: string }) => {
     createCategoryMutation.mutate(
       {
         name: data.name,
@@ -32,10 +29,7 @@ export default function CategoriesPage() {
           reset();
         },
         onError: (err: Error) => {
-          toast.error(
-            err.message ||
-              "Failed to create category. Please try again."
-          );
+          toast.error(err.message || "Failed to create category. Please try again.");
         },
       }
     );
@@ -75,9 +69,7 @@ export default function CategoriesPage() {
           size="lg"
           type="submit"
           disabled={createCategoryMutation.isPending}>
-          {createCategoryMutation.isPending
-            ? "Creating..."
-            : "Create Category"}
+          {createCategoryMutation.isPending ? "Creating..." : "Create Category"}
         </Button>
       </form>
     </div>

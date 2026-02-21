@@ -12,20 +12,10 @@ export interface CoverImageProps {
   label?: string;
 }
 
-const CoverImage = React.forwardRef<
-  HTMLDivElement,
-  CoverImageProps
->(
-  (
-    { value, onChange, className, label = "Cover Image" },
-    ref
-  ) => {
+const CoverImage = React.forwardRef<HTMLDivElement, CoverImageProps>(
+  ({ value, onChange, className, label = "Cover Image" }, ref) => {
     const [preview, setPreview] = useState<string | null>(
-      typeof value === "string"
-        ? value
-        : value instanceof File
-          ? URL.createObjectURL(value)
-          : null
+      typeof value === "string" ? value : value instanceof File ? URL.createObjectURL(value) : null
     );
     const [isDragging, setIsDragging] = useState(false);
     const fileInputRef = useRef<HTMLInputElement>(null);
@@ -67,32 +57,24 @@ const CoverImage = React.forwardRef<
       }
     };
 
-    const handleFileChange = (
-      e: React.ChangeEvent<HTMLInputElement>
-    ) => {
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       const file = e.target.files?.[0] || null;
       handleFileSelect(file);
     };
 
-    const handleDragOver = (
-      e: React.DragEvent<HTMLDivElement>
-    ) => {
+    const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
       e.preventDefault();
       e.stopPropagation();
       setIsDragging(true);
     };
 
-    const handleDragLeave = (
-      e: React.DragEvent<HTMLDivElement>
-    ) => {
+    const handleDragLeave = (e: React.DragEvent<HTMLDivElement>) => {
       e.preventDefault();
       e.stopPropagation();
       setIsDragging(false);
     };
 
-    const handleDrop = (
-      e: React.DragEvent<HTMLDivElement>
-    ) => {
+    const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
       e.preventDefault();
       e.stopPropagation();
       setIsDragging(false);
@@ -167,9 +149,7 @@ const CoverImage = React.forwardRef<
                 size={48}
                 className={cn(
                   "mb-4 transition-colors",
-                  isDragging
-                    ? "text-blue-500"
-                    : "text-gray-400 dark:text-gray-500"
+                  isDragging ? "text-blue-500" : "text-gray-400 dark:text-gray-500"
                 )}
               />
               <p className="text-center text-sm text-gray-600 dark:text-gray-400">

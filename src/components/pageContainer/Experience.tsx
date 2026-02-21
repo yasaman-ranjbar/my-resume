@@ -1,10 +1,5 @@
 import Image from "next/image";
-import {
-  ArrowRight,
-  Lock,
-  Paperclip,
-  Megaphone,
-} from "lucide-react";
+import { ArrowRight, Lock, Paperclip, Megaphone } from "lucide-react";
 import Link from "next/link";
 
 export default function Experience() {
@@ -17,9 +12,7 @@ export default function Experience() {
             {/* Main Experience Card */}
             <div className="relative z-10 mx-auto max-w-md rounded-3xl border border-white/5 bg-[#131313] p-8 lg:mx-0">
               <div className="text-center">
-                <span className="mb-2 block text-8xl font-bold text-white">
-                  10+
-                </span>
+                <span className="mb-2 block text-8xl font-bold text-white">10+</span>
                 <span className="mb-6 block text-3xl font-bold text-white">
                   Years Of <br /> Experience
                 </span>
@@ -36,12 +29,8 @@ export default function Experience() {
                   <Lock className="h-6 w-6" />
                 </div>
                 <div>
-                  <h4 className="text-xl font-bold text-white">
-                    Ui/Ux Design
-                  </h4>
-                  <p className="text-sm text-gray-400">
-                    241 Projects
-                  </p>
+                  <h4 className="text-xl font-bold text-white">Ui/Ux Design</h4>
+                  <p className="text-sm text-gray-400">241 Projects</p>
                 </div>
               </div>
             </div>
@@ -53,10 +42,8 @@ export default function Experience() {
               Boost Business Strategic Solutions with Us
             </h2>
             <p className="mb-10 text-lg leading-relaxed text-gray-400">
-              Business consulting consultants provide expert
-              advice and guide businesses to help them
-              improve their performance, efficiency, and
-              organizational growth.
+              Business consulting consultants provide expert advice and guide businesses to help
+              them improve their performance, efficiency, and organizational growth.
             </p>
 
             <div className="mb-10 grid grid-cols-1 gap-6 sm:grid-cols-2">
@@ -64,12 +51,9 @@ export default function Experience() {
                 <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-full bg-[#F9004D] text-white transition-transform group-hover:scale-110">
                   <Paperclip className="h-6 w-6" />
                 </div>
-                <h3 className="mb-3 text-xl font-bold text-white">
-                  Business Solutions
-                </h3>
+                <h3 className="mb-3 text-xl font-bold text-white">Business Solutions</h3>
                 <p className="text-sm text-gray-400">
-                  Each one showcases my approach and
-                  dedication to detail, creativity.
+                  Each one showcases my approach and dedication to detail, creativity.
                 </p>
               </div>
 
@@ -77,12 +61,9 @@ export default function Experience() {
                 <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-full bg-[#F9004D] text-white transition-transform group-hover:scale-110">
                   <Megaphone className="h-6 w-6" />
                 </div>
-                <h3 className="mb-3 text-xl font-bold text-white">
-                  Profit Partners
-                </h3>
+                <h3 className="mb-3 text-xl font-bold text-white">Profit Partners</h3>
                 <p className="text-sm text-gray-400">
-                  Business consulting consul us to a provide
-                  expert advice businesses.
+                  Business consulting consul us to a provide expert advice businesses.
                 </p>
               </div>
             </div>

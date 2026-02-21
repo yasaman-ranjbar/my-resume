@@ -49,16 +49,14 @@ export const Modal: React.FC<ModalProps> = ({
     };
 
     window.addEventListener("keydown", handleEsc);
-    return () =>
-      window.removeEventListener("keydown", handleEsc);
+    return () => window.removeEventListener("keydown", handleEsc);
   }, [isOpen, closeOnEsc, onClose]);
 
   // Focus trap + body scroll lock
   useEffect(() => {
     if (!isOpen) return;
 
-    prevFocusedRef.current =
-      document.activeElement as HTMLElement;
+    prevFocusedRef.current = document.activeElement as HTMLElement;
     document.body.style.overflow = "hidden";
     modalRef.current?.focus();
 
@@ -87,9 +85,7 @@ export const Modal: React.FC<ModalProps> = ({
         {(title || showCloseButton) && (
           <div className="flex items-center justify-between border-b border-gray-200 px-6 py-4">
             {title && (
-              <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
-                {title}
-              </h2>
+              <h2 className="text-xl font-semibold text-gray-900 dark:text-white">{title}</h2>
             )}
             {showCloseButton && (
               <button
@@ -106,9 +102,7 @@ export const Modal: React.FC<ModalProps> = ({
         )}
 
         {/* Body */}
-        <div className="max-h-[80vh] overflow-y-auto px-6 py-5">
-          {children}
-        </div>
+        <div className="max-h-[80vh] overflow-y-auto px-6 py-5">{children}</div>
       </div>
     </div>
   );

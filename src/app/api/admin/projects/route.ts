@@ -9,21 +9,13 @@ export async function GET() {
     const projects = await prisma.project.findMany();
     return NextResponse.json(projects);
   } catch (error) {
-    return NextResponse.json(
-      { error: "Failed to fetch projects" },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: "Failed to fetch projects" }, { status: 500 });
   }
 }
 
-function getString(
-  formData: FormData,
-  key: string
-): string | null {
+function getString(formData: FormData, key: string): string | null {
   const value = formData.get(key);
-  return value instanceof File
-    ? null
-    : (value as string | null);
+  return value instanceof File ? null : (value as string | null);
 }
 
 export async function POST(request: Request) {
@@ -31,12 +23,8 @@ export async function POST(request: Request) {
     const formData = await request.formData();
     const title = formData.get("title") as string;
     const slug = formData.get("slug") as string;
-    const description = formData.get(
-      "description"
-    ) as string;
-    const shortDescription = formData.get(
-      "shortDescription"
-    ) as string;
+    const description = formData.get("description") as string;
+    const shortDescription = formData.get("shortDescription") as string;
     const liveUrl = formData.get("liveUrl") as string;
     const githubUrl = formData.get("githubUrl") as string;
     const tagsRaw = getString(formData, "tags");
@@ -46,11 +34,7 @@ export async function POST(request: Request) {
     if (thumbnail instanceof File && thumbnail.size > 0) {
       const bytes = await thumbnail.arrayBuffer();
       const buffer = Buffer.from(bytes);
-      const uploadsDir = path.join(
-        process.cwd(),
-        "public",
-        "uploads"
-      );
+      const uploadsDir = path.join(process.cwd(), "public", "uploads");
       await mkdir(uploadsDir, { recursive: true });
       const safeName = `${Date.now()}-${thumbnail.name.replace(/[^a-zA-Z0-9.-]/g, "_")}`;
       const filePath = path.join(uploadsDir, safeName);
@@ -68,16 +52,8 @@ export async function POST(request: Request) {
         })()
       : [];
 
-    if (
-      !title ||
-      !slug ||
-      !description ||
-      !shortDescription
-    ) {
-      return NextResponse.json(
-        { error: "Missing required fields" },
-        { status: 400 }
-      );
+    if (!title || !slug || !description || !shortDescription) {
+      return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
     }
 
     const project = await prisma.project.create({
@@ -94,23 +70,17 @@ export async function POST(request: Request) {
     });
     return NextResponse.json(project, { status: 201 });
   } catch (error: unknown) {
-    if (
-      error instanceof Prisma.PrismaClientKnownRequestError
-    ) {
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
       if (error.code === "P2002") {
         return NextResponse.json(
           {
-            error:
-              "A project with this slug already exists",
+            error: "A project with this slug already exists",
           },
           { status: 409 }
         );
       }
     }
     console.error(error);
-    return NextResponse.json(
-      { error: "Failed to create project" },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: "Failed to create project" }, { status: 500 });
   }
 }

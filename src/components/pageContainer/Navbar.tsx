@@ -39,9 +39,7 @@ export default function Navbar() {
                 href={item.path}
                 className={clsx(
                   "relative text-sm font-medium transition-colors hover:text-white",
-                  pathname === item.path
-                    ? "text-white"
-                    : "text-gray-400"
+                  pathname === item.path ? "text-white" : "text-gray-400"
                 )}>
                 {item.name}
                 {pathname === item.path && (
@@ -70,11 +68,7 @@ export default function Navbar() {
             <button
               onClick={() => setIsOpen(!isOpen)}
               className="text-gray-400 hover:text-white focus:outline-none">
-              {isOpen ? (
-                <X size={24} />
-              ) : (
-                <Menu size={24} />
-              )}
+              {isOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
           </div>
         </div>

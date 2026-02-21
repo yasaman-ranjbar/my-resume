@@ -2,24 +2,13 @@
 
 import LoadingSpinner from "@/components/common/LoadingSpinner";
 import { ADMIN_ROUTES } from "@/constant/route";
-import {
-  usePosts,
-  useUpdatePostStatus,
-  useDeletePost,
-} from "@/hooks/usePosts";
+import { usePosts, useUpdatePostStatus, useDeletePost, useUpdatePost } from "@/hooks/usePosts";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState, Suspense } from "react";
 import { toast } from "react-toastify";
 import { Badge } from "@/components/ui/Badge";
-import {
-  SquarePen,
-  Trash2,
-  Eye,
-  EyeOff,
-  Search,
-  CopyPlus,
-} from "lucide-react";
+import { SquarePen, Trash2, Eye, EyeOff, Search, CopyPlus } from "lucide-react";
 import { PostsProps } from "@/types";
 import {
   Select,
@@ -29,49 +18,46 @@ import {
   SelectValue,
 } from "@/components/ui/Select";
 import { Input } from "@/components/ui/input";
-import {
-  useRouter,
-  useSearchParams,
-  usePathname,
-} from "next/navigation";
+import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import { useDebounce } from "@/hooks/useDebounce";
+import { Controller, FieldValues, useForm } from "react-hook-form";
+import { Modal } from "@/components/ui/Modal";
+import { Label } from "@radix-ui/react-label";
+import { useCategories } from "@/hooks/useCategories";
+import PostTag from "@/components/admin/PostTag";
+import CoverImage from "@/components/ui/coverImage";
+import { Button } from "@/components/ui/Button";
+import { Textarea } from "@/components/ui/textarea";
 
 function PostListContent() {
+  const { setValue, getValues, register, handleSubmit, control } = useForm();
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const { data: categories } = useCategories();
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [postIdToDelete, setPostIdToDelete] = useState<string | null>(null);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [postToEditId, setPostToEditId] = useState<string | null>(null);
 
   // Initialize state from URL query parameters
-  const [searchQuery, setSearchQuery] = useState(
-    searchParams.get("search") || ""
-  );
-  const [statusFilter, setStatusFilter] = useState(
-    searchParams.get("status") || "all"
-  );
+  const [searchQuery, setSearchQuery] = useState(searchParams.get("search") || "");
+  const [statusFilter, setStatusFilter] = useState(searchParams.get("status") || "all");
 
   // Debounce search query to avoid too many API calls
-  const debouncedSearchQuery = useDebounce(
-    searchQuery,
-    500
-  );
+  const debouncedSearchQuery = useDebounce(searchQuery, 500);
 
   // Fetch posts with search and filter parameters
-  const {
-    data: posts,
-    isLoading,
-    error,
-  } = usePosts(debouncedSearchQuery, statusFilter);
+  const { data: posts, isLoading, error } = usePosts(debouncedSearchQuery, statusFilter);
   const updatePostStatus = useUpdatePostStatus();
   const deletePostMutation = useDeletePost();
+  const updatePostMutation = useUpdatePost();
 
   // Update URL when filters change
   useEffect(() => {
     const params = new URLSearchParams();
 
-    if (
-      debouncedSearchQuery &&
-      debouncedSearchQuery.trim() !== ""
-    ) {
+    if (debouncedSearchQuery && debouncedSearchQuery.trim() !== "") {
       params.set("search", debouncedSearchQuery.trim());
     }
 
@@ -80,32 +66,19 @@ function PostListContent() {
     }
 
     const queryString = params.toString();
-    const newUrl = queryString
-      ? `${pathname}?${queryString}`
-      : pathname;
+    const newUrl = queryString ? `${pathname}?${queryString}` : pathname;
 
     // Use replace to avoid cluttering browser history
     router.replace(newUrl, { scroll: false });
-  }, [
-    debouncedSearchQuery,
-    statusFilter,
-    pathname,
-    router,
-  ]);
+  }, [debouncedSearchQuery, statusFilter, pathname, router]);
 
   useEffect(() => {
     if (error) {
-      toast.error(
-        error.message ||
-          "Failed to load posts. Please try again later."
-      );
+      toast.error(error.message || "Failed to load posts. Please try again later.");
     }
   }, [error]);
 
-  const handleToggleStatus = async (
-    post: PostsProps,
-    status: string
-  ) => {
+  const handleToggleStatus = async (post: PostsProps, status: string) => {
     updatePostStatus.mutate(
       {
         id: post.id,
@@ -118,10 +91,7 @@ function PostListContent() {
           toast.success("Post status updated successfully");
         },
         onError: (error: Error) => {
-          toast.error(
-            error.message ||
-              "Failed to toggle status. Please try again later."
-          );
+          toast.error(error.message || "Failed to toggle status. Please try again later.");
         },
       }
     );
@@ -133,17 +103,24 @@ function PostListContent() {
         toast.success("Post deleted successfully");
       },
       onError: (error: Error) => {
-        toast.error(
-          error.message ||
-            "Failed to delete post. Please try again later."
-        );
+        toast.error(error.message || "Failed to delete post. Please try again later.");
       },
     });
   };
 
-  const handleEditPost = async (id: string) => {
-    router.push(`${ADMIN_ROUTES.POSTS_EDIT}/${id}`);
+  const handleEditPost = async (id: string, post: PostsProps) => {
+    setIsEditModalOpen(true);
+    setPostToEditId(id);
+    setValue("title", post.title);
+    setValue("slug", post.slug);
+    setValue("content", post.content);
+    setValue("status", post.status);
+    setValue("category_id", post.category_id);
+    setValue("tags", post.tags);
+    setValue("cover_url", post.cover_url);
   };
+
+  const handleUpdate = async (id: string, data: FieldValues) => { };
 
   return (
     <main className="min-h-[600px] p-8">
@@ -167,9 +144,7 @@ function PostListContent() {
               type="text"
               placeholder="Search posts by title..."
               value={searchQuery}
-              onChange={(e) =>
-                setSearchQuery(e.target.value)
-              }
+              onChange={(e) => setSearchQuery(e.target.value)}
             />
           </div>
           <div className="flex gap-2">
@@ -180,12 +155,8 @@ function PostListContent() {
                 <SelectValue placeholder="Select status" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">
-                  All Status
-                </SelectItem>
-                <SelectItem value="published">
-                  Published
-                </SelectItem>
+                <SelectItem value="all">All Status</SelectItem>
+                <SelectItem value="published">Published</SelectItem>
                 <SelectItem value="draft">Draft</SelectItem>
               </SelectContent>
             </Select>
@@ -200,9 +171,7 @@ function PostListContent() {
         </div>
       ) : error ? (
         <div className="flex items-center justify-center py-12">
-          <p className="text-red-500">
-            Error loading posts: {error.message}
-          </p>
+          <p className="text-red-500">Error loading posts: {error.message}</p>
         </div>
       ) : !posts?.length ? (
         <div className="flex items-center justify-center py-12">
@@ -224,24 +193,13 @@ function PostListContent() {
                   />
                 </div>
                 <div className="flex items-center gap-3">
-                  <h1 className="truncate text-xl font-semibold">
-                    {p.title}
-                  </h1>
-                  <Badge
-                    variant={
-                      p?.status === "published"
-                        ? "success"
-                        : "secondary"
-                    }>
+                  <h1 className="truncate text-xl font-semibold">{p.title}</h1>
+                  <Badge variant={p?.status === "published" ? "success" : "secondary"}>
                     {p?.status}
                   </Badge>
                 </div>
-                <p className="text-sm text-gray-500">
-                  /{p?.slug}
-                </p>
-                <p className="text-sm text-gray-500">
-                  {p?.content}
-                </p>
+                <p className="text-sm text-gray-500">/{p?.slug}</p>
+                <p className="text-sm text-gray-500">{p?.content}</p>
                 <div className="flex flex-wrap gap-2">
                   {p?.tags?.map((tag) => (
                     <Badge
@@ -254,33 +212,26 @@ function PostListContent() {
               </div>
               <div className="flex items-center justify-between">
                 <p className="text-sm text-gray-500">
-                  Created:{" "}
-                  {p.createdAt
-                    .toLocaleString()
-                    .slice(0, 10)}
+                  Created: {p.createdAt.toLocaleString().slice(0, 10)}
                 </p>
                 <div className="flex items-center gap-4">
                   {p.status === "published" ? (
                     <Eye
                       size={16}
                       className="cursor-pointer text-gray-500"
-                      onClick={() =>
-                        handleToggleStatus(p, "draft")
-                      }
+                      onClick={() => handleToggleStatus(p, "draft")}
                     />
                   ) : (
                     <EyeOff
                       size={16}
                       className="cursor-pointer text-gray-500"
-                      onClick={() =>
-                        handleToggleStatus(p, "published")
-                      }
+                      onClick={() => handleToggleStatus(p, "published")}
                     />
                   )}
                   <SquarePen
                     size={16}
                     className="cursor-pointer text-blue-500"
-                    onClick={() => handleEditPost(p.id)}
+                    onClick={() => handleEditPost(p.id, p)}
                   />
                   <Trash2
                     size={16}
@@ -293,6 +244,141 @@ function PostListContent() {
           ))}
         </div>
       )}
+
+      <Modal
+        isOpen={isEditModalOpen}
+        onClose={() => {
+          setIsEditModalOpen(false);
+          setPostToEditId(null);
+        }}
+        title="Edit Project"
+        size="lg"
+        closeOnOverlayClick={true}
+        showCloseButton={true}>
+        <div className="space-y-6">
+          <form
+            onSubmit={handleSubmit((data) => postToEditId && handleUpdate(postToEditId, data))}
+            className="space-y-4">
+            <div className="grid w-full grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+              <div className="w-full">
+                <Label htmlFor="title">Title</Label>
+                <Input
+                  type="text"
+                  id="title"
+                  {...register("title")}
+                />
+              </div>
+              <div className="w-full">
+                <Label htmlFor="slug">Slug</Label>
+                <Input
+                  type="text"
+                  id="slug"
+                  {...register("slug")}
+                />
+              </div>
+              <div className="w-full">
+                <Controller
+                  name="category_id"
+                  control={control}
+                  render={({ field }) => (
+                    <Select
+                      value={field.value}
+                      onValueChange={field.onChange}
+                      disabled={isLoading}>
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Select a category" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {isLoading ? (
+                          <SelectItem
+                            value="loading"
+                            disabled>
+                            Loading categories...
+                          </SelectItem>
+                        ) : categories && categories.length > 0 ? (
+                          categories.map((category) => (
+                            <SelectItem
+                              key={category.id}
+                              value={category.id.toString()}>
+                              {category.name}
+                            </SelectItem>
+                          ))
+                        ) : (
+                          <SelectItem
+                            value="no-categories"
+                            disabled>
+                            No categories available
+                          </SelectItem>
+                        )}
+                      </SelectContent>
+                    </Select>
+                  )}
+                />
+              </div>
+
+
+              <div className="w-full">
+                <div className="w-full">
+                  <Label htmlFor="tags">Tags</Label>
+                  <Input
+                    type="text"
+                    id="tags"
+                    {...register("tags")}
+                    value={getValues("tags")}
+                    onChange={(e) => setValue("tags", e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        e.preventDefault();
+                        setValue("tags", e.currentTarget.value);
+                      }
+                    }}
+                    placeholder="Type a tag and press Enter"
+                  />
+                </div>
+                {getValues("tags")?.length > 0 && (
+                  <div className="w-full">
+                    {getValues("tags")?.length > 0 && (
+                      <PostTag
+                        onClick={(tag) =>
+                          setValue(
+                            "tags",
+                            getValues("tags").filter((t: string) => t !== tag)
+                          )
+                        }
+                        tags={getValues("tags")}
+                      />
+                    )}
+                  </div>
+                )}
+              </div>
+              <div className="w-full">
+                <CoverImage
+                  value={getValues("thumbnail")}
+                  onChange={(file) => setValue("thumbnail", file)}
+                  label="Cover Image"
+                />
+              </div>
+            </div>
+            <div className="flex justify-end gap-3 pt-4">
+              <Button
+                type="button"
+                onClick={() => {
+                  setIsEditModalOpen(false);
+                  setPostToEditId(null);
+                }}
+                className="rounded-md border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-800">
+                Cancel
+              </Button>
+              <Button
+                type="submit"
+                disabled={updatePostMutation.isPending}
+                className="rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700">
+                {updatePostMutation.isPending ? "Saving..." : "Save"}
+              </Button>
+            </div>
+          </form>
+        </div>
+      </Modal>
     </main>
   );
 }

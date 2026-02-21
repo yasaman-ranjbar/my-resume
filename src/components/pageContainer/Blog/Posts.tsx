@@ -9,15 +9,11 @@ interface BlogPostsProps {
   posts: PostsProps[];
 }
 
-export default function BlogPosts({
-  posts,
-}: BlogPostsProps) {
+export default function BlogPosts({ posts }: BlogPostsProps) {
   return (
     <div className="container py-14">
       {posts.length === 0 ? (
-        <p className="text-center text-gray-400">
-          No blog posts available yet.
-        </p>
+        <p className="text-center text-gray-400">No blog posts available yet.</p>
       ) : (
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
           {posts.map((post) => (
@@ -47,9 +43,7 @@ export default function BlogPosts({
                   <div className="mb-4 flex items-center gap-4 text-xs text-gray-400">
                     <span className="flex items-center gap-1">
                       <Calendar size={14} />
-                      {new Date(
-                        post.created_at
-                      ).toLocaleDateString("en-US", {
+                      {new Date(post.created_at).toLocaleDateString("en-US", {
                         year: "numeric",
                         month: "short",
                         day: "numeric",
@@ -68,8 +62,7 @@ export default function BlogPosts({
 
                   <p className="mb-6 line-clamp-3 grow text-sm text-gray-400">
                     {post.content
-                      ? post.content.substring(0, 150) +
-                        "..."
+                      ? post.content.substring(0, 150) + "..."
                       : "Read more to discover the content"}
                   </p>
 

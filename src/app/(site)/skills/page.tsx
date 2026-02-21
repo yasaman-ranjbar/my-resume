@@ -1,9 +1,4 @@
-import {
-  Code2,
-  PenTool,
-  Users,
-  Terminal,
-} from "lucide-react";
+import { Code2, PenTool, Users, Terminal } from "lucide-react";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 
@@ -57,12 +52,9 @@ export default function Skills() {
     <main className="min-h-screen bg-[#131313] text-white">
       <Header />
       <div className="mx-auto max-w-7xl px-4 py-16 pt-32 sm:px-6 lg:px-8">
-        <h1 className="mb-4 text-center text-3xl font-bold md:text-4xl">
-          Skills & Tech Stack
-        </h1>
+        <h1 className="mb-4 text-center text-3xl font-bold md:text-4xl">Skills & Tech Stack</h1>
         <p className="mx-auto mb-16 max-w-2xl text-center text-gray-400">
-          A comprehensive overview of the technologies and
-          tools I use to bring ideas to life.
+          A comprehensive overview of the technologies and tools I use to bring ideas to life.
         </p>
 
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
@@ -74,9 +66,7 @@ export default function Skills() {
                 <div className="rounded-xl border border-white/10 bg-white/5 p-3">
                   {category.icon}
                 </div>
-                <h2 className="text-xl font-bold">
-                  {category.title}
-                </h2>
+                <h2 className="text-xl font-bold">{category.title}</h2>
               </div>
 
               <div className="flex flex-wrap gap-3">

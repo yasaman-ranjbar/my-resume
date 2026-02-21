@@ -79,8 +79,7 @@ type OpenSubmenus = Record<string, boolean>;
 
 export default function Sidebar() {
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [openSubmenus, setOpenSubmenus] =
-    useState<OpenSubmenus>({});
+  const [openSubmenus, setOpenSubmenus] = useState<OpenSubmenus>({});
 
   const toggleSubmenu = (title: string) => {
     setOpenSubmenus((prev) => ({
@@ -89,9 +88,7 @@ export default function Sidebar() {
     }));
   };
 
-  const isMobile = () =>
-    typeof window !== "undefined" &&
-    window.innerWidth < 768;
+  const isMobile = () => typeof window !== "undefined" && window.innerWidth < 768;
 
   return (
     <>
@@ -119,9 +116,7 @@ export default function Sidebar() {
         className={clsx(
           "scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-transparent fixed z-50 h-screen overflow-y-auto bg-[#F5F7FB] text-[#2d353c] transition-all duration-300 md:static",
           "top-0 left-0",
-          mobileOpen
-            ? "w-72 translate-x-0"
-            : "w-72 -translate-x-full",
+          mobileOpen ? "w-72 translate-x-0" : "w-72 -translate-x-full",
           "md:w-72 md:translate-x-0"
         )}>
         <div className="flex h-full flex-col p-4">
@@ -149,12 +144,8 @@ export default function Sidebar() {
               </button>
             </div>
 
-            <h2 className="mt-2 text-lg font-semibold">
-              Jasmine
-            </h2>
-            <p className="mt-1 text-xs text-gray-700">
-              Front-end Developer
-            </p>
+            <h2 className="mt-2 text-lg font-semibold">Jasmine</h2>
+            <p className="mt-1 text-xs text-gray-700">Front-end Developer</p>
           </div>
 
           {!mobileOpen && isMobile() && (
@@ -173,30 +164,25 @@ export default function Sidebar() {
                       </Link>
                     ) : (
                       <button
-                        onClick={() =>
-                          toggleSubmenu(item.title)
-                        }
+                        onClick={() => toggleSubmenu(item.title)}
                         className="text-gray-700 transition-colors hover:text-blue-600">
                         <item.icon size={24} />
                       </button>
                     )}
 
-                    {item.submenu &&
-                      openSubmenus[item.title] && (
-                        <div className="absolute top-0 left-full z-50 ml-3 min-w-[180px] rounded-lg bg-white py-2 shadow-xl md:hidden">
-                          {item.submenu.map((sub) => (
-                            <Link
-                              key={sub.title}
-                              href={sub.href}
-                              className="block px-5 py-2.5 text-sm text-gray-700 hover:bg-gray-100"
-                              onClick={() =>
-                                setMobileOpen(false)
-                              }>
-                              {sub.title}
-                            </Link>
-                          ))}
-                        </div>
-                      )}
+                    {item.submenu && openSubmenus[item.title] && (
+                      <div className="absolute top-0 left-full z-50 ml-3 min-w-[180px] rounded-lg bg-white py-2 shadow-xl md:hidden">
+                        {item.submenu.map((sub) => (
+                          <Link
+                            key={sub.title}
+                            href={sub.href}
+                            className="block px-5 py-2.5 text-sm text-gray-700 hover:bg-gray-100"
+                            onClick={() => setMobileOpen(false)}>
+                            {sub.title}
+                          </Link>
+                        ))}
+                      </div>
+                    )}
                   </div>
                 ))}
             </div>
@@ -215,33 +201,24 @@ export default function Sidebar() {
                   )}
                   <ul className="space-y-1">
                     {section.items.map((item) => {
-                      const hasSubmenu =
-                        !!item.submenu?.length;
-                      const isSubOpen =
-                        openSubmenus[item.title] ?? false;
+                      const hasSubmenu = !!item.submenu?.length;
+                      const isSubOpen = openSubmenus[item.title] ?? false;
 
                       return (
                         <li key={item.title}>
                           <div
                             className={clsx(
                               "flex cursor-pointer items-center justify-between rounded-xl px-4 py-3 transition-colors",
-                              isSubOpen
-                                ? "bg-white shadow-sm"
-                                : "hover:bg-white/60"
+                              isSubOpen ? "bg-white shadow-sm" : "hover:bg-white/60"
                             )}
-                            onClick={() =>
-                              hasSubmenu &&
-                              toggleSubmenu(item.title)
-                            }>
+                            onClick={() => hasSubmenu && toggleSubmenu(item.title)}>
                             <div className="flex items-center gap-3 text-gray-700">
                               <item.icon size={20} />
                               <span className="text-sm font-medium">
                                 {item.href ? (
                                   <Link
                                     href={item.href}
-                                    onClick={() =>
-                                      setMobileOpen(false)
-                                    }>
+                                    onClick={() => setMobileOpen(false)}>
                                     {item.title}
                                   </Link>
                                 ) : (
@@ -252,11 +229,7 @@ export default function Sidebar() {
 
                             {hasSubmenu && (
                               <span className="text-gray-500">
-                                {isSubOpen ? (
-                                  <ChevronDown size={16} />
-                                ) : (
-                                  <ChevronRight size={16} />
-                                )}
+                                {isSubOpen ? <ChevronDown size={16} /> : <ChevronRight size={16} />}
                               </span>
                             )}
                           </div>
@@ -277,22 +250,16 @@ export default function Sidebar() {
                                   opacity: 0,
                                 }}
                                 className="overflow-hidden rounded-b-xl bg-white/70">
-                                {item.submenu!.map(
-                                  (sub) => (
-                                    <li key={sub.title}>
-                                      <Link
-                                        href={sub.href}
-                                        className="block py-2.5 pl-14 text-sm text-gray-600 transition-colors hover:bg-white/50 hover:text-gray-900"
-                                        onClick={() =>
-                                          setMobileOpen(
-                                            false
-                                          )
-                                        }>
-                                        {sub.title}
-                                      </Link>
-                                    </li>
-                                  )
-                                )}
+                                {item.submenu!.map((sub) => (
+                                  <li key={sub.title}>
+                                    <Link
+                                      href={sub.href}
+                                      className="block py-2.5 pl-14 text-sm text-gray-600 transition-colors hover:bg-white/50 hover:text-gray-900"
+                                      onClick={() => setMobileOpen(false)}>
+                                      {sub.title}
+                                    </Link>
+                                  </li>
+                                ))}
                               </motion.ul>
                             )}
                           </AnimatePresence>

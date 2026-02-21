@@ -9,10 +9,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/Button";
 import { useForm, Controller } from "react-hook-form";
 import PostTag from "@/components/admin/PostTag";
-import {
-  CreatePostData,
-  useCreatePost,
-} from "@/hooks/usePosts";
+import { CreatePostData, useCreatePost } from "@/hooks/usePosts";
 import { useCategories } from "@/hooks/useCategories";
 import { toast } from "react-toastify";
 import {
@@ -22,31 +19,24 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/Select";
-import {
-  RadioGroup,
-  RadioGroupItem,
-} from "@/components/ui/RadioGroup";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/RadioGroup";
 
 export default function AddNewPost() {
-  const [coverImage, setCoverImage] = useState<File | null>(
-    null
-  );
+  const [coverImage, setCoverImage] = useState<File | null>(null);
   const [tags, setTags] = useState<string[]>([]);
   const [tagInput, setTagInput] = useState<string>("");
-  const { register, handleSubmit, control, reset } =
-    useForm<CreatePostData>({
-      defaultValues: {
-        title: "",
-        slug: "",
-        content: "",
-        status: "draft",
-        tags: [],
-        category_id: "",
-      },
-    });
+  const { register, handleSubmit, control, reset } = useForm<CreatePostData>({
+    defaultValues: {
+      title: "",
+      slug: "",
+      content: "",
+      status: "draft",
+      tags: [],
+      category_id: "",
+    },
+  });
   const createPostMutation = useCreatePost();
-  const { data: categories, isLoading: categoriesLoading } =
-    useCategories();
+  const { data: categories, isLoading: categoriesLoading } = useCategories();
 
   const onSubmit = async (data: CreatePostData) => {
     createPostMutation.mutate(
@@ -68,18 +58,13 @@ export default function AddNewPost() {
           setTagInput("");
         },
         onError: (err: Error) => {
-          toast.error(
-            err.message ||
-              "Failed to create post. Please try again."
-          );
+          toast.error(err.message || "Failed to create post. Please try again.");
         },
       }
     );
   };
 
-  const handleTagInputKeyDown = (
-    e: React.KeyboardEvent<HTMLInputElement>
-  ) => {
+  const handleTagInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
       e.preventDefault();
       const trimmedValue = tagInput.trim();
@@ -141,8 +126,7 @@ export default function AddNewPost() {
                         disabled>
                         Loading categories...
                       </SelectItem>
-                    ) : categories &&
-                      categories.length > 0 ? (
+                    ) : categories && categories.length > 0 ? (
                       categories.map((category) => (
                         <SelectItem
                           key={category.id}
@@ -209,9 +193,7 @@ export default function AddNewPost() {
                         value="published"
                         id="published"
                       />
-                      <Label htmlFor="published">
-                        Published
-                      </Label>
+                      <Label htmlFor="published">Published</Label>
                     </div>
                   </RadioGroup>
                 </div>
@@ -237,9 +219,7 @@ export default function AddNewPost() {
           size="lg"
           type="submit"
           disabled={createPostMutation.isPending}>
-          {createPostMutation.isPending
-            ? "Creating..."
-            : "Create Post"}
+          {createPostMutation.isPending ? "Creating..." : "Create Post"}
         </Button>
       </form>
     </div>

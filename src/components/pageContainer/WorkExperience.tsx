@@ -83,12 +83,8 @@ export default function WorkExperience() {
       className="bg-[#131313] py-20">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mb-16 text-center">
-          <h3 className="mb-2 font-medium tracking-wider text-[#F9004D] uppercase">
-            My Journey
-          </h3>
-          <h2 className="text-4xl font-bold text-white">
-            Experiences
-          </h2>
+          <h3 className="mb-2 font-medium tracking-wider text-[#F9004D] uppercase">My Journey</h3>
+          <h2 className="text-4xl font-bold text-white">Experiences</h2>
         </div>
 
         <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-2">
@@ -125,22 +121,12 @@ export default function WorkExperience() {
                 <div className="absolute top-0 left-[-9px] h-4 w-4 rounded-full bg-[#F9004D] shadow-lg shadow-[#F9004D]/50"></div>
 
                 <div className="space-y-2">
-                  <h3 className="text-lg font-semibold text-[#F9004D]">
-                    {exp.role}
-                  </h3>
-                  <h4 className="text-xl font-bold text-white">
-                    {exp.company}
-                  </h4>
-                  <p className="text-sm text-gray-400">
-                    {exp.position}
-                  </p>
-                  <p className="text-sm font-medium text-gray-500">
-                    {exp.duration}
-                  </p>
+                  <h3 className="text-lg font-semibold text-[#F9004D]">{exp.role}</h3>
+                  <h4 className="text-xl font-bold text-white">{exp.company}</h4>
+                  <p className="text-sm text-gray-400">{exp.position}</p>
+                  <p className="text-sm font-medium text-gray-500">{exp.duration}</p>
                   {exp.description && (
-                    <p className="pt-2 text-sm leading-relaxed text-gray-400">
-                      {exp.description}
-                    </p>
+                    <p className="pt-2 text-sm leading-relaxed text-gray-400">{exp.description}</p>
                   )}
                 </div>
               </motion.div>

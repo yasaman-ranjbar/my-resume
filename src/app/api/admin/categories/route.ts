@@ -7,10 +7,7 @@ export async function GET() {
     const categories = await prisma.category.findMany();
     return NextResponse.json(categories);
   } catch (error: unknown) {
-    return NextResponse.json(
-      { error: "Failed to fetch categories" },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: "Failed to fetch categories" }, { status: 500 });
   }
 }
 
@@ -21,14 +18,10 @@ export async function POST(request: Request) {
     const { name, slug } = body;
 
     // Basic type & presence validation
-    if (
-      typeof name !== "string" ||
-      typeof slug !== "string"
-    ) {
+    if (typeof name !== "string" || typeof slug !== "string") {
       return NextResponse.json(
         {
-          error:
-            "Name and slug must be provided as strings",
+          error: "Name and slug must be provided as strings",
         },
         { status: 400 }
       );
@@ -38,17 +31,11 @@ export async function POST(request: Request) {
     const processedSlug = slug.toLowerCase().trim();
 
     if (trimmedName.length === 0) {
-      return NextResponse.json(
-        { error: "Name is required" },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: "Name is required" }, { status: 400 });
     }
 
     if (processedSlug.length === 0) {
-      return NextResponse.json(
-        { error: "Slug is required" },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: "Slug is required" }, { status: 400 });
     }
 
     // Enforce slug format: only lowercase letters, numbers, and hyphens
@@ -72,11 +59,7 @@ export async function POST(request: Request) {
 
     return NextResponse.json(category, { status: 201 });
   } catch (error: unknown) {
-    if (
-      error instanceof
-        Prisma.PrismaClientKnownRequestError &&
-      error.code === "P2002"
-    ) {
+    if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === "P2002") {
       return NextResponse.json(
         {
           error: "A category with this slug already exists",
@@ -88,9 +71,6 @@ export async function POST(request: Request) {
     // Log unexpected errors for debugging
     console.error("Error creating category:", error);
 
-    return NextResponse.json(
-      { error: "Failed to create category" },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: "Failed to create category" }, { status: 500 });
   }
 }

@@ -1,11 +1,7 @@
 "use client";
 
 import { API_URL } from "@/config/api";
-import {
-  useQuery,
-  useMutation,
-  useQueryClient,
-} from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
 export interface Category {
   id: number;
@@ -27,21 +23,15 @@ const fetchCategories = async (): Promise<Category[]> => {
   const response = await fetch(API_URL.ADMIN.CATEGORIES);
 
   if (!response.ok) {
-    const errorData = await response
-      .json()
-      .catch(() => ({}));
-    throw new Error(
-      errorData.error || "Failed to fetch categories"
-    );
+    const errorData = await response.json().catch(() => ({}));
+    throw new Error(errorData.error || "Failed to fetch categories");
   }
 
   const data = await response.json();
   return data;
 };
 
-const createCategory = async (
-  data: CreateCategoryData
-): Promise<CreateCategoryResponse> => {
+const createCategory = async (data: CreateCategoryData): Promise<CreateCategoryResponse> => {
   const response = await fetch(API_URL.ADMIN.CATEGORIES, {
     method: "POST",
     headers: {
@@ -55,9 +45,7 @@ const createCategory = async (
 
   if (!response.ok) {
     const errorData = await response.json();
-    throw new Error(
-      errorData.error || "Failed to create category"
-    );
+    throw new Error(errorData.error || "Failed to create category");
   }
 
   return response.json();

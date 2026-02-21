@@ -8,12 +8,9 @@ export default function Resume() {
           <FileText size={40} />
         </div>
 
-        <h1 className="text-3xl font-bold">
-          Download Resume
-        </h1>
+        <h1 className="text-3xl font-bold">Download Resume</h1>
         <p className="text-gray-400">
-          Click the button below to download my latest
-          resume in PDF format.
+          Click the button below to download my latest resume in PDF format.
         </p>
 
         <a

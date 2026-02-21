@@ -16,8 +16,7 @@ const config: Config = {
         accent: "var(--accent)",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
-        "ring-offset-background":
-          "hsl(var(--ring-offset-background))",
+        "ring-offset-background": "hsl(var(--ring-offset-background))",
         "muted-foreground": "hsl(var(--muted-foreground))",
       },
       textColor: {
