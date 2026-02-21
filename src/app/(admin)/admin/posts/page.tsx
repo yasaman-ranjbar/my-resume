@@ -84,9 +84,7 @@ function PostListContent() {
   const handleToggleStatus = async (post: PostsProps, status: string) => {
     updatePostStatus.mutate(
       {
-        id: post.id,
-        title: post.title,
-        content: post.content,
+        ...post,
         status,
       },
       {
