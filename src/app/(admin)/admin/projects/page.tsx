@@ -21,10 +21,13 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import PostTag from "@/components/admin/PostTag";
 import CoverImage from "@/components/ui/coverImage";
+import ConfirmDeleteModal from "@/components/pageContainer/Admin/ConfirmDeleteModal";
 
 const AdminProjectsPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingProjectId, setEditingProjectId] = useState<string | null>(null);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [projectIdToDelete, setProjectIdToDelete] = useState<string | null>(null);
   const { setValue, getValues, register, handleSubmit } = useForm()
   const {
     data: projects,
@@ -139,7 +142,7 @@ const AdminProjectsPage = () => {
                   <Trash2
                     size={16}
                     className="cursor-pointer text-red-500"
-                    onClick={() => handleDelete(p.id)}
+                    onClick={() => { setIsDeleteModalOpen(true); setProjectIdToDelete(p.id); }}
                   />
                 </div>
               </div>
@@ -147,6 +150,12 @@ const AdminProjectsPage = () => {
           ))}
         </div>
       )}
+
+      <ConfirmDeleteModal
+        isModalOpen={isDeleteModalOpen}
+        setIsModalOpen={setIsDeleteModalOpen}
+        onDelete={() => handleDelete(projectIdToDelete as string)}
+      />
 
       <Modal
         isOpen={isModalOpen}
