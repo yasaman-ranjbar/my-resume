@@ -9,6 +9,7 @@ export interface LoginData {
 const userLogin = async (data: LoginData): Promise<LoginData> => {
   const response = await fetch(API_URL.ADMIN.LOGIN, {
     method: "POST",
+    credentials: "include",
     headers: {
       "Content-Type": "application/json",
     },
