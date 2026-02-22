@@ -5,6 +5,8 @@ import bcrypt from "bcrypt";
 
 const INVALID_CREDENTIALS_MSG = "Invalid email or password";
 
+
+
 export async function POST(request: Request) {
   const body = await request.json();
   const email = typeof body?.email === "string" ? body.email.trim().toLowerCase() : "";
@@ -49,3 +51,5 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
 }
+
+

@@ -1,5 +1,6 @@
 export const ADMIN_ROUTES = {
   DASHBOARD: "/admin",
+  USER_BY_ID: "/admin/user/:id",
   POSTS: "/admin/posts",
   POSTS_NEW: "/admin/posts/new-post",
   New_CATEGORY: "/admin/categories/new-category",

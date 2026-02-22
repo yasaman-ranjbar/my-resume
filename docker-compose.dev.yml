@@ -27,6 +27,9 @@ services:
     environment:
       DATABASE_URL: postgresql://postgres:postgres@db:5432/mydb?schema=public
       NODE_ENV: development
+      # Enable polling so file changes on Windows host are detected inside the container
+      WATCHPACK_POLLING: "true"
+      CHOKIDAR_USEPOLLING: "true"
     depends_on:
       - db
 

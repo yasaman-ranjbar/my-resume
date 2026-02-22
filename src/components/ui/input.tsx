@@ -9,7 +9,7 @@ export type InputProps = React.InputHTMLAttributes<HTMLInputElement> & {
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
   ({ className, type, icon, ...props }, ref) => {
     return (
-      <div className="relative flex w-full h-10 items-center gap-4 rounded-lg border border-neutral-300 px-3 py-2">
+      <div className="relative flex h-10 items-center gap-4 rounded-lg border border-neutral-300 px-3 py-2">
         {icon}
         <input
           type={type}
