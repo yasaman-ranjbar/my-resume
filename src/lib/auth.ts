@@ -1,4 +1,5 @@
-import { SignJWT } from "jose";
+import { jwtVerify, SignJWT } from "jose";
+import { cookies } from "next/headers";
 
 const JWT_SECRET = new TextEncoder().encode(
   process.env.JWT_SECRET || "your-secret-change-in-production"
@@ -11,6 +12,22 @@ export type TokenPayload = {
   sub: string;
   email: string;
 };
+
+/** Server-only: get session from cookie (returns null if missing or invalid). Use in Server Components/layouts. */
+export async function getSession(): Promise<TokenPayload | null> {
+  const cookieStore = await cookies();
+  const token = cookieStore.get(TOKEN_COOKIE_NAME)?.value;
+  if (!token) return null;
+  try {
+    const { payload } = await jwtVerify(token, JWT_SECRET);
+    return {
+      sub: String(payload.sub ?? ""),
+      email: String(payload.email ?? ""),
+    };
+  } catch {
+    return null;
+  }
+}
 
 export async function createAuthToken(payload: TokenPayload): Promise<string> {
   return new SignJWT({ ...payload })

@@ -2,18 +2,22 @@
 
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/input";
+import { ADMIN_ROUTES } from "@/constant/route";
 import { LoginData, useLogin } from "@/hooks/useLogin";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 
 export default function LoginPage() {
   const { register, handleSubmit, reset } = useForm<LoginData>();
-  const { mutate: loginMutation , isPending } = useLogin();
+  const { mutate: loginMutation, isPending } = useLogin();
+  const router = useRouter();
 
   const onSubmit = (data: LoginData) => {
     loginMutation(data, {
       onSuccess: () => {
         toast.success("Login successful");
+        router.push(ADMIN_ROUTES.DASHBOARD);
         reset();
       },
       onError: (error) => {

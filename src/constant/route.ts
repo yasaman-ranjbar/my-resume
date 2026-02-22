@@ -10,6 +10,7 @@ export const ADMIN_ROUTES = {
 
 export const AppRoutes = {
   HOME: "/",
+  LOGIN: "/login",
   ABOUT: "/about",
   CONTACT: "/contact",
   PROJECTS: "/projects",

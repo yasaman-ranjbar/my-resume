@@ -42,16 +42,10 @@ export async function POST(request: Request) {
       email: user.email,
     });
     const { name, value, options } = getAuthCookieConfig(token);
-    const response = NextResponse.json(
-      { message: "Login successful", token },
-      { status: 200 }
-    );
+    const response = NextResponse.json({ message: "Login successful", token }, { status: 200 });
     response.cookies.set(name, value, options);
     return response;
   } catch {
-    return NextResponse.json(
-      { error: "Internal server error" },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
 }
