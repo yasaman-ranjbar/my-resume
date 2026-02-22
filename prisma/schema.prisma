@@ -1,10 +1,10 @@
-datasource db {
-  provider = "postgresql"
-  url = env("DATABASE_URL")
-}
-
 generator client {
   provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 model User {
@@ -12,6 +12,10 @@ model User {
   createdAt DateTime @default(now())
   email     String   @unique
   name      String?
+  password  String   @db.VarChar(255)
+  role      String   @default("admin")
+  status    String   @default("active")
+  lastLogin DateTime?
 }
 
 model Category {
@@ -19,31 +23,31 @@ model Category {
   createdAt DateTime @default(now())
   name      String
   slug      String   @unique
-  posts Post[]
+  posts     Post[]
 }
 
 model Post {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  title     String
-  slug      String   @unique
-  content   String
-  status    String
-  tags      String[]
+  id          Int      @id @default(autoincrement())
+  createdAt   DateTime @default(now())
+  title       String
+  slug        String   @unique
+  content     String
+  status      String
+  tags        String[]
   category_id Int
+  cover_url   String?
   category    Category @relation(fields: [category_id], references: [id], onDelete: Cascade)
-  cover_url String?
 }
 
-model project { 
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  title     String
-  slug      String   @unique
-  description   String @db.Text
-  shortDescription   String  @db.VarChar(280)
-  liveUrl     String?
-  githubUrl     String?
-  tags      String[]
-  thumbnail String?
+model project {
+  id               Int      @id @default(autoincrement())
+  createdAt        DateTime @default(now())
+  title            String
+  slug             String   @unique
+  description      String
+  shortDescription String   @db.VarChar(280)
+  liveUrl          String?
+  githubUrl        String?
+  tags             String[]
+  thumbnail        String?
 }

@@ -5,6 +5,7 @@ export const API_URL = {
     CATEGORIES: `${BASE_URL}/api/admin/categories`,
     POSTS: `${BASE_URL}/api/admin/posts`,
     PROJECTS: `${BASE_URL}/api/admin/projects`,
+    LOGIN: `${BASE_URL}/api/admin/auth/login`,
   },
 
   PUBLIC: {

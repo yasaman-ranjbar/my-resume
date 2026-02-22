@@ -107,7 +107,7 @@ const AdminProjectsPage = () => {
                   />
                 </div>
                 <div className="flex-1 flex-col gap-4">
-                  <p className="text-base font-bold mb-2">{p?.title}</p>
+                  <p className="mb-2 text-base font-bold">{p?.title}</p>
                   <p className="text-sm text-gray-500">{p?.shortDescription}</p>
                   <div className="mt-3 flex flex-wrap gap-2">
                     {p?.tags?.map((tag) => (

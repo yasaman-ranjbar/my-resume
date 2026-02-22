@@ -261,7 +261,10 @@ function PostListContent() {
                   <Trash2
                     size={16}
                     className="cursor-pointer text-red-500"
-                    onClick={() => { setIsDeleteModalOpen(true); setPostIdToDelete(p.id); }}
+                    onClick={() => {
+                      setIsDeleteModalOpen(true);
+                      setPostIdToDelete(p.id);
+                    }}
                   />
                 </div>
               </div>
@@ -347,7 +350,6 @@ function PostListContent() {
                 />
               </div>
 
-
               <div className="w-full">
                 <div className="w-full">
                   <Label htmlFor="tags">Tags</Label>
@@ -384,7 +386,8 @@ function PostListContent() {
                   </div>
                 )}
               </div>
-              <div className="w-full"><Label className="">Status: </Label>
+              <div className="w-full">
+                <Label className="">Status: </Label>
                 <Controller
                   name="status"
                   control={control}
@@ -411,7 +414,8 @@ function PostListContent() {
                       </RadioGroup>
                     </div>
                   )}
-                /></div>
+                />
+              </div>
               <div className="w-full">
                 <CoverImage
                   value={getValues("cover_url")}
