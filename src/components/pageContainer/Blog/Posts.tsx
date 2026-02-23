@@ -43,7 +43,7 @@ export default function BlogPosts({ posts }: BlogPostsProps) {
                   <div className="mb-4 flex items-center gap-4 text-xs text-gray-400">
                     <span className="flex items-center gap-1">
                       <Calendar size={14} />
-                      {new Date(post.created_at).toLocaleDateString("en-US", {
+                      {new Date(post.createdAt).toLocaleDateString("en-US", {
                         year: "numeric",
                         month: "short",
                         day: "numeric",

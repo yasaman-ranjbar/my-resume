@@ -1,0 +1,78 @@
+"use client";
+
+import Link from "next/link";
+import { ExternalLink, Github, ArrowRight } from "lucide-react";
+import LoadingSpinner from "@/components/common/LoadingSpinner";
+import Image from "next/image";
+import { ProjectsProps } from "@/hooks/useProjects";
+
+export default function Projects({ projects }: { projects: ProjectsProps[] }) {
+
+
+  return (
+    <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+      {(
+        projects?.map((project) => (
+          <div
+            key={project.slug}
+            className="group flex flex-col overflow-hidden rounded-xl border border-white/10 bg-white/5 transition-all duration-300 hover:border-blue-500/50 hover:shadow-xl hover:shadow-blue-500/10">
+            {/* Image Placeholder */}
+            <div className="relative aspect-video overflow-hidden bg-gray-800">
+              <div className="absolute inset-0 flex items-center justify-center text-gray-600 transition-transform duration-500 group-hover:scale-105">
+                <Image
+                  src={project.thumbnail!}
+                  alt={project.title}
+                  width={100}
+                  height={100}
+                />
+              </div>
+              <div className="absolute inset-0 flex items-center justify-center gap-4 bg-black/50 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                <a
+                  href={project.liveUrl}
+                  className="rounded-full bg-white p-2 text-black transition-colors hover:bg-blue-500 hover:text-white"
+                  title="Live Demo">
+                  <ExternalLink size={20} />
+                </a>
+                <a
+                  href={project.githubUrl}
+                  className="rounded-full bg-white p-2 text-black transition-colors hover:bg-gray-800 hover:text-white"
+                  title="GitHub">
+                  <Github size={20} />
+                </a>
+              </div>
+            </div>
+
+            <div className="flex grow flex-col p-6">
+              <h3 className="mb-2 text-xl font-bold transition-colors group-hover:text-blue-400">
+                {project.title}
+              </h3>
+              <p className="mb-4 grow text-sm text-gray-400">
+                {project.shortDescription}
+              </p>
+
+              <div className="mb-6 flex flex-wrap gap-2">
+                {project.tags.map((tech) => (
+                  <span
+                    key={tech}
+                    className="rounded-md border border-blue-500/20 bg-blue-500/10 px-2 py-1 text-xs font-medium text-blue-400">
+                    {tech}
+                  </span>
+                ))}
+              </div>
+
+              <Link
+                href={`/projects/${project.slug}`}
+                className="mt-auto inline-flex items-center text-sm font-medium text-blue-400 transition-colors hover:text-blue-300">
+                View Details
+                <ArrowRight
+                  size={16}
+                  className="ml-1 transition-transform group-hover:translate-x-1"
+                />
+              </Link>
+            </div>
+          </div>
+        ))
+      )}
+    </div>
+  );
+}

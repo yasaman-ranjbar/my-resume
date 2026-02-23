@@ -11,6 +11,5 @@ export const API_URL = {
   PUBLIC: {
     CATEGORIES: `${BASE_URL}/api/categories`,
     POSTS: `${BASE_URL}/api/posts`,
-    PROJECTS: `${BASE_URL}/api/projects`,
   },
 };
