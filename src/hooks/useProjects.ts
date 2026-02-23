@@ -27,7 +27,25 @@ export interface ProjectsProps {
   createdAt: string;
 }
 
+// fetch projects************************************************
+const fetchProjects = async (): Promise<ProjectsProps[]> => {
+  const response = await fetch(API_URL.ADMIN.PROJECTS);
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({}));
+    throw new Error(errorData.error || "Failed to fetch projects");
+  }
+  const data = await response.json();
+  return data;
+};
 
+export const useGetProjects = (initialData?: ProjectsProps[]) => {
+  return useQuery({
+    queryKey: ["projects"],
+    queryFn: fetchProjects,
+    retry: 1,
+    initialData: initialData ?? undefined,
+  });
+};
 
 // create project********************************************
 const createProject = async (data: CreateProjectData) => {
