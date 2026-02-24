@@ -9,12 +9,12 @@ export type InputProps = React.InputHTMLAttributes<HTMLInputElement> & {
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
   ({ className, type, icon, ...props }, ref) => {
     return (
-      <div className="relative flex h-10 items-center gap-4 rounded-lg border border-neutral-300 px-3 py-2">
+      <div className="relative flex h-10 items-center gap-1 rounded-lg border border-neutral-300 px-3 py-2">
         {icon}
         <input
           type={type}
           className={cn(
-            "placeholder:text-muted-foreground w-full text-sm outline-none focus-visible:border-indigo-500 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50",
+            "placeholder:text-muted-foreground w-full text-sm text-gray-700 outline-none focus-visible:border-indigo-500 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50",
             className
           )}
           ref={ref}

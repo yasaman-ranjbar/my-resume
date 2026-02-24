@@ -114,11 +114,11 @@ const CoverImage = React.forwardRef<HTMLDivElement, CoverImageProps>(
           className={cn(
             "relative w-full cursor-pointer rounded-lg border-2 border-dashed transition-colors",
             isDragging
-              ? "border-blue-500 bg-blue-50 dark:bg-blue-900/20"
-              : "border-gray-300 hover:border-gray-400 dark:border-gray-600 dark:hover:border-gray-500",
+              ? "border-blue-500 bg-blue-50"
+              : "border-gray-300 hover:border-gray-400",
             preview
-              ? "min-h-[200px] bg-white dark:bg-gray-800"
-              : "min-h-[150px] bg-gray-50 dark:bg-gray-900/50"
+              ? "min-h-[200px] bg-white"
+              : "min-h-[150px] bg-gray-50"
           )}>
           <input
             ref={fileInputRef}

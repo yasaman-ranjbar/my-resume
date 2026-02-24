@@ -2,13 +2,26 @@
 
 import LoadingSpinner from "@/components/common/LoadingSpinner";
 import { ADMIN_ROUTES } from "@/constant/route";
-import { usePosts, useUpdatePostStatus, useDeletePost, useUpdatePost } from "@/hooks/usePosts";
+import {
+  usePosts,
+  useUpdatePostStatus,
+  useDeletePost,
+  useUpdatePost,
+} from "@/hooks/usePosts";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState, Suspense } from "react";
 import { toast } from "react-toastify";
 import { Badge } from "@/components/ui/Badge";
-import { SquarePen, Trash2, Eye, EyeOff, Search, CopyPlus } from "lucide-react";
+import {
+  SquarePen,
+  Trash2,
+  Eye,
+  EyeOff,
+  Search,
+  CopyPlus,
+  ArrowRight,
+} from "lucide-react";
 import { PostsProps } from "@/types";
 import {
   Select,
@@ -29,6 +42,8 @@ import CoverImage from "@/components/ui/coverImage";
 import { Button } from "@/components/ui/Button";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/RadioGroup";
 import ConfirmDeleteModal from "@/components/pageContainer/Admin/ConfirmDeleteModal";
+import { getExcerptFromHtml } from "@/utils/content";
+import TiptapEditor from "@/components/common/TiptapEditor";
 
 function PostListContent() {
   const { setValue, getValues, register, handleSubmit, control, watch } = useForm();
@@ -92,7 +107,9 @@ function PostListContent() {
           toast.success("Post status updated successfully");
         },
         onError: (error: Error) => {
-          toast.error(error.message || "Failed to toggle status. Please try again later.");
+          toast.error(
+            error.message || "Failed to toggle status. Please try again later."
+          );
         },
       }
     );
@@ -208,7 +225,7 @@ function PostListContent() {
             <div
               key={p?.id}
               className="space-y-4 rounded-lg bg-white p-4">
-              <div className="flex flex-col gap-2 border-b border-gray-200 py-3">
+              <div className="flex flex-col gap-4 border-b border-gray-200 py-3">
                 <div className="relative mb-2 h-48 w-full">
                   <Image
                     src={p?.cover_url}
@@ -223,8 +240,15 @@ function PostListContent() {
                     {p?.status}
                   </Badge>
                 </div>
-                <p className="text-sm text-gray-500">/{p?.slug}</p>
-                <p className="text-sm text-gray-500">{p?.content}</p>
+                <p className="line-clamp-4 text-sm text-gray-500">
+                  {getExcerptFromHtml(p?.content || "")}
+                </p>
+                <Link
+                  href={`/blog/${p.slug}?id=${p.id}`}
+                  className="inline-flex items-center gap-1 text-xs font-medium text-indigo-600 hover:text-indigo-800">
+                  View public page
+                  <ArrowRight size={14} />
+                </Link>
                 <div className="flex flex-wrap gap-2">
                   {p?.tags?.map((tag) => (
                     <Badge
@@ -286,14 +310,16 @@ function PostListContent() {
           setPostToEditId(null);
         }}
         title="Edit Project"
-        size="lg"
+        size="2xl"
         closeOnOverlayClick={true}
         showCloseButton={true}>
         <div className="space-y-6">
           <form
-            onSubmit={handleSubmit((data) => postToEditId && handleUpdate(postToEditId, data))}
+            onSubmit={handleSubmit(
+              (data) => postToEditId && handleUpdate(postToEditId, data)
+            )}
             className="space-y-4">
-            <div className="grid w-full grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+            <div className="grid w-full grid-cols-1 gap-6 md:grid-cols-2">
               <div className="w-full">
                 <Label htmlFor="title">Title</Label>
                 <Input
@@ -316,7 +342,11 @@ function PostListContent() {
                   control={control}
                   render={({ field }) => (
                     <Select
-                      value={field.value != null && field.value !== "" ? String(field.value) : ""}
+                      value={
+                        field.value != null && field.value !== ""
+                          ? String(field.value)
+                          : ""
+                      }
                       onValueChange={field.onChange}
                       disabled={isLoading}>
                       <SelectTrigger className="w-full">
@@ -350,7 +380,7 @@ function PostListContent() {
                 />
               </div>
 
-              <div className="w-full">
+              <div className="col-span-2 w-full">
                 <div className="w-full">
                   <Label htmlFor="tags">Tags</Label>
                   <Input
@@ -386,7 +416,8 @@ function PostListContent() {
                   </div>
                 )}
               </div>
-              <div className="w-full">
+
+              <div className="col-span-2 w-full">
                 <Label className="">Status: </Label>
                 <Controller
                   name="status"
@@ -416,7 +447,20 @@ function PostListContent() {
                   )}
                 />
               </div>
-              <div className="w-full">
+              <div className="col-span-2 w-full">
+                <Label htmlFor="content">Content</Label>
+                <Controller
+                  name="content"
+                  control={control}
+                  render={({ field }) => (
+                    <TiptapEditor
+                      value={field.value}
+                      onChange={field.onChange}
+                    />
+                  )}
+                />
+              </div>
+              <div className="col-span-2 w-full">
                 <CoverImage
                   value={getValues("cover_url")}
                   onChange={(file) => setValue("cover_url", file)}
@@ -426,18 +470,19 @@ function PostListContent() {
             </div>
             <div className="flex justify-end gap-3 pt-4">
               <Button
+                variant="outline"
                 type="button"
                 onClick={() => {
                   setIsEditModalOpen(false);
                   setPostToEditId(null);
                 }}
-                className="rounded-md border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-800">
+                className="rounded-md border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-500">
                 Cancel
               </Button>
               <Button
                 type="submit"
                 disabled={updatePostMutation.isPending}
-                className="rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700">
+                className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-white hover:bg-secondary">
                 {updatePostMutation.isPending ? "Saving..." : "Save"}
               </Button>
             </div>

@@ -1,15 +1,51 @@
-import { posts } from "@/data/posts";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { ArrowLeft, Calendar, Tag, Folder } from "lucide-react";
+import { ArrowLeft, Calendar, Tag } from "lucide-react";
+import type { PostsProps } from "@/types";
+import { prisma } from "@/lib/prisma";
+import Image from "next/image";
+import { stripHtml } from "@/utils/content";
 
-interface PageProps {
-  params: Promise<{ slug: string }>;
+interface PageParams {
+  slug: string;
 }
 
-export default async function BlogPostPage({ params }: PageProps) {
+interface PageSearchParams {
+  id?: string;
+}
+
+interface PageProps {
+  params: Promise<PageParams>;
+  searchParams: Promise<PageSearchParams>;
+}
+
+async function fetchPostById(id: string): Promise<PostsProps | null> {
+  const numericId = Number(id);
+  if (Number.isNaN(numericId)) return null;
+
+  const post = await prisma.post.findUnique({
+    where: { id: numericId },
+  });
+
+  if (!post || post.status !== "published") return null;
+  return post as unknown as PostsProps;
+}
+
+async function fetchPostBySlug(slug: string): Promise<PostsProps | null> {
+  const post = await prisma.post.findFirst({
+    where: {
+      slug,
+      status: "published",
+    },
+  });
+  return (post as unknown as PostsProps) ?? null;
+}
+
+export default async function BlogPostPage({ params, searchParams }: PageProps) {
   const { slug } = await params;
-  const post = posts.find((p) => p.slug === slug);
+  const { id } = await searchParams;
+
+  const post = (id && (await fetchPostById(id))) ?? (await fetchPostBySlug(slug));
 
   if (!post) {
     notFound();
@@ -32,50 +68,55 @@ export default async function BlogPostPage({ params }: PageProps) {
           <div className="mb-6 flex items-center justify-center gap-4 text-sm text-gray-400">
             <span className="flex items-center gap-1">
               <Calendar size={16} />
-              {post.date}
-            </span>
-            <span className="flex items-center gap-1 text-blue-400">
-              <Folder size={16} />
-              {post.category}
+              {new Date(post.createdAt).toLocaleDateString("en-US", {
+                year: "numeric",
+                month: "short",
+                day: "numeric",
+              })}
             </span>
           </div>
 
-          <h1 className="mb-8 text-3xl leading-tight font-bold md:text-5xl">{post.title}</h1>
+          <h1 className="mb-8 text-3xl leading-tight font-bold md:text-5xl">
+            {post.title}
+          </h1>
 
-          <div className="mb-10 flex aspect-video w-full items-center justify-center overflow-hidden rounded-2xl border border-white/10 bg-gray-800 text-gray-600">
-            Cover Image Placeholder
-          </div>
+          {post.cover_url && (
+            <Image
+              src={post.cover_url}
+              alt={post.title}
+              className="h-full w-full object-cover"
+              width={640}
+              height={360}
+            />
+          )}
         </header>
+
 
         <div
           className="prose prose-invert prose-lg prose-headings:text-white prose-a:text-blue-400 hover:prose-a:text-blue-300 max-w-none"
           dangerouslySetInnerHTML={{ __html: post.content }}
         />
 
-        <footer className="mt-12 border-t border-white/10 pt-8">
-          <div className="flex items-center gap-2">
-            <Tag
-              size={18}
-              className="text-gray-400"
-            />
-            <div className="flex flex-wrap gap-2">
-              {post.tags.map((tag) => (
-                <span
-                  key={tag}
-                  className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-sm text-gray-300">
-                  {tag}
-                </span>
-              ))}
+        {post.tags && post.tags.length > 0 && (
+          <footer className="mt-12 border-t border-white/10 pt-8">
+            <div className="flex items-center gap-2">
+              <Tag
+                size={18}
+                className="text-gray-400"
+              />
+              <div className="flex flex-wrap gap-2">
+                {post.tags.map((tag) => (
+                  <span
+                    key={tag}
+                    className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-sm text-gray-300">
+                    {tag}
+                  </span>
+                ))}
+              </div>
             </div>
-          </div>
-        </footer>
+          </footer>
+        )}
       </article>
     </div>
   );
-}
-
-export async function generateStaticParams() {
-  return posts.map((post) => ({
-    slug: post.slug,
-  }));
 }

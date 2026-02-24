@@ -114,7 +114,7 @@ export default function Sidebar() {
 
       <aside
         className={clsx(
-          "scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-transparent fixed z-50 h-screen overflow-y-auto bg-[#F5F7FB] text-[#2d353c] transition-all duration-300 md:static",
+          "scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-transparent fixed z-50 min-h-screen overflow-y-auto bg-bgLight text-[#2d353c] transition-all duration-300 md:static",
           "top-0 left-0",
           mobileOpen ? "w-72 translate-x-0" : "w-72 -translate-x-full",
           "md:w-72 md:translate-x-0"

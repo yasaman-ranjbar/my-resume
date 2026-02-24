@@ -20,6 +20,7 @@ import {
   SelectValue,
 } from "@/components/ui/Select";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/RadioGroup";
+import TiptapEditor from "@/components/common/TiptapEditor";
 
 export default function AddNewPost() {
   const [coverImage, setCoverImage] = useState<File | null>(null);
@@ -82,13 +83,16 @@ export default function AddNewPost() {
   return (
     <div className="space-y-8 p-6">
       <h1 className="flex items-center gap-2 text-2xl font-bold">
-        <CopyPlus size={24} />
-        <span>New Post</span>
+        <CopyPlus
+          className="text-gray-600"
+          size={24}
+        />
+        <span className="text-gray-600">New Post</span>
       </h1>
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="space-y-4">
-        <div className="flex w-full flex-col gap-6 md:flex-row">
+        <div className="grid w-full grid-cols-1 gap-6 md:grid-cols-2">
           <div className="w-full">
             <Label htmlFor="title">Title</Label>
             <Input
@@ -146,8 +150,7 @@ export default function AddNewPost() {
               )}
             />
           </div>
-        </div>
-        <div className="flex flex-col items-center gap-6 md:flex-row">
+
           <div className="w-full">
             <Label htmlFor="tags">Tags</Label>
             <Input
@@ -200,20 +203,26 @@ export default function AddNewPost() {
               )}
             />
           </div>
-        </div>
-        <div className="space-y-3">
-          <Label htmlFor="content">Content</Label>
-          <Textarea
-            id="content"
-            {...register("content")}
-            rows={10}
+          <div className="space-y-3">
+            <Label htmlFor="content">Content</Label>
+            <Controller
+              name="content"
+              control={control}
+              render={({ field }) => (
+                <TiptapEditor
+                  value={field.value}
+                  onChange={field.onChange}
+                />
+              )}
+            />
+          </div>
+          <CoverImage
+            value={coverImage}
+            onChange={(file) => setCoverImage(file)}
+            label="Cover Image"
           />
         </div>
-        <CoverImage
-          value={coverImage}
-          onChange={(file) => setCoverImage(file)}
-          label="Cover Image"
-        />
+
         <Button
           variant="default"
           size="lg"

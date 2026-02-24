@@ -1,10 +1,18 @@
 import BlogPosts from "../../../components/pageContainer/Blog/Posts";
 import PageHeader from "@/components/pageContainer/pageHeader/PageHeader";
+import type { PostsProps } from "@/types";
+import { prisma } from "@/lib/prisma";
+
+async function fetchBlogPosts(): Promise<PostsProps[]> {
+  const posts = await prisma.post.findMany({
+    where: { status: "published" },
+    orderBy: { createdAt: "desc" },
+  });
+  return posts as unknown as PostsProps[];
+}
 
 export default async function Blog() {
-  // if (error) {
-  //   console.error("Error fetching posts:", error);
-  // }
+  const posts = await fetchBlogPosts();
 
   return (
     <div>
@@ -13,13 +21,7 @@ export default async function Blog() {
         pageName="Blog"
         className="bg-[#F5F7FB]"
       />
-      {/* {error ? (
-        <p className="text-center text-red-400">
-          Failed to load posts. Please try again later.
-        </p>
-      ) : (
-        <BlogPosts posts={posts || []} />
-      )} */}
+      <BlogPosts posts={posts} />
     </div>
   );
 }

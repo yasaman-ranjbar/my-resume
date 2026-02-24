@@ -4,6 +4,9 @@ import Link from "next/link";
 import Image from "next/image";
 import { Calendar, ArrowRight } from "lucide-react";
 import { PostsProps } from "@/types";
+import { getExcerptFromHtml } from "@/utils/content";
+import { AppRoutes } from "@/constant/route";
+import { Badge } from "@/components/ui/Badge";
 
 interface BlogPostsProps {
   posts: PostsProps[];
@@ -18,8 +21,8 @@ export default function BlogPosts({ posts }: BlogPostsProps) {
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
           {posts.map((post) => (
             <Link
-              key={post.slug}
-              href={`/blog/${post.slug}`}
+              key={post.id}
+              href={`${AppRoutes.BLOG}/${post.slug}?id=${post.id}` as const}
               className="group">
               <div className="flex h-full flex-col overflow-hidden rounded-xl border border-white/10 bg-white/5 transition-all duration-300 hover:border-blue-500/50 hover:shadow-xl hover:shadow-blue-500/10">
                 {/* Image */}
@@ -49,11 +52,15 @@ export default function BlogPosts({ posts }: BlogPostsProps) {
                         day: "numeric",
                       })}
                     </span>
-                    {post.tags && post.tags.length > 0 && (
-                      <span className="rounded-full border border-blue-500/20 bg-blue-500/10 px-2 py-0.5 text-blue-400">
-                        {post.tags[0]}
-                      </span>
-                    )}
+                    {post.tags &&
+                      post.tags.length > 0 &&
+                      post.tags.map((tag) => (
+                        <Badge
+                          key={tag}
+                          variant="default">
+                          {tag}
+                        </Badge>
+                      ))}
                   </div>
 
                   <h2 className="mb-3 line-clamp-2 text-xl font-bold transition-colors group-hover:text-blue-400">
@@ -62,7 +69,7 @@ export default function BlogPosts({ posts }: BlogPostsProps) {
 
                   <p className="mb-6 line-clamp-3 grow text-sm text-gray-400">
                     {post.content
-                      ? post.content.substring(0, 150) + "..."
+                      ? getExcerptFromHtml(post.content, 220)
                       : "Read more to discover the content"}
                   </p>
 
