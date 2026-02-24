@@ -90,7 +90,7 @@ export const Modal: React.FC<ModalProps> = ({
             {showCloseButton && (
               <button
                 type="button"
-                className="ml-auto rounded-full p-1 text-gray-500 hover:text-gray-700 focus:ring-2 focus:ring-indigo-500 focus:outline-none dark:text-gray-400 dark:hover:text-gray-200"
+                className="cursor-pointer ml-auto rounded-full p-1 text-gray-500 hover:text-gray-700 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
                 onClick={onClose}
                 aria-label="Close modal">
                 <span className="text-2xl leading-none">

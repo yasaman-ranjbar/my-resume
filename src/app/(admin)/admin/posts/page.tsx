@@ -13,15 +13,7 @@ import Link from "next/link";
 import { useEffect, useState, Suspense } from "react";
 import { toast } from "react-toastify";
 import { Badge } from "@/components/ui/Badge";
-import {
-  SquarePen,
-  Trash2,
-  Eye,
-  EyeOff,
-  Search,
-  CopyPlus,
-  ArrowRight,
-} from "lucide-react";
+import { SquarePen, Trash2, Eye, EyeOff, Search, Plus, ArrowRight } from "lucide-react";
 import { PostsProps } from "@/types";
 import {
   Select,
@@ -168,27 +160,27 @@ function PostListContent() {
     <main className="min-h-[600px] p-8">
       <div className="mb-6 flex items-center justify-between">
         <h1 className="text-2xl font-semibold">Posts</h1>
-        <Link
-          href={ADMIN_ROUTES.POSTS_NEW}
-          className="flex items-center gap-2 rounded-lg bg-[#280A10] px-4 py-2 text-white">
-          <CopyPlus size={16} />
+        <Button
+          variant="outline"
+          onClick={() => router.push(ADMIN_ROUTES.POSTS_NEW)}
+          className="flex items-center cursor-pointer gap-2 rounded-lg border border-gray-500 px-4 py-2 text-gray-500 hover:bg-primary hover:text-white">
+          <Plus size={16} />
           New post
-        </Link>
+        </Button>
       </div>
 
       {/* Filters and Search */}
       <div className="mb-6 rounded-lg bg-white p-4 shadow-sm">
-        <div className="flex flex-col gap-4 sm:flex-row">
-          <div className="relative flex flex-1 gap-3">
-            <Search className="absolute top-1/2 left-3 h-5 w-5 -translate-y-1/2 transform text-gray-400" />
-            <Input
-              className="flex-1 pl-10"
-              type="text"
-              placeholder="Search posts by title..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-          </div>
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+          <Input
+            icon={<Search className="text-gray-500" />}
+            className="w-full"
+            type="text"
+            placeholder="Search posts by title..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+
           <div className="flex gap-2">
             <Select
               value={statusFilter}
@@ -482,7 +474,7 @@ function PostListContent() {
               <Button
                 type="submit"
                 disabled={updatePostMutation.isPending}
-                className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-white hover:bg-secondary">
+                className="bg-primary hover:bg-secondary rounded-md px-4 py-2 text-sm font-medium text-white">
                 {updatePostMutation.isPending ? "Saving..." : "Save"}
               </Button>
             </div>
